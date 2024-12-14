@@ -19,7 +19,7 @@
 # include <arpa/inet.h>
 # include "Client.hpp"
 //# include "IRCCommandHandler.hpp"
-# include "Channel.hpp"
+//# include "Channel.hpp"
 
 class Server
 {

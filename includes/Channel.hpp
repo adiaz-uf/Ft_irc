@@ -1,4 +1,9 @@
+#ifndef CHANNEL_HPP
+# define CHANNEL_HPP
+
 # include <string>
+# include <map>
+# include <set>
 # include <vector>
 
 class Channel
@@ -14,3 +19,5 @@ class Channel
         void topic();
         void mode();
 };
+
+#endif
