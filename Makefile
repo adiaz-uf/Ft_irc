@@ -1,4 +1,4 @@
-NAME = ftirc
+NAME = ircserv
 
 CC = c++
 RM = rm -rf
@@ -7,7 +7,7 @@ CFLAGS = -Wall -Werror -Wextra -std=c++98 #-fsanitize=address
 #directories
 SRC_DIR		=	src/
 OBJ_DIR		=	.obj/
-INC_DIR		=	include/
+INC_DIR		=	includes/
 
 #color codes
 GREEN = \033[1;32m
@@ -15,9 +15,11 @@ END = \033[0m
 
 #source files
 SRCS =  main.cpp \
-	Parser.cpp \
-	Channel.cpp \
-	User.cpp \
+		Server.cpp \
+		Client.cpp \
+		Parser.cpp \
+		Channel.cpp \
+		User.cpp \
 
 
 OBJS = $(SRCS:.cpp=.o)
@@ -25,7 +27,6 @@ OBJS = $(SRCS:.cpp=.o)
 #paths
 SRC			=	$(addprefix $(SRC_DIR), $(SRCS))
 OBJ			=	$(addprefix $(OBJ_DIR), $(OBJS))
-
 all: $(NAME)
 
 #executable compilation
