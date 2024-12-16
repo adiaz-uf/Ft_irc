@@ -1,6 +1,7 @@
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
 
+# include "Client.hpp"
 # include <string>
 # include <map>
 # include <set>
@@ -9,15 +10,25 @@
 class Channel
 {
     private:
-        std::vector<std::string> _users;
+        std::vector<Client *>   _clients;
+        std::string             _name;
+        std::string             _topic;
     public:
         Channel();
         ~Channel();
 
-        void kick();
+        void add(Client *lient);
+        void remove(Client *client);
+        void kick(Client *client, Client *target, const std::string& reason);
         void invite();
         void topic();
         void mode();
+
+        typedef std::vector<Client *>::iterator client_iterator;
 };
+
+/*
+
+*/
 
 #endif

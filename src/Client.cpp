@@ -35,3 +35,8 @@ void	Client::setUsername(const std::string& username)
 {
 	_username = username;
 }
+
+void Client::setChannel(Channel *channel)
+{
+	this->_channel = channel;
+}

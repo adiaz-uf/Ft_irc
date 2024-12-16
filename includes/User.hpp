@@ -13,8 +13,10 @@ class User
         // Setters
         void setNickname(std::string newNickname);
         void setUsername(std::string newUsername);
+        void setAuthenticate(int authenticate);
 
         // Getters
         std::string getNickname();
         std::string getUsername();
+        int         getAuthenticate();
 };
