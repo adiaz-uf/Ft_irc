@@ -38,6 +38,33 @@ Channel&	Channel::operator=(const Channel& other)
 
 Channel::~Channel() {}
 
+/* KICK */
+void	Channel::kick(const std::string& username)
+{
+	_users.erase(username);
+}
+
+/* INVITE */
+void	Channel::invite(const std::string& username)
+{
+	_invitedUsers.insert(username);
+}
+
+/* TOPIC */
+void	Channel::setTopic(const std::string& topic)
+{
+	_topic = topic;
+}
+
+/* MODE */
+void	Channel::setMode(char mode, bool enable)
+{
+	if (enable)
+		_modes.insert(mode);
+	else
+		_modes.erase(mode);
+}
+
 void	Channel::addUser(const std::string& username, int role)
 {
 	if (hasMode('i') && _invitedUsers.find(username) == _invitedUsers.end())
@@ -72,32 +99,14 @@ std::vector<std::string> Channel::getUsers() const
 	return userList;
 }
 
-void	Channel::invite(const std::string& username)
-{
-	_invitedUsers.insert(username);
-}
-
 bool	Channel::isInvited(const std::string& username) const
 {
 	return _invitedUsers.find(username) != _invitedUsers.end();
 }
 
-void	Channel::setTopic(const std::string& topic)
-{
-	_topic = topic;
-}
-
 const std::string&	Channel::getTopic() const
 {
 	return _topic;
-}
-
-void	Channel::setMode(char mode, bool enable)
-{
-	if (enable)
-		_modes.insert(mode);
-	else
-		_modes.erase(mode);
 }
 
 bool	Channel::hasMode(char mode) const
@@ -123,11 +132,6 @@ void	Channel::setPassword(const std::string& password)
 bool	Channel::checkPassword(const std::string& password) const
 {
 	return _password == password;
-}
-
-void	Channel::kick(const std::string& username)
-{
-	_users.erase(username);
 }
 
 void	Channel::promoteToOperator(const std::string& username)
