@@ -4,6 +4,7 @@
 # include "Channel.hpp"
 # include <string>
 
+class Channel;
 class Client
 {
 	private:

@@ -106,7 +106,7 @@ void	Server::_handleClientMessage(int clientFd)
 	}
 	std::string	message(buffer);
 	std::cout << "Received message from client " << clientFd << ": " <<  message << std::endl;
-//	IRCCommandHandler::handleCommand(*this, _clients[clientFd], message);
+	IRCCommandHandler::handleCommand(*this, _clients[clientFd], message);
 }
 
 void	Server::_disconnectClient(int clientFd)
