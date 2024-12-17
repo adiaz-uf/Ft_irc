@@ -12,8 +12,8 @@ Server::Server(int port, const std::string& password)
 Server::Server(const Server& other)
 	: _serverSocket(-1),
 	  _password(other._password),
-	  _clients(other._clients)//,
-//	  _channels(other._channels)
+	  _clients(other._clients),
+	  _channels(other._channels)
 {
 	if (other._serverSocket >= 0)
 		throw std::logic_error("Socket duplication not allowed");
@@ -28,7 +28,7 @@ Server&	Server::operator=(const Server& other)
 		_serverSocket = -1;
 		_password = other._password;
 		_clients = other._clients;
-//		_channels = other._channels;
+		_channels = other._channels;
 	}
 	return *this;
 }

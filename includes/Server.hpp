@@ -18,8 +18,8 @@
 # include <fcntl.h>
 # include <arpa/inet.h>
 # include "Client.hpp"
+# include "Channel.hpp"
 //# include "IRCCommandHandler.hpp"
-//# include "Channel.hpp"
 
 class Server
 {
@@ -28,7 +28,7 @@ class Server
 		int								_epollFd;
 		std::string						_password;
 		std::map<int, Client>			_clients;
-//		std::map<std:string, Channel>	_channels;
+		std::map<std::string, Channel>	_channels;
 
 		void	_setupServerSocket(int port);
 		void	_acceptNewClient();
