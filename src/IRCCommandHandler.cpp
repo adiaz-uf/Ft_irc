@@ -20,46 +20,63 @@ std::vector<std::string> IRCCommandHandler::split_istringstream(std::string str)
     return split;
 }
 
-void IRCCommandHandler::handleCommand(Server server, Client client, std::string input)
+void IRCCommandHandler::handleCommand(Server &server, Client &client, std::string input)
 {
     (void)server;
     (void)client;
-    int                         n = -1;
-    std::vector<std::string>    command;
-    std::string                 ircCommands[26] = {"JOIN", "PART", "NICK", "QUIT", "MSG", "WHOIS", "AWAY", \
-    "BACK", "TOPIC", "LIST", "KICK", "BAN", "INVITE", "MODE", "ME", "SERVER", "PING", "PRIVMSG", \
-    "NOTICE", "WHO", "OP", "DEOP", "VOICE", "DEVOICE", "MODE", "HELP"};
+    int         n = -1;
+    std::string ircCommands[14] = { "JOIN", "PART", "NICK", "QUIT", "MSG", "TOPIC", \
+    "KICK", "INVITE", "MODE", "PING", "PONG", "PRIVMSG", "MODE", "HELP" };
     
-    command = IRCCommandHandler::split_istringstream(input);
+    std::vector<std::string> command = IRCCommandHandler::split_istringstream(input);
     do
         n++;
-    while (n < 26 && command[n] != ircCommands[n]);  
-    std::cout << n << std::endl;
+    while (n < 14 && command[0] != ircCommands[n]);  
     switch (n)
     {
-        case 0:
+        case 0:  // JOIN
             break;
-        case 1:
+        case 1: // PART
+
             break;
-        case 2:
+        case 2: // NICK
+
             break;
-        case 3:
+        case 3: // QUIT
+
             break;
-        case 4:
+        case 4: // MSG
+
             break;
-        case 5:
+        case 5: // TOPIC
+
             break;
-        case 6:
+        case 6: // KICK
+            client.getChannel()->kick(command, server, client);
             break;
-        case 7:
+        case 7: // INVITE
+
             break;
-        case 8:
+        case 8: // MODE
+
             break;
-        case 9:
+        case 9: // PING
+
             break;
-        case 10:
+        case 10: // PONG
+
             break;
-        case 11:
+        case 11: // PRIVMSG
+
+            break;
+        case 12: // MODE
+
+            break;
+        case 13: // HELP
+
+            break;
+        default:
+            std::cout << "INVALID COMMAND" << std::endl;
             break;
     }
 

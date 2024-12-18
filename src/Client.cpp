@@ -40,3 +40,8 @@ void Client::setChannel(Channel *channel)
 {
 	this->_channel = channel;
 }
+
+Channel *Client::getChannel()
+{
+    return this->_channel;
+}

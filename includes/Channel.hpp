@@ -2,12 +2,16 @@
 # define CHANNEL_HPP
 
 # include "Client.hpp"
+# include "Server.hpp"
+# include "ErrorLogs.hpp"
 # include <string>
 # include <stdexcept>
 # include <map>
 # include <set>
 # include <vector>
 
+class Server;
+class Client;
 class Channel
 {
 	private:
@@ -47,13 +51,9 @@ class Channel
 		void	setPassword(const std::string& password);
 		bool	checkPassword(const std::string& password) const;
 
-		void	kick(const std::string& username);
+		void	kick(std::vector<std::string> command, Server &server, Client &client);
 		void	promoteToOperator(const std::string& username);
 		void	demoteFromOperator(const std::string& username);
 };
-
-/*
-
-*/
 
 #endif

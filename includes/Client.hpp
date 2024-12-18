@@ -12,7 +12,7 @@ class Client
 		std::string	_nickname;
 		std::string	_username;
 		bool		_authenticated;
-		Channel*		_channel;
+		Channel*	_channel;
 
 	public:
 		Client();
@@ -30,6 +30,7 @@ class Client
 		void	setUsername(const std::string& username);
 
 		void	setChannel(Channel *channel);		
+		Channel *getChannel();	
 
 		bool	isAuthenticated() const;
 		void	authenticate();

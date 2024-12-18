@@ -21,6 +21,8 @@
 # include "Channel.hpp"
 # include "IRCCommandHandler.hpp"
 
+class Client;
+class Channel;
 class Server
 {
 	private:

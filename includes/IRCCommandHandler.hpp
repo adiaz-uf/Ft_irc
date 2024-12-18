@@ -6,6 +6,7 @@
 # include <sstream>
 
 class Server;
+class Client;
 
 class IRCCommandHandler
 {
@@ -15,7 +16,7 @@ public:
     IRCCommandHandler(/* args */);
     ~IRCCommandHandler();
 
-    static void handleCommand(Server server, Client client, std::string msg);
+    static void handleCommand(Server &server, Client &client, std::string msg);
     static std::vector<std::string> split_istringstream(std::string str);
 };
 
