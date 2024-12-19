@@ -26,7 +26,12 @@ Client&	Client::operator=(const Client& other)
 
 Client::~Client() {}
 
-const std::string&	Client::getUsername() const
+const std::string &Client::getNickname() const
+{
+    return this->_nickname;
+}
+
+const std::string &Client::getUsername() const
 {
 	return _username;
 }

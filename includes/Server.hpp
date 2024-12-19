@@ -44,6 +44,7 @@ class Server
 		Server& operator=(const Server& other);
 		~Server();
 
+		bool	isValidChannel(std::string channel);
 		void	run();
 };
 

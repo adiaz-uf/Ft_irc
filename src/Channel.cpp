@@ -53,12 +53,12 @@ ERR_NOTONCHANNEL (442)
 */
 void	Channel::kick(std::vector<std::string> command, Server &server, Client &client)
 {
-	//if (!channel_exist) // search in server.channels
-	//	ERR_NOSUCHCHANNEL (403)
-	if (command.size() < 3)
-		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername().c_str() , "KICK") << std::endl;
+	if (!server.isValidChannel(command[1]))
+		std::cerr << ERR_NOSUCHCHANNEL(client.getUsername() , command[1]) << std::endl;
+	else if (command.size() < 3)
+		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "KICK") << std::endl;
 	else if (client.getChannel()->_name != command[1])
-		std::cerr << ERR_USERNOTINCHANNEL("send client", "", "KICK") << std::endl;
+		std::cerr << ERR_USERNOTINCHANNEL(client.getUsername(), client.getNickname(), "KICK") << std::endl;
 	else
 		_users.erase(command[2]);
 }
