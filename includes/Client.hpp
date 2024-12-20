@@ -12,8 +12,6 @@ class Client
 		std::string	_nickname;
 		std::string	_username;
 		bool		_authenticated;
-		Channel*	_channel;
-
 	public:
 		Client();
 		Client(int socket);
@@ -28,9 +26,6 @@ class Client
 
 		const	std::string& getUsername() const;
 		void	setUsername(const std::string& username);
-
-		void	setChannel(Channel *channel);		
-		Channel *getChannel();	
 
 		bool	isAuthenticated() const;
 		void	authenticate();

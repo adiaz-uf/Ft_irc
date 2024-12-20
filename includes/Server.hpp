@@ -45,6 +45,7 @@ class Server
 		~Server();
 
 		bool	isValidChannel(std::string channel);
+		Channel* getChannel(std::string channel);
 		void	run();
 };
 

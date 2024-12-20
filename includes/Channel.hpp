@@ -18,7 +18,7 @@ class Channel
 		std::string	_name;
 		std::string	_topic;
 		std::string	_password;
-		std::map<std::string, int> _users;
+		std::map<std::string, int> _users;// TODO: referencia al cliente en la struct
 		std::set<std::string>	_invitedUsers;
 		std::set<char>	_modes;
 		int	_userLimit;
@@ -35,6 +35,7 @@ class Channel
 		bool	isUserInChannel(const std::string& username) const;
 		bool	isOperator(const std::string& username) const;
 		std::vector<std::string>	getUsers() const;
+		std::map<std::string, int> getUser();
 
 		void	invite(const std::string& username);
 		bool	isInvited(const std::string& username) const;

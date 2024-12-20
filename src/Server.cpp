@@ -46,6 +46,13 @@ bool Server::isValidChannel(std::string channel)
     return (this->_channels.find(channel) != this->_channels.end());
 }
 
+Channel* Server::getChannel(std::string channel)
+{
+	if (this->_channels.find(channel) != this->_channels.end())
+		return &(this->_channels.at(channel));
+	return (NULL);
+}
+
 void	Server::_setupServerSocket(int port)
 {
 	_serverSocket = socket(AF_INET, SOCK_STREAM, 0);
