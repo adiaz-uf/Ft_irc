@@ -19,8 +19,10 @@
 # include <arpa/inet.h>
 # include "Client.hpp"
 # include "Channel.hpp"
-//# include "IRCCommandHandler.hpp"
+# include "IRCCommandHandler.hpp"
 
+class Client;
+class Channel;
 class Server
 {
 	private:
@@ -42,6 +44,7 @@ class Server
 		Server& operator=(const Server& other);
 		~Server();
 
+		bool	isValidChannel(std::string channel);
 		void	run();
 };
 

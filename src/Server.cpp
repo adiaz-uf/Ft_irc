@@ -41,6 +41,11 @@ Server::~Server()
 		close(_epollFd);
 }
 
+bool Server::isValidChannel(std::string channel)
+{
+    return (this->_channels.find(channel) != this->_channels.end());
+}
+
 void	Server::_setupServerSocket(int port)
 {
 	_serverSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -106,7 +111,7 @@ void	Server::_handleClientMessage(int clientFd)
 	}
 	std::string	message(buffer);
 	std::cout << "Received message from client " << clientFd << ": " <<  message << std::endl;
-//	IRCCommandHandler::handleCommand(*this, _clients[clientFd], message);
+	IRCCommandHandler::handleCommand(*this, _clients[clientFd], message);
 }
 
 void	Server::_disconnectClient(int clientFd)
@@ -118,7 +123,7 @@ void	Server::_disconnectClient(int clientFd)
 	_clients.erase(clientFd);
 }
 
-void	Server::run()
+void Server::run()
 {
 	struct epoll_event	events[MAX_EVENTS];
 
@@ -138,3 +143,5 @@ void	Server::run()
 		}
 	}
 }
+
+
