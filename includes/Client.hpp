@@ -1,8 +1,10 @@
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 
+# include "Channel.hpp"
 # include <string>
 
+class Channel;
 class Client
 {
 	private:
@@ -10,6 +12,7 @@ class Client
 		std::string	_nickname;
 		std::string	_username;
 		bool		_authenticated;
+		Channel*	_channel;
 
 	public:
 		Client();
@@ -19,11 +22,15 @@ class Client
 		~Client();
 
 		int		getSocket() const;
+
 		const	std::string&	getNickname() const;
 		void	setNickname(const std::string& nickname);
 
 		const	std::string& getUsername() const;
 		void	setUsername(const std::string& username);
+
+		void	setChannel(Channel *channel);		
+		Channel *getChannel();	
 
 		bool	isAuthenticated() const;
 		void	authenticate();

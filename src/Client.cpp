@@ -26,7 +26,12 @@ Client&	Client::operator=(const Client& other)
 
 Client::~Client() {}
 
-const std::string&	Client::getUsername() const
+const std::string &Client::getNickname() const
+{
+    return this->_nickname;
+}
+
+const std::string &Client::getUsername() const
 {
 	return _username;
 }
@@ -34,4 +39,14 @@ const std::string&	Client::getUsername() const
 void	Client::setUsername(const std::string& username)
 {
 	_username = username;
+}
+
+void Client::setChannel(Channel *channel)
+{
+	this->_channel = channel;
+}
+
+Channel *Client::getChannel()
+{
+    return this->_channel;
 }
