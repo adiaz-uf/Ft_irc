@@ -1,14 +1,5 @@
 # include "Channel.hpp"
 
-/*
-   · i: Set/remove Invite-only channel
-   · t: Set/remove the restrictions of the TOPIC command to channel operators
-   · k: Set/remove the channel key (password)
-   · o: Give/take channel operator privilege
-   · l: Set/remove the user limit to channel
-*/
-
-
 Channel::Channel()
 	: _name(""), _topic(""), _users(), _invitedUsers(), _modes(), _userLimit(-1) {}
 

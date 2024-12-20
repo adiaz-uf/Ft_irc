@@ -14,30 +14,41 @@ GREEN = \033[1;32m
 END = \033[0m
 
 #source files
-SRCS =  main.cpp \
-		Server.cpp \
-		Client.cpp \
-		Parser.cpp \
-		Channel.cpp \
-		User.cpp \
-		IRCCommandHandler.cpp \
-
+SRCS =  main \
+		Server \
+		Client \
+		Channel \
+		IRCCommandHandler \
+		commands/join \
+		commands/part \
+		commands/nick \
+		commands/quit \
+		commands/topic \
+		commands/kick \
+		commands/invite \
+		commands/mode \
+		commands/ping \
+		commands/pong \
+		commands/privmsg \
+		commands/help \
+		commands/notice \
 
 OBJS = $(SRCS:.cpp=.o)
 
 #paths
-SRC			=	$(addprefix $(SRC_DIR), $(SRCS))
-OBJ			=	$(addprefix $(OBJ_DIR), $(OBJS))
+SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .cpp, $(SRCS)))
+OBJ			=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRCS)))
 all: $(NAME)
 
 #executable compilation
 $(NAME): $(OBJ)
-	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) 
+	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 	@echo "\n$(GREEN)¡Compilation Success, you can run ft_irc!$(END)\n"
 
 #objs compilation
 $(OBJ_DIR)%.o:$(SRC_DIR)%.cpp
 	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)/commands
 	$(CC) $(CFLAGS) -I $(INC_DIR) -o $@ -c $<
 
 clean:
