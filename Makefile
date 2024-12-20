@@ -20,6 +20,7 @@ SRCS =  main.cpp \
 		Parser.cpp \
 		Channel.cpp \
 		User.cpp \
+		IRCCommandHandler.cpp \
 
 
 OBJS = $(SRCS:.cpp=.o)

@@ -18,6 +18,11 @@ void User::setUsername(std::string newUsername)
     this->_userName = newUsername;
 }
 
+void User::setAuthenticate(int authenticate)
+{
+    this->_authenticate = authenticate;
+}
+
 std::string User::getNickname()
 {
     return this->_nickName;
@@ -25,4 +30,9 @@ std::string User::getNickname()
 std::string User::getUsername()
 {
     return this->_userName;
+}
+
+int User::getAuthenticate()
+{
+    return this->_authenticate;
 }
