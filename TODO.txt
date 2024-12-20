@@ -1,0 +1,10 @@
+Password on Server Entry
+Port Parsing 
+    Port Valid
+    No Other Characters
+Handle Client Message Needs to aggregate the whole message not just take a part
+    TO FIX: Client should have a buffer attribute and any message should be aggregated
+    Only if "/r/n" is found should it be processed
+
+Al Final:
+    Leaks
