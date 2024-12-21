@@ -47,7 +47,7 @@ class Server
 		Server& operator=(const Server& other);
 		~Server();
 
-
+		bool		deleteMemberAllChannels(int fd);
 
 		bool		isValidChannel	(std::string channel);
 		bool		isValidClient	(int fd);

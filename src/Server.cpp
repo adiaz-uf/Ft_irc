@@ -162,6 +162,8 @@ void		Server::_handleClientMessage(int clientFd)
 	}
 }
 
+
+// Logic Question? when is client removed from all channel maps?
 void		Server::_disconnectClient(int clientFd)
 {
 	std::cout << "Client disconnected: " << clientFd << std::endl;
@@ -170,7 +172,7 @@ void		Server::_disconnectClient(int clientFd)
 		std::cerr << "Failed to remove client FD from epoll: " << clientFd << std::endl;
 	close(clientFd);
 
-
+	deleteMemberAllChannels(clientFd);
 	_clients.erase(clientFd);
 }
 
@@ -196,3 +198,8 @@ void 		Server::run()
 }
 
 
+bool		Server::deleteMemberAllChannels(int fd)
+{
+	for (std::map<std::string, Channel>::iterator it = _channels.begin(); it!=_channels.end(); it++)
+		it->second.deleteMember(fd);
+}

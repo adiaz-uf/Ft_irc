@@ -49,11 +49,13 @@ class Channel
 		void						makeOperator		(Server& server, int fd);
 		void						removeOperator		(int fd);
 
+		void 						deleteMember		(int fd);
+
 						//"IS IN?" CHECKS
 		bool						isInvited			(int fd)									const;
 		bool						isMember			(int fd) 									const;
 		bool						isOperator			(int fd) 									const;
-		
+	
 						//TOPIC
 		const std::string&			getTopic			() 											const;
 		void						setTopic			(const std::string& topic);			

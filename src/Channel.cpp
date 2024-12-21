@@ -89,6 +89,16 @@ void				Channel::removeOperator		(int fd)
 	_operators.erase(fd);
 }
 
+void 				Channel::deleteMember		(int fd)
+{
+	if (isMember(fd))
+		removeMember(fd);
+	if (isInvited(fd))
+		uninvite(fd);
+	if (isOperator(fd))
+		removeOperator(fd);
+}
+
 const std::string&	Channel::getTopic			() 								const
 {
 	return (_topic);
@@ -128,3 +138,4 @@ int					Channel::getUsersLimit		() 								const
 {
 	return _userLimit;
 }
+
