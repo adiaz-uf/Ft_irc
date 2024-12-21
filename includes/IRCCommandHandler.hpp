@@ -20,7 +20,6 @@ public:
     static std::vector<std::string> split_istringstream(std::string str);
 
 
-    static void    kick(std::vector<std::string> command, Server &server, Client &client);
 };
 
 #endif // IRCCOMMANDHANDLER_HPP

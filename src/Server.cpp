@@ -71,6 +71,9 @@ Client*		Server::getClient(std::string client)
 	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
 		if ((it->second).getNickname() == client)
 			return (&(it->second));
+			
+	/*shouldnt get to this line*/
+	return(NULL); 	
 }
 
 Channel*	Server::getChannel(std::string channel)
@@ -137,25 +140,37 @@ void		Server::_acceptNewClient()
 void		Server::_handleClientMessage(int clientFd)
 {
 	char	buffer[512];
+	std::string*	cbuffer = getClient(clientFd)->getBuffer();
 	std::memset(buffer, 0, sizeof(buffer));
 
 	int	bytesReceived = recv(clientFd, buffer, sizeof(buffer) - 1, 0);
 	if (bytesReceived <= 0)
+		return _disconnectClient(clientFd);
+	if (strcmp(buffer, "\n") || strcmp(buffer, ""))
 	{
-		_disconnectClient(clientFd);
-		return ;
+		std::string	message(buffer);
+		cbuffer->append(message);
+	}	
+	while (cbuffer->find("\n") != std::string::npos)
+	{
+ 		if (cbuffer->find("\n") != 0)
+		{
+			IRCCommandHandler::handleCommand(*this, _clients[clientFd], cbuffer->substr(0,cbuffer->find("\n")));
+			std::cout << "executed" << std::endl;
+		}
+		cbuffer->erase(0, cbuffer->find("\n") + 1);
 	}
-	std::string	message(buffer);
-	std::cout << "Received message from client " << clientFd << ": " <<  message << std::endl;
-	IRCCommandHandler::handleCommand(*this, _clients[clientFd], message);
 }
 
 void		Server::_disconnectClient(int clientFd)
 {
 	std::cout << "Client disconnected: " << clientFd << std::endl;
+	
 	if (epoll_ctl(_epollFd, EPOLL_CTL_DEL, clientFd, NULL) == -1)
 		std::cerr << "Failed to remove client FD from epoll: " << clientFd << std::endl;
 	close(clientFd);
+
+
 	_clients.erase(clientFd);
 }
 

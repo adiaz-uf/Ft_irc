@@ -2,7 +2,7 @@ NAME = ircserv
 
 CC = c++
 RM = rm -rf
-CFLAGS = -Wall -Werror -Wextra -std=c++98 #-fsanitize=address
+CFLAGS = -Wall -g -Werror -Wextra -std=c++98 #-fsanitize=address
 
 #directories
 SRC_DIR		=	src/
@@ -17,9 +17,7 @@ END = \033[0m
 SRCS =  main.cpp \
 		Server.cpp \
 		Client.cpp \
-		Parser.cpp \
 		Channel.cpp \
-		User.cpp \
 		IRCCommandHandler.cpp \
 
 

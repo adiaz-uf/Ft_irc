@@ -47,17 +47,18 @@ class Server
 		Server& operator=(const Server& other);
 		~Server();
 
+
+
 		bool		isValidChannel	(std::string channel);
 		bool		isValidClient	(int fd);
 		bool		isValidClient	(std::string client);
 
+		
 		Channel* 	getChannel		(std::string channel);
 		Client* 	getClient		(std::string client);
 		Client* 	getClient		(int fd);
 
 		void		run();
-		//TODO BEL
-		Client* findClient(int fd);
 };
 
 #endif

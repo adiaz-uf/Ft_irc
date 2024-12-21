@@ -20,13 +20,14 @@ class Channel
 		std::string						_name;
 		std::string						_topic;
 		std::string						_password;
-		int								_userLimit;
 		
-		std::set<char>					_modes;
 		
 		std::map<int, Client*> 			_members;
 		std::map<int, Client*>			_operators;
 		std::map<int, Client*>			_invited;
+
+		std::set<char>					_modes;
+		int								_userLimit;
 
 	public:
 		Channel();
@@ -40,13 +41,13 @@ class Channel
 		//IMPORTANT NOTE: FOR THESE YOU *MUST* DO APPROPRIATE CHECKS BEFORE CALLING
 		//If fd is already in invited do not add to invited
 		void						makeMember			(Server& server, int fd);
-		void						removeMember		(Server& server, int fd);
+		void						removeMember		(int fd);
 
 		void 						invite				(Server& server, int fd);
-		void						uninvite			(Server& server, int fd);
+		void						uninvite			(int fd);
 
 		void						makeOperator		(Server& server, int fd);
-		void						removeOperator		(Server& server, int fd);
+		void						removeOperator		(int fd);
 
 						//"IS IN?" CHECKS
 		bool						isInvited			(int fd)									const;

@@ -52,7 +52,6 @@ void IRCCommandHandler::handleCommand(Server &server, Client &client, std::strin
 
             break;
         case 6: // KICK
-            kick(command, server, client);//client.getChannel()->
             break;
         case 7: // INVITE
 
@@ -93,34 +92,3 @@ ERR_CHANOPRIVSNEEDED (482)
 ERR_USERNOTINCHANNEL (441)
 ERR_NOTONCHANNEL (442)
 */
-void	IRCCommandHandler::kick(std::vector<std::string> command, Server &server, Client &client)
-{
-	if (!server.isValidChannel(command[1]))
-		std::cerr << ERR_NOSUCHCHANNEL(client.getUsername() , command[1]) << std::endl;
-	else if (command.size() < 3)
-		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "KICK") << std::endl;
-/* 	else if (server.getChannel(command[1])->getUser().find(command[1]) != command[1])//TODO
-		std::cerr << ERR_USERNOTINCHANNEL(client.getUsername(), client.getNickname(), "KICK") << std::endl; */
-	else
-		server.getChannel(command[1])->getUser().erase(command[2]);
-}
-
-/* 
-INVITE: Parameters: <nickname> <channel>
-- INVITE Wiz #foo_bar    ; Invite Wiz to #foo_bar
-*/
-void	Channel::invite(const std::string& username)
-{
-	_invitedUsers.insert(username);
-}
-
-/* 
-TOPIC: Parameters: <channel> [<topic>]
-- TOPIC #test :New topic    ; Setting the topic on "#test" to "New topic".
-- TOPIC #test :             ; Clearing the topic on "#test"
-- TOPIC #test               ; Checking the topic for "#test"
- */
-void	Channel::setTopic(const std::string& topic)
-{
-	_topic = topic;
-}

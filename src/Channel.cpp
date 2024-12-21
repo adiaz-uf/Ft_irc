@@ -10,15 +10,16 @@
 
 
 Channel::Channel()
-	: _name(""), _topic(""), _members(), _invited(), _modes(), _userLimit(-1) {}
+	: _name(""), _topic(""), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
 
 Channel::Channel(const std::string& name)
-	: _name(name), _topic(""), _members(), _invited(), _modes(), _userLimit(-1) {}
+	: _name(name), _topic(""), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
 
 Channel::Channel(const Channel& other)
 	: _name(other._name),
 	  _topic(other._topic),
 	  _members(other._members),
+	  _operators(other._operators),
 	  _invited(other._invited),
 	  _modes(other._modes),
 	  _userLimit(other._userLimit) {}
@@ -30,6 +31,7 @@ Channel&	Channel::operator=(const Channel& other)
 		_name = other._name;
 		_topic = other._topic;
 		_members = other._members;
+		_operators = other._operators;
 		_invited = other._invited;
 		_modes = other._modes;
 		_userLimit = other._userLimit;
@@ -60,29 +62,29 @@ bool				Channel::isInvited 			(int fd)                      	const
 
 void				Channel::makeOperator		(Server& server, int fd)
 {
-	Client* client = server.findClient(fd);
+	Client* client = server.getClient(fd);
 	_operators[fd] = client;
 }
 void	 			Channel::invite				(Server& server, int fd)
 {
-	Client* client = server.findClient(fd);
+	Client* client = server.getClient(fd);
 	_invited[fd] = client;
 }
 void				Channel::makeMember			(Server& server, int fd)
 {
-	Client* client = server.findClient(fd);
+	Client* client = server.getClient(fd);
 	_members[fd] = client;
 }
 
-void				Channel::removeMember		(Server& server, int fd)
+void				Channel::removeMember		(int fd)
 {
 	_members.erase(fd);
 }
-void				Channel::uninvite			(Server& server, int fd)
+void				Channel::uninvite			(int fd)
 {
 	_invited.erase(fd);
 }
-void				Channel::removeOperator		(Server& server, int fd)
+void				Channel::removeOperator		(int fd)
 {
 	_operators.erase(fd);
 }
