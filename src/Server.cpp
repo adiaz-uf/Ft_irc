@@ -154,10 +154,7 @@ void		Server::_handleClientMessage(int clientFd)
 	while (cbuffer->find("\n") != std::string::npos)
 	{
  		if (cbuffer->find("\n") != 0)
-		{
 			IRCCommandHandler::handleCommand(*this, _clients[clientFd], cbuffer->substr(0,cbuffer->find("\n")));
-			std::cout << "executed" << std::endl;
-		}
 		cbuffer->erase(0, cbuffer->find("\n") + 1);
 	}
 }
@@ -198,8 +195,42 @@ void 		Server::run()
 }
 
 
-bool		Server::deleteMemberAllChannels(int fd)
+void		Server::deleteMemberAllChannels(int fd)
 {
 	for (std::map<std::string, Channel>::iterator it = _channels.begin(); it!=_channels.end(); it++)
 		it->second.deleteMember(fd);
+}
+
+bool		Server::nickValid(std::string name, int fd)
+{
+	(void)fd;
+	//Reglas de documentacion de IRC
+		//They MUST NOT contain any of the following characters: space (' ', 0x20), comma (',', 0x2C), asterisk ('*', 0x2A), question mark ('?', 0x3F), exclamation mark ('!', 0x21), at sign ('@', 0x40).
+		//They MUST NOT start with any of the following characters: dollar ('$', 0x24), colon (':', 0x3A).
+		//They MUST NOT start with a character listed as a channel type, channel membership prefix, or prefix listed in the IRCv3 multi-prefix Extension.
+		//They SHOULD NOT contain any dot character ('.', 0x2E).
+	//Creo que hexchat tiene reglas distintas
+	if (name.find_first_not_of("1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`|^_-{}[]\\") != std::string::npos)
+	{
+		//SEND MESSAGE TO CLIENT
+		// @time=2024-12-21T08:25:19.065Z :osmium.libera.chat 432 bmatos-d 2asdasd :Erroneous Nickname
+		return (false);
+	}
+	
+	if (name.find_first_of("1234567890-") == 0)
+	{
+		//SEND MESSAGE TO CLIENT
+		// @time=2024-12-21T08:25:19.065Z :osmium.libera.chat 432 bmatos-d 2asdasd :Erroneous Nickname
+		return (false);
+	}
+	
+	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
+		if (it->second.getNickname() == name)
+		{
+			//MESSAGE TO CLIENT
+			//@time=2024-12-21T08:22:56.797Z :osmium.libera.chat 433 bmatos-d asdasd :Nickname is already in use.
+			return (false);
+		}
+
+	return (true);
 }

@@ -68,6 +68,9 @@ class Channel
 		bool						hasMode				(char mode) 								const;
 		void						setMode				(char mode, bool enable);			
 		
+		void						copyMemberToInvite	();
+		void						deleteInviteElements();
+		
 						//UserLimit
 		void						setUsersLimit		(int limit);			
 		int							getUsersLimit		() 											const;

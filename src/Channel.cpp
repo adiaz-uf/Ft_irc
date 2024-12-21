@@ -10,10 +10,10 @@
 
 
 Channel::Channel()
-	: _name(""), _topic(""), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
+	: _name(""), _topic("No topic is set"), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
 
 Channel::Channel(const std::string& name)
-	: _name(name), _topic(""), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
+	: _name(name), _topic("No topic is set"), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
 
 Channel::Channel(const Channel& other)
 	: _name(other._name),
@@ -41,101 +41,108 @@ Channel&	Channel::operator=(const Channel& other)
 
 Channel::~Channel() {}
 
-bool				Channel::isMember  			(int fd)                      	const
+bool				Channel::isMember  				(int fd)                      	const
 {
 	if (_members.find(fd) != _members.end())
 		return (true);
 	return (false);
 }
-bool				Channel::isOperator			(int fd)                      	const
+bool				Channel::isOperator				(int fd)                      	const
 {
 	if (_operators.find(fd) != _operators.end())
 		return (true);
 	return (false);
 }
-bool				Channel::isInvited 			(int fd)                      	const
+bool				Channel::isInvited 				(int fd)                      	const
 {
 	if (_invited.find(fd) == _invited.end())
 		return (false);
 	return	(true);
 }
-
-void				Channel::makeOperator		(Server& server, int fd)
+	
+void				Channel::makeOperator			(Server& server, int fd)
 {
 	Client* client = server.getClient(fd);
 	_operators[fd] = client;
 }
-void	 			Channel::invite				(Server& server, int fd)
+void	 			Channel::invite					(Server& server, int fd)
 {
 	Client* client = server.getClient(fd);
 	_invited[fd] = client;
 }
-void				Channel::makeMember			(Server& server, int fd)
+void				Channel::makeMember				(Server& server, int fd)
 {
 	Client* client = server.getClient(fd);
 	_members[fd] = client;
 }
-
-void				Channel::removeMember		(int fd)
+	
+void				Channel::removeMember			(int fd)
 {
 	_members.erase(fd);
 }
-void				Channel::uninvite			(int fd)
+void				Channel::uninvite				(int fd)
 {
 	_invited.erase(fd);
 }
-void				Channel::removeOperator		(int fd)
+void				Channel::removeOperator			(int fd)
 {
 	_operators.erase(fd);
 }
-
-void 				Channel::deleteMember		(int fd)
+	
+void 				Channel::deleteMember			(int fd)
 {
-	if (isMember(fd))
-		removeMember(fd);
-	if (isInvited(fd))
-		uninvite(fd);
-	if (isOperator(fd))
-		removeOperator(fd);
+	if (isMember  (fd))	removeMember  (fd);
+	if (isInvited (fd))	uninvite      (fd);
+	if (isOperator(fd))	removeOperator(fd);
 }
-
-const std::string&	Channel::getTopic			() 								const
+	
+const std::string&	Channel::getTopic				() 								const
 {
 	return (_topic);
 }
-void 				Channel::setTopic			(const std::string& topic)
+void 				Channel::setTopic				(const std::string& topic)
 {
 	_topic = topic;
 }
-
-void				Channel::setPassword		(const std::string& password)
+	
+void				Channel::setPassword			(const std::string& password)
 {
 	_password = password;
 }
-bool				Channel::checkPassword		(const std::string& password) 	const
+bool				Channel::checkPassword			(const std::string& password) 	const
 {
 	return _password == password;
 }
-
-bool				Channel::hasMode			(char mode) 					const
+	
+bool				Channel::hasMode				(char mode) 					const
 {
 	return _modes.find(mode) != _modes.end();
 }
-void				Channel::setMode   			(char mode, bool enable)
+void				Channel::setMode   				(char mode, bool enable)
 {
 	if (enable)
 		_modes.insert(mode);
 	else
 		_modes.erase(mode);
 }
-
-void				Channel::setUsersLimit		(int limit)
+	
+void				Channel::setUsersLimit			(int limit)
 {
 	_userLimit = limit;
 }
-
-int					Channel::getUsersLimit		() 								const
+	
+int					Channel::getUsersLimit			() 								const
 {
 	return _userLimit;
 }
+	
+void				Channel::copyMemberToInvite		()
+{
+	_invited = _members;
+}
 
+void				Channel::deleteInviteElements	()
+{
+	for (std::map<int, Client*>::iterator it = _invited.begin(); it != _invited.end(); it++)
+		_invited.erase(it->first);
+}

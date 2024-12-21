@@ -35,20 +35,23 @@ void IRCCommandHandler::handleCommand(Server &server, Client &client, std::strin
     switch (n)
     {
         case 0:  // JOIN
+            //VJOIN(nick, user, channel)
+            
             break;
         case 1: // PART
+            //VPART(nick, user, channel)
 
             break;
         case 2: // NICK
-
+           //NICK(oldnick, user, newnick) 
+        
             break;
         case 3: // QUIT
-
             break;
-        case 4: // MSG
 
-            break;
         case 5: // TOPIC
+            //TOPIC_GET(nick, channel, topic)
+            //TOPIC_SET(todo)
 
             break;
         case 6: // KICK

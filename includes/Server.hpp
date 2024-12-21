@@ -47,18 +47,21 @@ class Server
 		Server& operator=(const Server& other);
 		~Server();
 
-		bool		deleteMemberAllChannels(int fd);
 
-		bool		isValidChannel	(std::string channel);
-		bool		isValidClient	(int fd);
-		bool		isValidClient	(std::string client);
-
+		bool		isValidChannel			(std::string channel);
+		bool		isValidClient			(int fd);
+		bool		isValidClient			(std::string client);
 		
-		Channel* 	getChannel		(std::string channel);
-		Client* 	getClient		(std::string client);
-		Client* 	getClient		(int fd);
+				
+		Channel* 	getChannel				(std::string channel);
+		Client* 	getClient				(std::string client);
+		Client* 	getClient				(int fd);
 
 		void		run();
+
+		//Utilities
+		void		deleteMemberAllChannels	(int fd);
+		bool		nickValid				(std::string name, int fd);
 };
 
 #endif

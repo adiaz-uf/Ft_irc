@@ -31,22 +31,40 @@ Client&	Client::operator=(const Client& other)
 
 Client::~Client() {}
 
-const std::string &Client::getNickname() const
+
+
+
+int					Client::getSocket() const
+{
+	return (_socket);
+}
+
+const std::string &	Client::getNickname		() const
 {
     return this->_nickname;
 }
 
-const std::string &Client::getUsername() const
+const std::string &	Client::getUsername		() const
 {
 	return _username;
 }
 
-std::string*	Client::getBuffer() 
+std::string*		Client::getBuffer		() 
 {
 	return &_terminal_input;
 }
 
-void	Client::setUsername(const std::string& username)
+void				Client::setUsername		(const std::string& username)
 {
 	_username = username;
+}
+
+bool				Client::isAuthenticated	() const
+{
+	return (_authenticated);
+}
+
+void				Client::authenticate	()
+{
+	_authenticated = true;
 }
