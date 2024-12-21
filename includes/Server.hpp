@@ -23,6 +23,7 @@
 
 class Client;
 class Channel;
+
 class Server
 {
 	private:
@@ -32,21 +33,29 @@ class Server
 		std::map<int, Client>			_clients;
 		std::map<std::string, Channel>	_channels;
 
+		//Suggest making these static non server functions
 		void	_setupServerSocket(int port);
 		void	_acceptNewClient();
 		void	_handleClientMessage(int clientFd);
 		void	_disconnectClient(int clientFd);
 
 	public:
+		//Suggest removing the constructors we dont need.
 		Server();
 		Server(int port, const std::string& password);
 		Server(const Server& other);
 		Server& operator=(const Server& other);
 		~Server();
 
-		bool	isValidChannel(std::string channel);
-		Channel* getChannel(std::string channel);
-		void	run();
+		bool		isValidChannel	(std::string channel);
+		bool		isValidClient	(int fd);
+		bool		isValidClient	(std::string client);
+
+		Channel* 	getChannel		(std::string channel);
+		Client* 	getClient		(std::string client);
+		Client* 	getClient		(int fd);
+
+		void		run();
 		//TODO BEL
 		Client* findClient(int fd);
 };

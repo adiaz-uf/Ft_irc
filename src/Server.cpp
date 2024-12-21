@@ -41,19 +41,48 @@ Server::~Server()
 		close(_epollFd);
 }
 
-bool Server::isValidChannel(std::string channel)
+
+
+bool 		Server::isValidChannel(std::string channel) 
 {
     return (this->_channels.find(channel) != this->_channels.end());
 }
 
-Channel* Server::getChannel(std::string channel)
+bool 		Server::isValidClient(int fd)  
+{
+    return (this->_clients.find(fd) != this->_clients.end());
+}
+
+bool 		Server::isValidClient(std::string client) 
+{
+	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
+		if ((it->second).getNickname() == client)
+			return (true);
+	return (false);
+}
+
+Client*		Server::getClient(int fd)
+{
+	return &(this->_clients.at(fd));
+}
+
+Client*		Server::getClient(std::string client)
+{
+	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
+		if ((it->second).getNickname() == client)
+			return (&(it->second));
+}
+
+Channel*	Server::getChannel(std::string channel)
 {
 	if (this->_channels.find(channel) != this->_channels.end())
 		return &(this->_channels.at(channel));
 	return (NULL);
 }
 
-void	Server::_setupServerSocket(int port)
+
+
+void		Server::_setupServerSocket(int port)
 {
 	_serverSocket = socket(AF_INET, SOCK_STREAM, 0);
 	if (_serverSocket == -1)
@@ -83,7 +112,7 @@ void	Server::_setupServerSocket(int port)
 	std::cout << "Server started on port " << port << std::endl;
 }
 
-void	Server::_acceptNewClient()
+void		Server::_acceptNewClient()
 {
 	struct sockaddr_in	clientAddr;
 	socklen_t	clientLen = sizeof(clientAddr);
@@ -105,7 +134,7 @@ void	Server::_acceptNewClient()
 	std::cout << "New client connected: " << clientSocket << std::endl;
 }
 
-void	Server::_handleClientMessage(int clientFd)
+void		Server::_handleClientMessage(int clientFd)
 {
 	char	buffer[512];
 	std::memset(buffer, 0, sizeof(buffer));
@@ -121,7 +150,7 @@ void	Server::_handleClientMessage(int clientFd)
 	IRCCommandHandler::handleCommand(*this, _clients[clientFd], message);
 }
 
-void	Server::_disconnectClient(int clientFd)
+void		Server::_disconnectClient(int clientFd)
 {
 	std::cout << "Client disconnected: " << clientFd << std::endl;
 	if (epoll_ctl(_epollFd, EPOLL_CTL_DEL, clientFd, NULL) == -1)
@@ -130,7 +159,7 @@ void	Server::_disconnectClient(int clientFd)
 	_clients.erase(clientFd);
 }
 
-void Server::run()
+void 		Server::run()
 {
 	struct epoll_event	events[MAX_EVENTS];
 

@@ -39,19 +39,19 @@ Channel&	Channel::operator=(const Channel& other)
 
 Channel::~Channel() {}
 
-bool				Channel::isMember  (int fd)                      const
+bool				Channel::isMember  			(int fd)                      	const
 {
 	if (_members.find(fd) != _members.end())
 		return (true);
 	return (false);
 }
-bool				Channel::isOperator(int fd)                      const
+bool				Channel::isOperator			(int fd)                      	const
 {
 	if (_operators.find(fd) != _operators.end())
 		return (true);
 	return (false);
 }
-bool				Channel::isInvited (int fd)                      const
+bool				Channel::isInvited 			(int fd)                      	const
 {
 	if (_invited.find(fd) == _invited.end())
 		return (false);
@@ -105,11 +105,11 @@ bool				Channel::checkPassword		(const std::string& password) 	const
 	return _password == password;
 }
 
-bool				Channel::hasMode	(char mode) 								const
+bool				Channel::hasMode			(char mode) 					const
 {
 	return _modes.find(mode) != _modes.end();
 }
-void				Channel::setMode   	(char mode, bool enable)
+void				Channel::setMode   			(char mode, bool enable)
 {
 	if (enable)
 		_modes.insert(mode);
@@ -117,12 +117,12 @@ void				Channel::setMode   	(char mode, bool enable)
 		_modes.erase(mode);
 }
 
-void				Channel::setUsersLimit(int limit)
+void				Channel::setUsersLimit		(int limit)
 {
 	_userLimit = limit;
 }
 
-int					Channel::getUsersLimit() const
+int					Channel::getUsersLimit		() 								const
 {
 	return _userLimit;
 }
