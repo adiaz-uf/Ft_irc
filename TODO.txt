@@ -23,3 +23,5 @@ HEXCHAT
 
 Al Final:
     Leaks
+
+Has Mode

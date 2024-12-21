@@ -47,6 +47,8 @@ class Server
 		bool	isValidChannel(std::string channel);
 		Channel* getChannel(std::string channel);
 		void	run();
+		//TODO BEL
+		Client* findClient(int fd);
 };
 
 #endif

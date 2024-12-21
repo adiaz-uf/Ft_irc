@@ -10,18 +10,23 @@
 # include <set>
 # include <vector>
 
+
+
 class Server;
 class Client;
 class Channel
 {
 	private:
-		std::string	_name;
-		std::string	_topic;
-		std::string	_password;
-		std::map<std::string, int> _users;// TODO: referencia al cliente en la struct
-		std::set<std::string>	_invitedUsers;
-		std::set<char>	_modes;
-		int	_userLimit;
+		std::string						_name;
+		std::string						_topic;
+		std::string						_password;
+		int								_userLimit;
+		
+		std::set<char>					_modes;
+		
+		std::map<int, Client*> 			_members;
+		std::map<int, Client*>			_operators;
+		std::map<int, Client*>			_invited;
 
 	public:
 		Channel();
@@ -29,32 +34,41 @@ class Channel
 		Channel(const Channel& other);
 		Channel&	operator=(const Channel& other);
 		~Channel();
+		
 
-		void	addUser(const std::string& username, int role);
-		void	removeUser(const std::string& username);
-		bool	isUserInChannel(const std::string& username) const;
-		bool	isOperator(const std::string& username) const;
-		std::vector<std::string>	getUsers() const;
-		std::map<std::string, int> getUser();
+						//ADD REMOVE
+		//IMPORTANT NOTE: FOR THESE YOU *MUST* DO APPROPRIATE CHECKS BEFORE CALLING
+		//If fd is already in invited do not add to invited
+		void						makeMember			(Server& server, int fd);
+		void						removeMember		(Server& server, int fd);
 
-		void	invite(const std::string& username);
-		bool	isInvited(const std::string& username) const;
+		void 						invite				(Server& server, int fd);
+		void						uninvite			(Server& server, int fd);
 
-		void	setTopic(const std::string& topic);
-		const std::string&	getTopic() const;
+		void						makeOperator		(Server& server, int fd);
+		void						removeOperator		(Server& server, int fd);
 
-		void	setMode(char mode, bool enable);
-		bool	hasMode(char mode) const;
+						//"IS IN?" CHECKS
+		bool						isInvited			(int fd)									const;
+		bool						isMember			(int fd) 									const;
+		bool						isOperator			(int fd) 									const;
+		
+						//TOPIC
+		const std::string&			getTopic			() 											const;
+		void						setTopic			(const std::string& topic);			
+		
+						//PASSWORD
+		void						setPassword			(const std::string& password);			
+		bool						checkPassword		(const std::string& password) 				const;
 
-		void	setUsersLimit(int limit);
-		int		getUsersLimit() const;
+						//MODE
+		bool						hasMode				(char mode) 								const;
+		void						setMode				(char mode, bool enable);			
+		
+						//UserLimit
+		void						setUsersLimit		(int limit);			
+		int							getUsersLimit		() 											const;
 
-		void	setPassword(const std::string& password);
-		bool	checkPassword(const std::string& password) const;
-
-		void	kick(std::vector<std::string> command, Server &server, Client &client);
-		void	promoteToOperator(const std::string& username);
-		void	demoteFromOperator(const std::string& username);
 };
 
 #endif
