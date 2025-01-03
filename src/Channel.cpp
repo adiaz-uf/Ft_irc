@@ -1,16 +1,17 @@
 # include "Channel.hpp"
 
 Channel::Channel()
-	: _name(""), _topic(""), _users(), _invitedUsers(), _modes(), _userLimit(-1) {}
+	: _name(""), _topic("No topic is set"), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
 
 Channel::Channel(const std::string& name)
-	: _name(name), _topic(""), _users(), _invitedUsers(), _modes(), _userLimit(-1) {}
+	: _name(name), _topic("No topic is set"), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
 
 Channel::Channel(const Channel& other)
 	: _name(other._name),
 	  _topic(other._topic),
-	  _users(other._users),
-	  _invitedUsers(other._invitedUsers),
+	  _members(other._members),
+	  _operators(other._operators),
+	  _invited(other._invited),
 	  _modes(other._modes),
 	  _userLimit(other._userLimit) {}
 
@@ -20,8 +21,9 @@ Channel&	Channel::operator=(const Channel& other)
 	{
 		_name = other._name;
 		_topic = other._topic;
-		_users = other._users;
-		_invitedUsers = other._invitedUsers;
+		_members = other._members;
+		_operators = other._operators;
+		_invited = other._invited;
 		_modes = other._modes;
 		_userLimit = other._userLimit;
 	}
@@ -30,99 +32,118 @@ Channel&	Channel::operator=(const Channel& other)
 
 Channel::~Channel() {}
 
-
-
-/* MODE */
-void	Channel::setMode(char mode, bool enable)
+bool				Channel::isMember  				(int fd)                      	const
+{
+	if (_members.find(fd) != _members.end())
+		return (true);
+	return (false);
+}
+bool				Channel::isOperator				(int fd)                      	const
+{
+	if (_operators.find(fd) != _operators.end())
+		return (true);
+	return (false);
+}
+bool				Channel::isInvited 				(int fd)                      	const
+{
+	if (_invited.find(fd) == _invited.end())
+		return (false);
+	return	(true);
+}
+	
+void				Channel::makeOperator			(Server& server, int fd)
+{
+	Client* client = server.getClient(fd);
+	_operators[fd] = client;
+}
+void	 			Channel::invite					(Server& server, int fd)
+{
+	Client* client = server.getClient(fd);
+	_invited[fd] = client;
+}
+void				Channel::makeMember				(Server& server, int fd)
+{
+	Client* client = server.getClient(fd);
+	_members[fd] = client;
+}
+	
+void				Channel::removeMember			(int fd)
+{
+	_members.erase(fd);
+}
+void				Channel::uninvite				(int fd)
+{
+	_invited.erase(fd);
+}
+void				Channel::removeOperator			(int fd)
+{
+	_operators.erase(fd);
+}
+	
+void 				Channel::deleteMember			(int fd)
+{
+	if (isMember  (fd))	removeMember  (fd);
+	if (isInvited (fd))	uninvite      (fd);
+	if (isOperator(fd))	removeOperator(fd);
+}
+	
+const std::string&	Channel::getTopic				() 								const
+{
+	return (_topic);
+}
+void 				Channel::setTopic				(const std::string& topic)
+{
+	_topic = topic;
+}
+	
+void				Channel::setPassword			(const std::string& password)
+{
+	_password = password;
+}
+bool				Channel::checkPassword			(const std::string& password) 	const
+{
+	return _password == password;
+}
+	
+bool				Channel::hasMode				(char mode) 					const
+{
+	return _modes.find(mode) != _modes.end();
+}
+void				Channel::setMode   				(char mode, bool enable)
 {
 	if (enable)
 		_modes.insert(mode);
 	else
 		_modes.erase(mode);
 }
-
-void	Channel::addUser(const std::string& username, int role)
-{
-	if (hasMode('i') && _invitedUsers.find(username) == _invitedUsers.end())
-		throw std::runtime_error("User must be invited to join this channel.");
-	else if (_userLimit != -1 && static_cast<int>(_users.size()) >= _userLimit)
-        throw std::runtime_error("User limit exceeded for this channel.");
-	_users[username] = role;
-}
-
-void	Channel::removeUser(const std::string& username)
-{
-	_users.erase(username);
-}
-
-bool	Channel::isUserInChannel(const std::string& username) const
-{
-	return _users.find(username) != _users.end();
-}
-
-bool	Channel::isOperator(const std::string& username) const
-{
-	std::map<std::string, int>::const_iterator it = _users.find(username);
-	return it != _users.end() && it->second == 1;
-}
-
-std::vector<std::string> Channel::getUsers() const
-{
-	std::vector<std::string>	userList;
-	for (std::map<std::string, int>::const_iterator it
-			= _users.begin(); it != _users.end(); ++it)
-		userList.push_back(it->first);
-	return userList;
-}
-
-std::map<std::string, int> Channel::getUser()
-{
-    return this->_users;
-}
-
-bool	Channel::isInvited(const std::string& username) const
-{
-	return _invitedUsers.find(username) != _invitedUsers.end();
-}
-
-const std::string&	Channel::getTopic() const
-{
-	return _topic;
-}
-
-bool	Channel::hasMode(char mode) const
-{
-	return _modes.find(mode) != _modes.end();
-}
-
-void	Channel::setUsersLimit(int limit)
+	
+void				Channel::setUsersLimit			(int limit)
 {
 	_userLimit = limit;
 }
-
-int		Channel::getUsersLimit() const
+	
+int					Channel::getUsersLimit			() 								const
 {
 	return _userLimit;
 }
 
-void	Channel::setPassword(const std::string& password)
+Client* Channel::getMember(std::string username)
 {
-	_password = password;
+	for (std::map<int, Client*>::const_iterator it = _members.begin(); it != _members.end(); it++)
+		if ((it->second)->getNickname() == username)
+			return (it->second);
+			
+	/*shouldnt get to this line*/
+	return(NULL); 	
 }
 
-bool	Channel::checkPassword(const std::string& password) const
+void				Channel::copyMemberToInvite		()
 {
-	return _password == password;
+	_invited = _members;
 }
 
-void	Channel::promoteToOperator(const std::string& username)
+void				Channel::deleteInviteElements	()
 {
-	if (_users.find(username) != _users.end())
-		_users[username] = 1;
-}
-
-void	Channel::demoteFromOperator(const std::string& username)
-{
-	if (_users.find(username) != _users.end())
-		_users[username] = 0;
+	for (std::map<int, Client*>::iterator it = _invited.begin(); it != _invited.end(); it++)
+		_invited.erase(it->first);
 }

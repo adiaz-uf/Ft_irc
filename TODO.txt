@@ -1,25 +1,18 @@
+WELCOME MESSAGE
+
 Password on Server Entry
 
 Port Parsing 
     Port Valid
     No Other Characters
 
-Handle Client Message Needs to aggregate the whole message not just take a part
-    TO FIX: Client should have a buffer attribute and any message should be aggregated
-    Only if "/r/n" is found should it be processed
-
-IRCCommandHandler
-    The way to identify channel should be done through message. 
-
-    Client channel shouldnt be stored in client
-        eg KICK <channel> <client> :[<message>]
-        When youre on the client you dont need to do this because it will do it automatically for you.
-        eg when you are in the channel in the ui the message sent to the server will have the channel appended so all you need to do is KICK <client> <msg>
-
-    Need to implement a notice command for the evaluation
-
 HEXCHAT
     At the moment it doesnt connect automatically - why?
 
+Disconnect:
+    When is client removed from channels
+
 Al Final:
     Leaks
+
+Has Mode

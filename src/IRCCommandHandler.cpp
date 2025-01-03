@@ -34,24 +34,26 @@ void IRCCommandHandler::handleCommand(Server &server, Client &client, std::strin
     {
         case 0:  // JOIN
             join(command, server, client);
+            //JOIN_LOG(nick, user, channel);
             break;
         case 1: // PART
             part(command, server, client);
+            //VPART(nick, user, channel)
             break;
         case 2: // NICK
             nick(command, server, client);
+           //NICK(oldnick, user, newnick) 
             break;
         case 3: // QUIT
             quit(command, server, client);
             break;
-        case 4: // TOPIC
+        case 5: // TOPIC
             topic(command, server, client);
+            //TOPIC_GET(nick, channel, topic)
+            //TOPIC_SET(todo)
             break;
-        case 5: // KICK
+        case 6: // KICK
             kick(command, server, client);
-            break;
-        case 6: // INVITE
-            invite(command, server, client);
             break;
         case 7: // MODE
             mode(command, server, client);

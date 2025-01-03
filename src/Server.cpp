@@ -41,19 +41,51 @@ Server::~Server()
 		close(_epollFd);
 }
 
-bool Server::isValidChannel(std::string channel)
+
+
+bool 		Server::isValidChannel(std::string channel) 
 {
     return (this->_channels.find(channel) != this->_channels.end());
 }
 
-Channel* Server::getChannel(std::string channel)
+bool 		Server::isValidClient(int fd)  
+{
+    return (this->_clients.find(fd) != this->_clients.end());
+}
+
+bool 		Server::isValidClient(std::string client) 
+{
+	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
+		if ((it->second).getNickname() == client)
+			return (true);
+	return (false);
+}
+
+Client*		Server::getClient(int fd)
+{
+	return &(this->_clients.at(fd));
+}
+
+Client*		Server::getClient(std::string client)
+{
+	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
+		if ((it->second).getNickname() == client)
+			return (&(it->second));
+			
+	/*shouldnt get to this line*/
+	return(NULL); 	
+}
+
+Channel*	Server::getChannel(std::string channel)
 {
 	if (this->_channels.find(channel) != this->_channels.end())
 		return &(this->_channels.at(channel));
 	return (NULL);
 }
 
-void	Server::_setupServerSocket(int port)
+
+
+void		Server::_setupServerSocket(int port)
 {
 	_serverSocket = socket(AF_INET, SOCK_STREAM, 0);
 	if (_serverSocket == -1)
@@ -83,7 +115,7 @@ void	Server::_setupServerSocket(int port)
 	std::cout << "Server started on port " << port << std::endl;
 }
 
-void	Server::_acceptNewClient()
+void		Server::_acceptNewClient()
 {
 	struct sockaddr_in	clientAddr;
 	socklen_t	clientLen = sizeof(clientAddr);
@@ -105,32 +137,43 @@ void	Server::_acceptNewClient()
 	std::cout << "New client connected: " << clientSocket << std::endl;
 }
 
-void	Server::_handleClientMessage(int clientFd)
+void		Server::_handleClientMessage(int clientFd)
 {
 	char	buffer[512];
+	std::string*	cbuffer = getClient(clientFd)->getBuffer();
 	std::memset(buffer, 0, sizeof(buffer));
 
 	int	bytesReceived = recv(clientFd, buffer, sizeof(buffer) - 1, 0);
 	if (bytesReceived <= 0)
+		return _disconnectClient(clientFd);
+	if (strcmp(buffer, "\n") || strcmp(buffer, ""))
 	{
-		_disconnectClient(clientFd);
-		return ;
+		std::string	message(buffer);
+		cbuffer->append(message);
+	}	
+	while (cbuffer->find("\n") != std::string::npos)
+	{
+ 		if (cbuffer->find("\n") != 0)
+			IRCCommandHandler::handleCommand(*this, _clients[clientFd], cbuffer->substr(0,cbuffer->find("\n")));
+		cbuffer->erase(0, cbuffer->find("\n") + 1);
 	}
-	std::string	message(buffer);
-	std::cout << "Received message from client " << clientFd << ": " <<  message << std::endl;
-	IRCCommandHandler::handleCommand(*this, _clients[clientFd], message);
 }
 
-void	Server::_disconnectClient(int clientFd)
+
+// Logic Question? when is client removed from all channel maps?
+void		Server::_disconnectClient(int clientFd)
 {
 	std::cout << "Client disconnected: " << clientFd << std::endl;
+	
 	if (epoll_ctl(_epollFd, EPOLL_CTL_DEL, clientFd, NULL) == -1)
 		std::cerr << "Failed to remove client FD from epoll: " << clientFd << std::endl;
 	close(clientFd);
+
+	deleteMemberAllChannels(clientFd);
 	_clients.erase(clientFd);
 }
 
-void Server::run()
+void 		Server::run()
 {
 	struct epoll_event	events[MAX_EVENTS];
 
@@ -152,3 +195,42 @@ void Server::run()
 }
 
 
+void		Server::deleteMemberAllChannels(int fd)
+{
+	for (std::map<std::string, Channel>::iterator it = _channels.begin(); it!=_channels.end(); it++)
+		it->second.deleteMember(fd);
+}
+
+bool		Server::nickValid(std::string name, int fd)
+{
+	(void)fd;
+	//Reglas de documentacion de IRC
+		//They MUST NOT contain any of the following characters: space (' ', 0x20), comma (',', 0x2C), asterisk ('*', 0x2A), question mark ('?', 0x3F), exclamation mark ('!', 0x21), at sign ('@', 0x40).
+		//They MUST NOT start with any of the following characters: dollar ('$', 0x24), colon (':', 0x3A).
+		//They MUST NOT start with a character listed as a channel type, channel membership prefix, or prefix listed in the IRCv3 multi-prefix Extension.
+		//They SHOULD NOT contain any dot character ('.', 0x2E).
+	//Creo que hexchat tiene reglas distintas
+	if (name.find_first_not_of("1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`|^_-{}[]\\") != std::string::npos)
+	{
+		//SEND MESSAGE TO CLIENT
+		// @time=2024-12-21T08:25:19.065Z :osmium.libera.chat 432 bmatos-d 2asdasd :Erroneous Nickname
+		return (false);
+	}
+	
+	if (name.find_first_of("1234567890-") == 0)
+	{
+		//SEND MESSAGE TO CLIENT
+		// @time=2024-12-21T08:25:19.065Z :osmium.libera.chat 432 bmatos-d 2asdasd :Erroneous Nickname
+		return (false);
+	}
+	
+	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
+		if (it->second.getNickname() == name)
+		{
+			//MESSAGE TO CLIENT
+			//@time=2024-12-21T08:22:56.797Z :osmium.libera.chat 433 bmatos-d asdasd :Nickname is already in use.
+			return (false);
+		}
+
+	return (true);
+}

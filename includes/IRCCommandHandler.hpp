@@ -3,6 +3,7 @@
 
 # include "Client.hpp"
 # include "Server.hpp"
+# include <ErrorLogs.hpp>
 # include <sstream>
 
 class Server;

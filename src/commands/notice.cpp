@@ -1,7 +1,7 @@
 # include "IRCCommandHandler.hpp"
 
 /*
-Command: NOTICE Parameters: <target>{,<target>} <text to be sent>
+Command: NOTICE Parameters: <target> <text to be sent>
 
 The NOTICE command is used to send notices between users, as well as to send notices to channels. 
 <target> is interpreted the same way as it is for the PRIVMSG command.

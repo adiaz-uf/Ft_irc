@@ -12,6 +12,8 @@ class Client
 		std::string	_nickname;
 		std::string	_username;
 		bool		_authenticated;
+		std::string _terminal_input;
+
 	public:
 		Client();
 		Client(int socket);
@@ -19,16 +21,17 @@ class Client
 		Client&	operator=(const Client& other);
 		~Client();
 
-		int		getSocket() const;
+		int						getSocket() const;
+		std::string*			getBuffer();
 
 		const	std::string&	getNickname() const;
-		void	setNickname(const std::string& nickname);
+		void					setNickname(const std::string& nickname);
 
-		const	std::string& getUsername() const;
-		void	setUsername(const std::string& username);
+		const	std::string&	getUsername() const;
+		void					setUsername(const std::string& username);
 
-		bool	isAuthenticated() const;
-		void	authenticate();
+		bool					isAuthenticated() const;
+		void					authenticate();
 };
 
 #endif
