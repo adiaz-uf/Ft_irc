@@ -76,6 +76,7 @@ class Channel
 		int							getUsersLimit		() 											const;
 
 		Client* 						getMember(std::string username);
+		std::string getName();
 
 };
 

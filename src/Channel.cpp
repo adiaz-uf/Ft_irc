@@ -137,6 +137,11 @@ Client* Channel::getMember(std::string username)
 	return(NULL); 	
 }
 
+std::string Channel::getName()
+{
+    return (this->_name);
+}
+
 void				Channel::copyMemberToInvite		()
 {
 	_invited = _members;
