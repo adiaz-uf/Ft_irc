@@ -3,6 +3,7 @@
 
 # include "Channel.hpp"
 # include <string>
+# include <map>
 
 class Channel;
 class Client
@@ -13,7 +14,7 @@ class Client
 		std::string	_username;
 		bool		_authenticated;
 		std::string _terminal_input;
-		std::map<std::string, Channel>	_channels;
+		std::map<std::string, Channel> _channels;
 
 	public:
 		Client();

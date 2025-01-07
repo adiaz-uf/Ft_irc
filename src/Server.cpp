@@ -83,6 +83,11 @@ Channel*	Server::getChannel(std::string channel)
 	return (NULL);
 }
 
+void Server::addChannel(std::string channel)
+{
+	Channel newchannel = Channel(channel);
+	this->_channels[channel] = newchannel;
+}
 
 
 void		Server::_setupServerSocket(int port)
@@ -173,7 +178,7 @@ void		Server::_disconnectClient(int clientFd)
 	_clients.erase(clientFd);
 }
 
-void 		Server::run()
+void Server::run()
 {
 	struct epoll_event	events[MAX_EVENTS];
 

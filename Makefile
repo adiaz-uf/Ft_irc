@@ -20,18 +20,13 @@ SRCS =  main \
 		Channel \
 		IRCCommandHandler \
 		commands/join \
-		commands/part \
 		commands/nick \
-		commands/quit \
 		commands/topic \
 		commands/kick \
 		commands/invite \
 		commands/mode \
-		commands/ping \
-		commands/pong \
 		commands/privmsg \
-		commands/help \
-		commands/notice \
+
 
 OBJS = $(SRCS:.cpp=.o)
 
