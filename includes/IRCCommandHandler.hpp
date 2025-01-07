@@ -5,6 +5,7 @@
 # include "Server.hpp"
 # include <ErrorLogs.hpp>
 # include <sstream>
+# include <queue>
 
 class Server;
 class Client;

@@ -23,55 +23,39 @@ std::vector<std::string> IRCCommandHandler::split_istringstream(std::string str)
 void IRCCommandHandler::handleCommand(Server &server, Client &client, std::string input)
 {
     int         n = -1;
-    std::string ircCommands[13] = { "JOIN", "PART", "NICK", "QUIT", "TOPIC", \
-    "KICK", "INVITE", "MODE", "PING", "PONG", "PRIVMSG", "HELP", "NOTICE" };
+    std::string ircCommands[7] = { "JOIN", "NICK", "TOPIC", \
+    "KICK", "MODE", "PRIVMSG", "INVITE" };
     
     std::vector<std::string> command = IRCCommandHandler::split_istringstream(input);
     do
         n++;
-    while (n < 13 && command[0] != ircCommands[n]);  
+    while (n < 7 && command[0] != ircCommands[n]);  
     switch (n)
     {
         case 0:  // JOIN
             join(command, server, client);
             //JOIN_LOG(nick, user, channel);
             break;
-        case 1: // PART
-            part(command, server, client);
-            //VPART(nick, user, channel)
-            break;
-        case 2: // NICK
+        case 1: // NICK
             nick(command, server, client);
-           //NICK(oldnick, user, newnick) 
+            //NICK(oldnick, user, newnick) 
             break;
-        case 3: // QUIT
-            quit(command, server, client);
-            break;
-        case 5: // TOPIC
+        case 2: // TOPIC
             topic(command, server, client);
             //TOPIC_GET(nick, channel, topic)
             //TOPIC_SET(todo)
             break;
-        case 6: // KICK
+        case 3: // KICK
             kick(command, server, client);
             break;
-        case 7: // MODE
+        case 4: // MODE
             mode(command, server, client);
             break;
-        case 8: // PING
-            ping(command, server, client);
-            break;
-        case 9: // PONG
-            pong(command, server, client);
-            break;
-        case 10: // PRIVMSG
+        case 5: // PRIVMSG
             privmsg(command, server, client);
             break;
-        case 11: // HELP
-            help(command, server, client);
-            break;
-        case 12: // NOTICE
-            notice(command, server, client);
+        case 6: // INVITE
+            invite(command, server, client);
             break;
         default:
             std::cout << "INVALID COMMAND" << std::endl;

@@ -14,7 +14,7 @@
 //#define VTOPIC_SET(nick, channel, topic)              (": 331 " nick  " #"  channel  " :" topic "\r\n")
 #define JOIN_LOG(nick, user, channel)                      ( ":" nick "!~" user " JOIN #" channel "\r\n")
 #define PART_LOG(nick, user, channel)                      (":"nick"!~"user" PART #"channel"\r\n")
-#define NICK_LOG(oldnick, user, newnick)                    (":"oldnick"!~"user" NICK :"newnick"r\n")
+#define NICK_LOG(oldnick, user, newnick)                    (":"oldnick"!~"user" NICK :"newnick"\r\n")
 
 
 #define ERR_NOTREGISTERED(source)                            "451 " + source + " :You have not registered"

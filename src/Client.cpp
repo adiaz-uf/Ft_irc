@@ -66,7 +66,7 @@ void				Client::setUsername		(const std::string& username)
 
 bool				Client::isAuthenticated	() const
 {
-	return (_authenticated);
+	return (this->_authenticated);
 }
 
 void				Client::authenticate	()

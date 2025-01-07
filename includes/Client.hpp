@@ -13,6 +13,7 @@ class Client
 		std::string	_username;
 		bool		_authenticated;
 		std::string _terminal_input;
+		std::map<std::string, Channel>	_channels;
 
 	public:
 		Client();

@@ -28,19 +28,45 @@ RPL_ENDOFNAMES (366)
 */
 void    IRCCommandHandler::join(std::vector<std::string> command, Server &server, Client &client)
 {
-    int i = 1;
-    std::vector<std::string> channels;
-    std::vector<std::string> keys;
-    while (server.isValidChannel(command[i]))//TODO: separate channels and keys
-    {
-        channels.push_back(command[i]);
-        if (command[i + 1].compare(","))
-            i += 2; 
-    }
+    //int i = 1;
+    std::queue<std::string> channels;
+    std::queue<std::string> keys;
+	std::string split;                                                                                                                                                                
+
     if (command.size() < 2)
 		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "JOIN") << std::endl;
-    else if (!server.isValidChannel(command[1]))
-		std::cerr << ERR_NOSUCHCHANNEL(client.getUsername() , command[1]) << std::endl;
+	std::istringstream ss1(command[1]);
+    if (command[1].find(',') != std::string::npos) // Separate channels into vector
+	{
+		while (std::getline(ss1, split, ','))                                                                                                                                                                                   
+			channels.push(split);
+	}
+	if (command.size() > 2)
+	{
+		std::istringstream ss2(command[2]); 
+		while (std::getline(ss2, split, ','))                                                                                                                                                                                   
+			keys.push(split);
+	}
+	while (!channels.empty())
+	{
+		//if (!server.isValidChannel(channels.front()))
+			//std::cerr << ERR_NOSUCHCHANNEL(client.getUsername() , channels.front()) << std::endl;
+		std::cout << "join channel " << channels.front() << " ";//TODO: join channel
+		channels.pop();
+		if (!keys.empty())
+		{
+			std::cout << "using key \"" << keys.front() << "\" ";
+			keys.pop();
+		}
+		if (!channels.empty())
+			std::cout << "and ";
+	}
+	std::cout << std::endl;
+/* 	while (!keys.empty())
+	{
+		std::cout << keys.front() << std::endl;
+		keys.pop();
+	} */
     (void)server;
     return ;
 }

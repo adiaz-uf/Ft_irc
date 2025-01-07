@@ -21,6 +21,6 @@ void IRCCommandHandler::nick(std::vector<std::string> command, Server &server, C
     }
     if (!server.nickValid(command[1], client.getSocket()))
         return ;
-    
     client.setNickname(command[1]);
+    //TODO: send log
 }
