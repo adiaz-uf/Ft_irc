@@ -15,7 +15,8 @@ RPL_TOPIC (332)
 RPL_TOPICWHOTIME (333)
  */
 void	IRCCommandHandler::topic(std::vector<std::string> command, Server &server, Client &client)
-{    (void)command;
+{    
+    (void)command;
     (void)server;
     (void)client;
 	return ;

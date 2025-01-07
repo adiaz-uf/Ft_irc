@@ -22,7 +22,6 @@ class Channel
 		std::string						_topic;
 		std::string						_password;
 		
-		
 		std::map<int, Client*> 			_members;
 		std::map<int, Client*>			_operators;
 		std::map<int, Client*>			_invited;
