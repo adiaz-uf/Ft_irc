@@ -16,10 +16,8 @@ Message Examples:
 ERR_NEEDMOREPARAMS (461)v
 ERR_NOSUCHCHANNEL (403)v
 ERR_TOOMANYCHANNELS (405)
-ERR_BADCHANNELKEY (475)
-ERR_BANNEDFROMCHAN (474)
-ERR_CHANNELISFULL (471)
-ERR_INVITEONLYCHAN (473)
+ERR_BADCHANNELKEY (475)v
+ERR_INVITEONLYCHAN (473)v
 ERR_BADCHANMASK (476)
 RPL_TOPIC (332)
 RPL_TOPICWHOTIME (333)
@@ -35,11 +33,8 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
     if (command.size() < 2)
 		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "JOIN") << std::endl;
 	std::istringstream ss1(command[1]);
-    if (command[1].find(',') != std::string::npos) 
-	{
-		while (std::getline(ss1, split, ',')) // Separate channels into queue                                                                                                                                                                              
-			channels.push(split);
-	}
+	while (std::getline(ss1, split, ',')) // Separate channels into queue                                                                                                                                                                              
+		channels.push(split);
 	if (command.size() > 2)
 	{
 		std::istringstream ss2(command[2]); 
@@ -51,14 +46,25 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
 		if (server.isValidChannel(channels.front()))
 		{
 			if (server.getChannel(channels.front())->isMember(client.getSocket()) == false)
-				server.getChannel(channels.front())->makeMember(server, client.getSocket());
-			else
-				; // TODO: if client is already in channel?
+			{
+				if (!keys.empty())
+					{
+						if (server.getChannel(channels.front())->checkPassword(keys.front()))
+							server.getChannel(channels.front())->makeMember(server, client.getSocket());
+						else	
+						{
+							std::cerr << ERR_BADCHANNELKEY(keys.front(), channels.front()) << std::endl;
+							return ;
+						}
+					}
+				else
+					server.getChannel(channels.front())->makeMember(server, client.getSocket());
+			}
 		}
 		else
 		{
 			server.addChannel(channels.front());
-			server.getChannel(channels.front())->makeMember(server, client.getSocket());// TODO; key?
+			server.getChannel(channels.front())->makeMember(server, client.getSocket());
 		}
 		std::cout << "join channel " << channels.front() << " ";
 		if (!keys.empty())

@@ -64,6 +64,11 @@ void	 			Channel::invite					(Server& server, int fd)
 void				Channel::makeMember				(Server& server, int fd)
 {
 	Client* client = server.getClient(fd);
+	if (true) // TODO: channel mode is invite-only
+	{
+		std::cout << ERR_INVITEONLYCHAN(this->_name) << std::endl;
+		return ;
+	}
 	_members[fd] = client;
 }
 	

@@ -20,6 +20,7 @@ Message Examples:
 */
 void IRCCommandHandler::mode(std::vector<std::string> command, Server &server, Client &client)
 {
+    
     (void)command;
     (void)server;
     (void)client;
