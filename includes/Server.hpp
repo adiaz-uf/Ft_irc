@@ -63,6 +63,13 @@ class Server
 		//Utilities
 		void		deleteMemberAllChannels(int fd);
 		bool		nickValid(std::string name, int fd);
+		void		sendMessageToClient(const std::string& message, int clientFd);
+
+		std::string formatMessage(const std::string& sender, const std::string& command,
+				const std::string& target, const std::string& content)
+		{
+			return ":" + sender + " " + command + " " + target + " :" + content + "\r\n";
+		}
 };
 
 #endif

@@ -157,3 +157,17 @@ void				Channel::deleteInviteElements	()
 	for (std::map<int, Client*>::iterator it = _invited.begin(); it != _invited.end(); it++)
 		_invited.erase(it->first);
 }
+
+void	Channel::broadcastMessage(const std::string& message, const Channel& channel, int senderFd)
+{
+	for (std::map<int, MemberType>::const_iterator it = channel._members.begin();
+			it != channel._members.end(); ++it)
+	{
+		int	fd = it->first;
+		if (fd != senderFd)
+		{
+			if (send(fd, message.c_str(), message.length(), 0) == -1)
+				std::cerr << "Error broadcasting to FD : " << fd << std::endl;
+		}
+	}
+}

@@ -239,3 +239,10 @@ bool		Server::nickValid(std::string name, int fd)
 
 	return (true);
 }
+
+void	Server::sendMessageToClient(const std::string& message, int clientFd)
+{
+	if (send(clientFd, message.c_str(), message.length(), 0) == -1)
+		std::cerr <<"Error sending message to Client FD : " << clientFd << std::endl;
+}
+
