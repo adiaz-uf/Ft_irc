@@ -65,6 +65,7 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
 		{
 			server.addChannel(channels.front());
 			server.getChannel(channels.front())->makeMember(server, client.getSocket());
+			server.getChannel(channels.front())->makeOperator(server, client.getSocket());
 		}
 		std::cout << "join channel " << channels.front() << " ";
 		if (!keys.empty())
