@@ -15,6 +15,14 @@ ERR_NOTONCHANNEL (442)v
 */
 void	IRCCommandHandler::kick(std::vector<std::string> command, Server &server, Client &client)
 {
+
+//	if (command.size() > 3)
+	std::cerr << "Hello" << std::endl;
+		server.getChannel(command[1])->broadcastMessage(KICK_LOG((client.getNickname()), command[2], command[1], command[3]), command[1], 0);
+//		return ;
+//	else if (command.size() == 3)
+//		server.sendMessageToClient(KICK_LOG((client.getNickname()), command[2], command[1], command[2]), client.getSocket());
+	return ;
 	if (command.size() < 3)
 		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "KICK") << std::endl;
 	else if (!server.isValidChannel(command[1]))

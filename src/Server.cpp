@@ -76,6 +76,11 @@ Client*		Server::getClient(std::string client)
 	return(NULL); 	
 }
 
+std::map<std::string, Channel>*	Server::getChannels()
+{
+	return &_channels;
+}
+
 Channel*	Server::getChannel(std::string channel)
 {
 	if (this->_channels.find(channel) != this->_channels.end())
@@ -246,3 +251,13 @@ void	Server::sendMessageToClient(const std::string& message, int clientFd)
 		std::cerr <<"Error sending message to Client FD : " << clientFd << std::endl;
 }
 
+void	Server::broadcastToEveryone(const std::string& message, const Server& server)
+{
+	for (std::map<int, Client>::const_iterator it = server._clients.begin();
+			it != server._clients.end(); ++it)
+	{
+		int	fd = it->first;
+		if (send(fd, message.c_str(), message.length(), 0) == -1)
+			std::cerr << "Error broadcasting to FD : " << fd << std::endl;
+	}
+}

@@ -30,7 +30,16 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
     std::queue<std::string> keys;
 	std::string split;                                                                                                                                                                
 
-    if (command.size() < 2)
+	server.sendMessageToClient(JOIN_LOG((client.getNickname()), client.getUsername(), command[1].substr(1, command[1].size() - 1)), client.getSocket());
+
+
+	
+	(*(server.getChannels()))[command[1]] = Channel(command[1]);
+	server.getChannel(command[1])->makeMember(server, client.getSocket());
+    
+
+
+	if (command.size() < 2)
 		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "JOIN") << std::endl;
 	std::istringstream ss1(command[1]);
 	while (std::getline(ss1, split, ',')) // Separate channels into queue                                                                                                                                                                              

@@ -160,10 +160,13 @@ void				Channel::deleteInviteElements	()
 
 void	Channel::broadcastMessage(const std::string& message, const Channel& channel, int senderFd)
 {
-	for (std::map<int, MemberType>::const_iterator it = channel._members.begin();
+	std::cerr << ">>>>>>1<<<<<<" << std::endl;
+	for (std::map<int, Client*>::const_iterator it = channel._members.begin();
 			it != channel._members.end(); ++it)
 	{
+		std::cerr << ">>>>>>2<<<<<<" << std::endl;
 		int	fd = it->first;
+		std::cerr << "fd : " << fd <<std::endl;
 		if (fd != senderFd)
 		{
 			if (send(fd, message.c_str(), message.length(), 0) == -1)

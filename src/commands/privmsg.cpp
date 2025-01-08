@@ -30,5 +30,7 @@ void IRCCommandHandler::privmsg(std::vector<std::string> command, Server &server
     (void)command;
     (void)server;
     (void)client;
+
+	server.sendMessageToClient(PRIVMSG_LOG((client.getNickname()), client.getUsername(), command[1], command[2]), server.getClient(command[1])->getSocket());
     return ;
 }

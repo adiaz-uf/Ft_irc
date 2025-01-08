@@ -15,7 +15,15 @@ RPL_TOPIC (332)
 RPL_TOPICWHOTIME (333)
  */
 void	IRCCommandHandler::topic(std::vector<std::string> command, Server &server, Client &client)
-{    
+{  
+	if (command.size() == 2)
+		server.sendMessageToClient(TOPIC_GET_LOG(client.getNickname(), command[1], server.getChannel(command[1])->getTopic()), client.getSocket());
+	else if (command.size() == 3)
+	{
+		server.getChannel(command[1])->setTopic(command[2].substr(1, command[2].size() - 1));
+		server.sendMessageToClient(TOPIC_SET_LOG(client.getNickname(), client.getUsername(), command[1], server.getChannel(command[1])->getTopic()), client.getSocket());
+	}
+	return;
     if (command.size() < 2)
 		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "TOPIC") << std::endl;
     else if (!server.isValidChannel(command[1]))

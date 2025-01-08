@@ -53,6 +53,7 @@ class Server
 		bool		isValidClient(std::string client);
 		
 				
+		std::map<std::string, Channel> 	*getChannels();
 		Channel* 	getChannel(std::string channel);
 		Client* 	getClient(std::string client);
 		Client* 	getClient				(int fd);
@@ -64,6 +65,7 @@ class Server
 		void		deleteMemberAllChannels(int fd);
 		bool		nickValid(std::string name, int fd);
 		void		sendMessageToClient(const std::string& message, int clientFd);
+		void		broadcastToEveryone(const std::string& message, const Server& server);
 
 		std::string formatMessage(const std::string& sender, const std::string& command,
 				const std::string& target, const std::string& content)
