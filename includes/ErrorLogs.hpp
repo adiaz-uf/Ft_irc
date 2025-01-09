@@ -21,7 +21,17 @@
 
 #define KICK_LOG(operator, victim, channel, message) 		(std::string(":") + (operator) + "!~" + (victim) + " KICK " + (channel) + " " + (victim) + " :" + (message) + "\r\n")
 
+#define INVITE_OPERATOR_LOG(operator, victim, channel) 		(std::string(":") + " 341 " + (operator) + " " + (victim) + " " + (channel) + "\r\n")
+
+#define INVITE_CLIENT_LOG(op_nick, op_user, victim, channel) 		(std::string(":") + (op_nick) + "!~" + (op_user) + " INVITE " + (victim) + " :" + (channel) + "\r\n")
+
 #define PRIVMSG_LOG(nick, user, target, message) 		(std::string(":") + (nick) + "!~" + (user) + " PRIVMSG " + (target) + " " + (message) + "\r\n")
+
+#define MODE_LOG(nick, user, channel, mode)                (std::string(":") + (nick) + "!~" + (user) + " MODE " + (channel) + " " + (mode) + "\r\n") 
+
+//#define MODE_UNSET_LOG(nick, user, channel, mode)                (std::string(":") + (nick) + "!~" + (user) + " MODE " + (channel) + " -" + (mode) + "\r\n") 
+
+#define QUIT_LOG(server, nick) 								(std::string(":") + (server) + " ERROR " + "Closing Link: " + (nick) + " (Ping timeout)" + "\r\n")
 
 #define PART_LOG(nick, user, channel)                      (":"(nick)"!~"(user)" PART #"(channel)"\r\n")
 #define NICK_LOG(oldnick, user, newnick)                    (":"(oldnick)"!~"(user)" NICK :"(newnick)"\r\n")

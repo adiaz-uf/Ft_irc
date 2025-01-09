@@ -32,11 +32,19 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
 
 	server.sendMessageToClient(JOIN_LOG((client.getNickname()), client.getUsername(), command[1].substr(1, command[1].size() - 1)), client.getSocket());
 
+//	Channel* channel = server.getChannel(command[1]);
+//	channel->broadcastMessage(KICK_LOG((client.getNickname()), command[2], command[1], command[3]), 0);
 
-	
-	(*(server.getChannels()))[command[1]] = Channel(command[1]);
+
+	if (!server.getChannels()->size())
+		(*(server.getChannels()))[command[1]] = Channel(command[1]);
 	server.getChannel(command[1])->makeMember(server, client.getSocket());
-    
+    if (server.getChannel(command[1])->getMember(client.getNickname()))
+	{
+        std::cerr << "Channel " << command[1] << std::endl;
+        return;
+    }
+
 
 
 	if (command.size() < 2)

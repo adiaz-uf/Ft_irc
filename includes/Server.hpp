@@ -27,10 +27,12 @@ class Channel;
 class Server
 {
 	private:
+		const std::string				_serverName;
 		int								_serverSocket;
 		int								_epollFd;
 		std::string						_password;
 		std::map<int, Client>			_clients;
+		std::map<int, Client>			_unautorizedClients;
 		std::map<std::string, Channel>	_channels;
 
 		//Suggest making these static non server functions
@@ -52,12 +54,13 @@ class Server
 		bool		isValidClient(int fd);
 		bool		isValidClient(std::string client);
 		
-				
+			
 		std::map<std::string, Channel> 	*getChannels();
 		Channel* 	getChannel(std::string channel);
 		Client* 	getClient(std::string client);
 		Client* 	getClient				(int fd);
 
+		std::string	getPassword();
 		void 		addChannel(std::string channel);
 		void		run();
 
@@ -66,12 +69,6 @@ class Server
 		bool		nickValid(std::string name, int fd);
 		void		sendMessageToClient(const std::string& message, int clientFd);
 		void		broadcastToEveryone(const std::string& message, const Server& server);
-
-		std::string formatMessage(const std::string& sender, const std::string& command,
-				const std::string& target, const std::string& content)
-		{
-			return ":" + sender + " " + command + " " + target + " :" + content + "\r\n";
-		}
 };
 
 #endif

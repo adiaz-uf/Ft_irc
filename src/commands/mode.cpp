@@ -20,9 +20,8 @@ Message Examples:
 */
 void IRCCommandHandler::mode(std::vector<std::string> command, Server &server, Client &client)
 {
-    
-    (void)command;
-    (void)server;
-    (void)client;
+
+	Channel* channel = server.getChannel(command[1]);
+	channel->broadcastMessage(MODE_LOG((client.getNickname()), client.getUsername(), command[1], command[2]), 0);
     return ;
 }

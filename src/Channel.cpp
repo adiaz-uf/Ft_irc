@@ -70,6 +70,7 @@ void				Channel::makeMember				(Server& server, int fd)
 		return ;
 	} */
 	_members[fd] = client;
+	std::cout << "Added member " << fd << "with client " << client << "to channel."<< this << std::endl;
 }
 	
 void				Channel::removeMember			(int fd)
@@ -158,19 +159,31 @@ void				Channel::deleteInviteElements	()
 		_invited.erase(it->first);
 }
 
-void	Channel::broadcastMessage(const std::string& message, const Channel& channel, int senderFd)
+void Channel::broadcastMessage(const std::string& message, int senderFd)
 {
-	std::cerr << ">>>>>>1<<<<<<" << std::endl;
-	for (std::map<int, Client*>::const_iterator it = channel._members.begin();
-			it != channel._members.end(); ++it)
-	{
-		std::cerr << ">>>>>>2<<<<<<" << std::endl;
-		int	fd = it->first;
-		std::cerr << "fd : " << fd <<std::endl;
-		if (fd != senderFd)
-		{
-			if (send(fd, message.c_str(), message.length(), 0) == -1)
-				std::cerr << "Error broadcasting to FD : " << fd << std::endl;
+	std::cerr << "Member size: " << _members.size() << std::endl;
+    if (!_members.size()) {
+        std::cerr << "Channel members list is empty: " << getName() << std::endl;
+        return;
+    }
+
+    if (message.empty()) {
+        std::cerr << "Message is empty, nothing to broadcast." << std::endl;
+        return;
+    } 
+    for (std::map<int, Client*>::iterator it = _members.begin();
+         it != _members.end(); it++)
+    {
+        if (!it->second) {
+            std::cerr << "Invalid client pointer for FD: " << it->first << std::endl;
+            continue;
+        }
+
+        int fd = it->first;
+		std::cout << "fd : " << fd << std::endl;
+		(void)senderFd;
+		if (send(fd, message.c_str(), message.length(), 0) == -1) {
+			std::cerr << "Error broadcasting to FD: " << fd << " - " << std::endl;
 		}
 	}
 }

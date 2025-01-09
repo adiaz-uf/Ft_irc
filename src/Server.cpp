@@ -1,16 +1,17 @@
 #include "Server.hpp"
 
 Server::Server()
-	: _serverSocket(-1), _password("") {}
+	: _serverName("IRCSERVER"), _serverSocket(-1), _password("") {}
 
 Server::Server(int port, const std::string& password)
-	: _serverSocket(-1), _password(password)
+	: _serverName("IRCSERVER"), _serverSocket(-1), _password(password)
 {
 	_setupServerSocket(port);
 }
 
 Server::Server(const Server& other)
-	: _serverSocket(-1),
+	: _serverName("IRCSERVER"),
+	  _serverSocket(-1),
 	  _password(other._password),
 	  _clients(other._clients),
 	  _channels(other._channels)
@@ -88,12 +89,16 @@ Channel*	Server::getChannel(std::string channel)
 	return (NULL);
 }
 
+std::string	Server::getPassword()
+{
+	return _password;
+}
+
 void Server::addChannel(std::string channel)
 {
 	Channel newchannel = Channel(channel);
 	this->_channels[channel] = newchannel;
 }
-
 
 void		Server::_setupServerSocket(int port)
 {
@@ -178,7 +183,6 @@ void		Server::_disconnectClient(int clientFd)
 	if (epoll_ctl(_epollFd, EPOLL_CTL_DEL, clientFd, NULL) == -1)
 		std::cerr << "Failed to remove client FD from epoll: " << clientFd << std::endl;
 	close(clientFd);
-
 	deleteMemberAllChannels(clientFd);
 	_clients.erase(clientFd);
 }
@@ -201,6 +205,13 @@ void Server::run()
 			else if (events[i].events & EPOLLIN)
 				_handleClientMessage(events[i].data.fd);
 		}
+		for (std::map<int, Client>::iterator it = _clients.begin();
+				it != _clients.end(); ++it)
+			if (static_cast<long int>(std::time(0) - it->second.getTime()) > 5)
+			{
+				sendMessageToClient(QUIT_LOG(_serverName, it->second.getNickname()), it->second.getSocket());
+				_disconnectClient(it->first);
+			}
 	}
 }
 

@@ -1,20 +1,18 @@
 #include "Client.hpp"
 
 Client::Client()
-	: _socket(-1), _nickname(""), _username(""), _authenticated(false) , _terminal_input(""){}
+	: _socket(-1), _nickname(""), _username(""), _time(std::time(0)), _authenticated(false) , _terminal_input(""){}
 
 Client::Client(int socket)
-	: _socket(socket), _nickname(""), _username(""), _authenticated(false),  _terminal_input(""){}
+	: _socket(socket), _nickname(""), _username(""), _time(std::time(0)), _authenticated(false),  _terminal_input(""){}
 
 Client::Client(const Client& other)
 	: _socket(other._socket),
 	  _nickname(other._nickname),
 	  _username(other._username),
+	  _time(other._time),
 	  _authenticated(other._authenticated),
-	  _terminal_input(other._terminal_input)
-	  {
-
-	  }
+	  _terminal_input(other._terminal_input) {}
 
 Client&	Client::operator=(const Client& other)
 {
@@ -23,6 +21,7 @@ Client&	Client::operator=(const Client& other)
 		_socket = other._socket;
 		_nickname = other._nickname;
 		_username = other._username;
+		_time = other._time;
 		_authenticated = other._authenticated;
 		_terminal_input = other._terminal_input;
 	}
@@ -62,6 +61,11 @@ std::string*		Client::getBuffer		()
 void				Client::setUsername		(const std::string& username)
 {
 	_username = username;
+}
+
+std::time_t			Client::getTime()
+{
+	return _time;
 }
 
 bool				Client::isAuthenticated	() const

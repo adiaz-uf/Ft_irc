@@ -13,7 +13,11 @@ ERR_USERONCHANNEL (443)
 */
 void	IRCCommandHandler::invite(std::vector<std::string> command, Server &server, Client &client)
 {
-    if (command.size() < 3)
+	server.sendMessageToClient(INVITE_CLIENT_LOG((client.getNickname()), client.getUsername(), command[1], command[2]), server.getClient(command[1])->getSocket());
+    
+	server.sendMessageToClient(INVITE_OPERATOR_LOG((client.getNickname()), command[1], command[2]), client.getSocket());
+	
+	if (command.size() < 3)
 		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "INVITE") << std::endl;
     else if (!server.isValidClient(command[1]))
         std::cerr << "TODO: error" << std::endl;

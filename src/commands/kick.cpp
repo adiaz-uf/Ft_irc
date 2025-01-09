@@ -18,10 +18,17 @@ void	IRCCommandHandler::kick(std::vector<std::string> command, Server &server, C
 
 //	if (command.size() > 3)
 	std::cerr << "Hello" << std::endl;
-		server.getChannel(command[1])->broadcastMessage(KICK_LOG((client.getNickname()), command[2], command[1], command[3]), command[1], 0);
-//		return ;
-//	else if (command.size() == 3)
-//		server.sendMessageToClient(KICK_LOG((client.getNickname()), command[2], command[1], command[2]), client.getSocket());
+	
+	Channel* channel = server.getChannel(command[1]);
+	std::cerr << "Channel :" << channel << std::endl;
+	if (!channel) {
+		std::cerr << ERR_NOSUCHCHANNEL(client.getNickname(), command[1]) << std::endl;
+		return;
+	}
+	if (command.size() > 3)
+		channel->broadcastMessage(KICK_LOG((client.getNickname()), command[2], command[1], command[3]), 0);
+	else if (command.size() == 3)
+		channel->broadcastMessage(KICK_LOG((client.getNickname()), command[2], command[1], command[2]), 0);
 	return ;
 	if (command.size() < 3)
 		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "KICK") << std::endl;
