@@ -17,7 +17,7 @@
 //#define VTOPIC_SET(nick, channel, topic)              (": 331 " nick  " #"  (channel)  " :" topic "\r\n")
 
 //#define JOIN_LOG(nick, user, channel)                       ":" nick "!~" user " JOIN #" (channel) "\r\n"
-#define JOIN_LOG(nick, user, channel) 		(std::string(":") + (nick) + "!~" + (user) + " JOIN #" + (channel) + "\r\n")
+#define JOIN_LOG(nick, user, channel) 		(std::string(":") + (nick) + "!~" + (user) + " JOIN " + (channel) + "\r\n")
 
 #define KICK_LOG(operator, victim, channel, message) 		(std::string(":") + (operator) + "!~" + (victim) + " KICK " + (channel) + " " + (victim) + " :" + (message) + "\r\n")
 
