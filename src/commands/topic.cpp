@@ -16,13 +16,13 @@ RPL_TOPICWHOTIME (333)
  */
 void	IRCCommandHandler::topic(std::vector<std::string> command, Server &server, Client &client)
 {  
-	if (command.size() == 2)
+	/* if (command.size() == 2)
 		server.sendMessageToClient(TOPIC_GET_LOG(client.getNickname(), command[1], server.getChannel(command[1])->getTopic()), client.getSocket());
 	else if (command.size() == 3)
 	{
 		server.getChannel(command[1])->setTopic(command[2].substr(1, command[2].size() - 1));
 		server.sendMessageToClient(TOPIC_SET_LOG(client.getNickname(), client.getUsername(), command[1], server.getChannel(command[1])->getTopic()), client.getSocket());
-	}
+	} */
 	return;
     if (command.size() < 2)
 		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "TOPIC") << std::endl;
@@ -37,7 +37,7 @@ void	IRCCommandHandler::topic(std::vector<std::string> command, Server &server, 
         if (command.size() == 2)
         {
             std::cout << "Checking the topic for \"" << server.getChannel(command[1])->getName() << "\"" << std::endl;
-            std::cout << "Topic: " << server.getChannel(command[1])->getTopic() << std::endl;
+            server.sendMessageToClient(TOPIC_GET_LOG(client.getNickname(), command[1], server.getChannel(command[1])->getTopic()), client.getSocket());
         }
         else
         {
@@ -45,6 +45,7 @@ void	IRCCommandHandler::topic(std::vector<std::string> command, Server &server, 
             {
                 std::cout << "Clearing the topic on \"" << server.getChannel(command[1])->getName() << "\"" << std::endl;
                 server.getChannel(command[1])->setTopic("");
+                server.sendMessageToClient(TOPIC_SET_LOG(client.getNickname(), client.getUsername(), command[1], server.getChannel(command[1])->getTopic()), client.getSocket());
             }
             else
             {
@@ -52,6 +53,7 @@ void	IRCCommandHandler::topic(std::vector<std::string> command, Server &server, 
                 std::cout << " Setting the topic on \"" << server.getChannel(command[1])->getName()
                 << "\" to " << command[2] << std::endl;
                 server.getChannel(command[1])->setTopic(command[2]);
+                server.sendMessageToClient(TOPIC_SET_LOG(client.getNickname(), client.getUsername(), command[1], command[2]), client.getSocket());
             }
         }
     }

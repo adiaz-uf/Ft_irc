@@ -18,17 +18,17 @@ void	IRCCommandHandler::invite(std::vector<std::string> command, Server &server,
 	server.sendMessageToClient(INVITE_OPERATOR_LOG((client.getNickname()), command[1], command[2]), client.getSocket());
 	
 	if (command.size() < 3)
-		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "INVITE") << std::endl;
+		server.sendMessageToClient(ERR_NEEDMOREPARAMS(client.getUsername(), "INVITE"), client.getSocket());
     else if (!server.isValidClient(command[1]))
-        std::cerr << "TODO: error" << std::endl;
+        server.sendMessageToClient(ERR_NOSUCHNICK(command[2], command[1]), client.getSocket());
     else if (!server.isValidChannel(command[2]))
-        std::cerr << ERR_NOSUCHCHANNEL(command[2], server.getChannel(command[2])->getName()) << std::endl;
+        server.sendMessageToClient(ERR_NOSUCHCHANNEL(command[2], server.getChannel(command[2])->getName()), client.getSocket());
     else if (!server.getChannel(command[2])->isMember(client.getSocket()))
-        std::cerr << ERR_NOTONCHANNEL(client.getNickname(), server.getChannel(command[2])->getName()) << std::endl;
+        server.sendMessageToClient(ERR_NOTONCHANNEL(client.getNickname(), server.getChannel(command[2])->getName()), client.getSocket());
     else if (!server.getChannel(command[2])->isOperator(client.getSocket()))
-        std::cerr << ERR_CHANOPRIVSNEEDED(client.getNickname(), server.getChannel(command[2])->getName()) << std::endl;
+        server.sendMessageToClient(ERR_CHANOPRIVSNEEDED(client.getNickname(), server.getChannel(command[2])->getName()), client.getSocket());
     else if (server.getChannel(command[2])->isMember(server.getClient(command[1])->getSocket()))
-        std::cerr << ERR_USERONCHANNEL(client.getNickname(), server.getChannel(command[2])->getName()) << std::endl;
+        server.sendMessageToClient(ERR_USERONCHANNEL(client.getNickname(), server.getChannel(command[2])->getName()), client.getSocket());
     else
         server.getChannel(command[2])->invite(server, client.getSocket());
 }

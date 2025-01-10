@@ -27,10 +27,11 @@ RPL_AWAY (301)
 */
 void IRCCommandHandler::privmsg(std::vector<std::string> command, Server &server, Client &client)
 {    
-    (void)command;
-    (void)server;
-    (void)client;
-
-	server.sendMessageToClient(PRIVMSG_LOG((client.getNickname()), client.getUsername(), command[1], command[2]), server.getClient(command[1])->getSocket());
+    if (command.size() < 3)
+		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "PRIVMSG") << std::endl;
+    else if (!server.isValidClient(command[1]))
+        std::cerr << ERR_NOSUCHNICK(command[2], command[1]) << std::endl;
+    else
+	    server.sendMessageToClient(PRIVMSG_LOG((client.getNickname()), client.getUsername(), command[1], command[2]), server.getClient(command[1])->getSocket());
     return ;
 }
