@@ -55,9 +55,11 @@
 #define ERR_CHANNELISFULL(source, channel)                  "471 " + (source) + " " + (channel) + " :Cannot join channel (+l)"
 #define ERR_CANNOTSENDTOCHAN(source, channel)               "404 " + (source) + " " + (channel) + " :Cannot send to channel"
 #define ERR_CHANOPRIVSNEEDED(source, channel)               "482 " + (source) + " " + (channel) + " :You're not channel operator"
-#define ERR_INVITEONLYCHAN(channel)                        "473 " + (channel) + " :Cannot join channel (+i)"
+#define ERR_INVITEONLYCHAN(channel)                         "473 " + (channel) + " :Cannot join channel (+i)"
 
 #define ERR_NOSUCHNICK(source, nickname)                    "401 " + (source) + " " + (nickname) + " :No such nick/channel"
 #define ERR_USERNOTINCHANNEL(source, nickname, channel)     "441 " + (source) + " " + (nickname) + " " + (channel) + " :They aren't on that channel"
+
+#define ERR_INVALIDMODEPARAM(source)                        "696 " + (source) + " :Invalid mode parameter"
 
 #endif // ERRORLOGS_HPP
