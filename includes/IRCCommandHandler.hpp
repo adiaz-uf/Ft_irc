@@ -22,6 +22,7 @@ public:
     static std::vector<std::string> split_istringstream(std::string str);
 
     // Commands
+    static void pass(std::vector<std::string> command, Server &server, Client &client);
     static void kick(std::vector<std::string> command, Server &server, Client &client);
     static void invite(std::vector<std::string> command, Server &server, Client &client);
     static void	topic(std::vector<std::string> command, Server &server, Client &client);

@@ -24,38 +24,47 @@ void IRCCommandHandler::handleCommand(Server &server, Client &client, std::strin
 {
     std::cout << input << std::endl;
     int         n = -1;
-    std::string ircCommands[7] = { "JOIN", "NICK", "TOPIC", \
+    std::string ircCommands[8] = { "PASS", "JOIN", "NICK", "TOPIC", \
     "KICK", "MODE", "PRIVMSG", "INVITE" };
     
     std::vector<std::string> command = IRCCommandHandler::split_istringstream(input);
     do
         n++;
-    while (n < 7 && command[0] != ircCommands[n]);  
+    while (n < 8 && command[0] != ircCommands[n]); 
+	
+	if (!client.isAuthenticated() && n != 0)
+	{
+		server.sendMessageToClient("You must provide the PASSWORD first.\r\n", client.getSocket());
+		return;
+	}
     switch (n)
     {
-        case 0:  // JOIN
+		case 0:  // PASS
+			pass(command, server, client);
+			break;
+        case 1:  // JOIN
             join(command, server, client);
             //JOIN_LOG(nick, user, channel);
             break;
-        case 1: // NICK
+        case 2: // NICK
             nick(command, server, client);
             //NICK(oldnick, user, newnick) 
             break;
-        case 2: // TOPIC
+        case 3: // TOPIC
             topic(command, server, client);
             //TOPIC_GET(nick, channel, topic)
             //TOPIC_SET(todo)
             break;
-        case 3: // KICK
+        case 4: // KICK
             kick(command, server, client);
             break;
-        case 4: // MODE
+        case 5: // MODE
             //mode(command, server, client);
             break;
-        case 5: // PRIVMSG
+        case 6: // PRIVMSG
             privmsg(command, server, client);
             break;
-        case 6: // INVITE
+        case 7: // INVITE
             invite(command, server, client);
             break;
         default:

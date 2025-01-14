@@ -2,7 +2,7 @@ NAME = ircserv
 
 CC = c++
 RM = rm -rf
-CFLAGS = -Wall -g -Werror -Wextra -std=c++98 -fsanitize=address
+CFLAGS = -Wall -g -Werror -Wextra -std=c++98 #-fsanitize=address
 
 #directories
 SRC_DIR		=	src/
@@ -26,6 +26,7 @@ SRCS =  main \
 		commands/invite \
 		commands/mode \
 		commands/privmsg \
+		commands/pass \
 
 
 OBJS = $(SRCS:.cpp=.o)

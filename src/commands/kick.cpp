@@ -46,12 +46,24 @@ void	IRCCommandHandler::kick(std::vector<std::string> command, Server &server, C
 	else
 	{
 		std::cout << "bye bye " << std::endl;
+
 		int socket = server.getChannel(command[1])->getMember(command[2])->getSocket();
-		server.sendMessageToClient(KICK_LOG((client.getNickname()), command[2], command[1], "No reason"), socket);
+		//		server.sendMessageToClient(KICK_LOG((client.getNickname()), command[2], command[1], "No reason"), socket);
 		if (command.size() > 3)
-			server.getChannel(command[1])->broadcastMessage(KICK_LOG((client.getNickname()), command[2], command[1], command[3]), 0);
+		{
+			std::string message;
+			for (size_t i = 3; i < command.size(); ++i)
+			{
+				if (i != 2)
+					message += " ";
+				message += command[i];
+			}
+			if (!message.empty() && message[0] == ':')
+				message.erase(0, 1);
+			server.getChannel(command[1])->broadcastMessage(KICK_LOG((client.getNickname()), command[2], command[1], message), 0);
+		}
 		else if (command.size() == 3)
-			server.getChannel(command[1])->broadcastMessage(KICK_LOG((client.getNickname()), command[2], command[1], "No reason"), 0);
-		server.getChannel(command[1])->deleteMember(socket);	
+			server.getChannel(command[1])->broadcastMessage(KICK_LOG((client.getNickname()), command[2], command[1], command[2]), 0);
+		server.getChannel(command[1])->deleteMember(socket);
 	}
 }

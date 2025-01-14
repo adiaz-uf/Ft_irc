@@ -28,11 +28,24 @@ RPL_AWAY (301)
 void IRCCommandHandler::privmsg(std::vector<std::string> command, Server &server, Client &client)
 {    
     if (command.size() < 3)
-        std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "PRIVMSG") << std::endl;
-    else if (server.isValidChannel(command[1]))
-        server.getChannel(command[1])->broadcastMessage(PRIVMSG_LOG((client.getNickname()), client.getUsername(), command[1], command[2]), client.getSocket());
+	{
+		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "PRIVMSG") << std::endl;
+		return ;
+	}
+	std::string message;
+	for (size_t i = 2; i < command.size(); ++i)
+	{
+		if (i != 2)
+			message += " ";
+		message += command[i];
+	}
+	if (!message.empty() && message[0] == ':')
+		message.erase(0, 1);
+
+    if (server.isValidChannel(command[1]))
+        server.getChannel(command[1])->broadcastMessage(PRIVMSG_LOG((client.getNickname()), client.getUsername(), command[1], message), client.getSocket());
     else if (!server.isValidClient(command[1]))
         std::cerr << ERR_NOSUCHNICK(client.getNickname(), command[1]) << std::endl;
     else
-        server.sendMessageToClient(PRIVMSG_LOG((client.getNickname()), client.getUsername(), command[1], command[2]), server.getClient(command[1])->getSocket());
+		server.sendMessageToClient(PRIVMSG_LOG((client.getNickname()), client.getUsername(), command[1], message), server.getClient(command[1])->getSocket());
 }

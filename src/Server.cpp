@@ -42,8 +42,6 @@ Server::~Server()
 		close(_epollFd);
 }
 
-
-
 bool 		Server::isValidChannel(std::string channel) 
 {
     return (this->_channels.find(channel) != this->_channels.end());
@@ -62,9 +60,18 @@ bool 		Server::isValidClient(std::string client)
 	return (false);
 }
 
+bool		Server::isClientAuthorized(int fd)
+{
+    return (_clients.find(fd) != _clients.end());
+}
+
 Client*		Server::getClient(int fd)
 {
-	return &(this->_clients.at(fd));
+	std::map<int, Client>::iterator it = _clients.find(fd);
+	if (it != _clients.end())
+		return &(it->second);
+	return NULL;
+//	return &(this->_clients.at(fd));
 }
 
 Client*		Server::getClient(std::string client)
@@ -150,7 +157,7 @@ void		Server::_acceptNewClient()
 		return ;
 	}
 	_clients[clientSocket] = Client(clientSocket);
-	std::cout << "New client connected: " << clientSocket << std::endl;
+	std::cout << "New client connected but not authorized: " << clientSocket << std::endl;
 }
 
 void		Server::_handleClientMessage(int clientFd)
@@ -161,7 +168,7 @@ void		Server::_handleClientMessage(int clientFd)
 
 	int	bytesReceived = recv(clientFd, buffer, sizeof(buffer) - 1, 0);
 	if (bytesReceived <= 0)
-		return _disconnectClient(clientFd);
+		return disconnectClient(clientFd);
 	if (strcmp(buffer, "\n") || strcmp(buffer, ""))
 	{
 		std::string	message(buffer);
@@ -177,7 +184,7 @@ void		Server::_handleClientMessage(int clientFd)
 
 
 // Logic Question? when is client removed from all channel maps?
-void		Server::_disconnectClient(int clientFd)
+void		Server::disconnectClient(int clientFd)
 {
 	std::cout << "Client disconnected: " << clientFd << std::endl;
 	
@@ -202,7 +209,7 @@ void Server::run()
 			if (events[i].data.fd == _serverSocket)
 				_acceptNewClient();
 			else if (events[i].events & (EPOLLERR | EPOLLRDHUP | EPOLLHUP))
-				_disconnectClient(events[i].data.fd);
+				disconnectClient(events[i].data.fd);
 			else if (events[i].events & EPOLLIN)
 				_handleClientMessage(events[i].data.fd);
 		}
