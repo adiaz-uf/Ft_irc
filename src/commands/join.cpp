@@ -79,7 +79,12 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
 			server.getChannel(channels.front())->makeMember(server, client.getSocket());
 			server.getChannel(channels.front())->makeOperator(server, client.getSocket());
 		}
+<<<<<<< Updated upstream
 		server.sendMessageToClient(JOIN_LOG((client.getNickname()), client.getUsername(), channels.front()), client.getSocket());
+=======
+//		server.sendMessageToClient(JOIN_LOG((client.getNickname()), client.getUsername(), channels.front()), client.getSocket());
+		server.getChannel(channels.front())->broadcastMessage(JOIN_LOG((client.getNickname()), client.getUsername(), channels.front()), 0);
+>>>>>>> Stashed changes
 		if (!keys.empty())
 			keys.pop();
 		channels.pop();

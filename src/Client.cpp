@@ -1,10 +1,10 @@
 #include "Client.hpp"
 
 Client::Client()
-	: _socket(-1), _nickname(""), _username(""), _time(std::time(0)), _authenticated(false) , _terminal_input(""){}
+	: _socket(-1), _nickname(""), _username(""), _time(std::time(0)), _authenticated(false) , _terminal_input("") {}
 
 Client::Client(int socket)
-	: _socket(socket), _nickname(""), _username(""), _time(std::time(0)), _authenticated(false),  _terminal_input(""){}
+	: _socket(socket), _nickname(""), _username(""), _time(std::time(0)), _authenticated(false),  _terminal_input("") {}
 
 Client::Client(const Client& other)
 	: _socket(other._socket),

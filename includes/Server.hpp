@@ -32,14 +32,13 @@ class Server
 		int								_epollFd;
 		std::string						_password;
 		std::map<int, Client>			_clients;
-		std::map<int, Client>			_unautorizedClients;
+//		std::map<int, Client>			_unauthorizedClients;
 		std::map<std::string, Channel>	_channels;
 
 		//Suggest making these static non server functions
 		void	_setupServerSocket(int port);
 		void	_acceptNewClient();
 		void	_handleClientMessage(int clientFd);
-		void	_disconnectClient(int clientFd);
 
 	public:
 		//Suggest removing the constructors we dont need.
@@ -49,11 +48,13 @@ class Server
 		Server& operator=(const Server& other);
 		~Server();
 
+		void		disconnectClient(int clientFd);
 
 		bool		isValidChannel(std::string channel);
 		bool		isValidClient(int fd);
 		bool		isValidClient(std::string client);
-		
+		bool		isClientAuthorized(int fd);
+
 			
 		std::map<std::string, Channel> 	*getChannels();
 		Channel* 	getChannel(std::string channel);

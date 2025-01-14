@@ -19,7 +19,7 @@
 //#define JOIN_LOG(nick, user, channel)                       ":" nick "!~" user " JOIN #" (channel) "\r\n"
 #define JOIN_LOG(nick, user, channel) 		(std::string(":") + (nick) + "!~" + (user) + " JOIN " + (channel) + "\r\n")
 
-#define KICK_LOG(operator, victim, channel, message) 		(std::string(":") + (operator) + "!~" + (victim) + " KICK " + (channel) + " " + (victim) + " :" + (message) + "\r\n")
+#define KICK_LOG(operator, victim, channel, message) 		(std::string(":") + (operator) + "!~" + (victim) + " KICK " + (channel) + " " + (victim) + (message) + "\r\n")
 
 #define INVITE_OPERATOR_LOG(operator, victim, channel) 		(std::string(":") + " 341 " + (operator) + " " + (victim) + " " + (channel) + "\r\n")
 

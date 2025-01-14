@@ -161,7 +161,6 @@ void				Channel::deleteInviteElements	()
 
 void Channel::broadcastMessage(const std::string& message, int senderFd)
 {
-	(void)senderFd;
 	std::cerr << "Member size: " << _members.size() << std::endl;
     if (!_members.size()) {
         std::cerr << "Channel members list is empty: " << getName() << std::endl;
@@ -182,9 +181,10 @@ void Channel::broadcastMessage(const std::string& message, int senderFd)
 
         int fd = it->first;
 		std::cout << "fd : " << fd << std::endl;
-		
-		if (send(fd, message.c_str(), message.length(), 0) == -1) {
-			std::cerr << "Error broadcasting to FD: " << fd << " - " << std::endl;
+		if (fd != senderFd)
+		{
+			if (send(fd, message.c_str(), message.length(), 0) == -1)
+				std::cerr << "Error broadcasting to FD: " << fd << " - " << std::endl;
 		}
 	}
 }
