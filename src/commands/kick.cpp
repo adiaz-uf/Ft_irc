@@ -34,13 +34,13 @@ void	IRCCommandHandler::kick(std::vector<std::string> command, Server &server, C
 	else if (!server.isValidChannel(command[1]))
 		std::cout  << "bye bye 3" << std::endl;
 		//server.sendMessageToClient(ERR_NOSUCHCHANNEL(client.getUsername() , command[1]), client.getSocket());
-	else if (!server.getChannel(command[2])->isMember(client.getSocket()))
+	else if (!server.getChannel(command[1])->isMember(client.getSocket()))
         std::cout  << "bye bye 5" << std::endl;
 	else if (!server.getChannel(command[1])->isMember(server.getChannel(command[1])->getMember(command[2])->getSocket()))
 		std::cout  << "bye bye 4" << std::endl;
 		//server.sendMessageToClient(ERR_USERNOTINCHANNEL(client.getUsername(), client.getNickname(), "KICK"), client.getSocket());
 		//server.sendMessageToClient(ERR_NOTONCHANNEL(client.getNickname(), server.getChannel(command[2])->getName()), client.getSocket());
-    else if (!server.getChannel(command[2])->isOperator(client.getSocket()))
+    else if (!server.getChannel(command[1])->isOperator(client.getSocket()))
         std::cout  << "bye bye 6" << std::endl;
 		//server.sendMessageToClient(ERR_CHANOPRIVSNEEDED(client.getNickname(), server.getChannel(command[2])->getName()), client.getSocket());
 	else

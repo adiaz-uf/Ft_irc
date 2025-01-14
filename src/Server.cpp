@@ -96,6 +96,7 @@ std::string	Server::getPassword()
 
 void Server::addChannel(std::string channel)
 {
+	
 	Channel newchannel = Channel(channel);
 	this->_channels[channel] = newchannel;
 }
