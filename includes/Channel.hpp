@@ -53,7 +53,7 @@ class Channel
 
 						//"IS IN?" CHECKS
 		bool						isInvited			(int fd)									const;
-		bool						isMember			(int fd) 									const;
+		bool						isMember			(int fd);
 		bool						isOperator			(int fd) 									const;
 	
 						//TOPIC

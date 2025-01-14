@@ -22,6 +22,7 @@ std::vector<std::string> IRCCommandHandler::split_istringstream(std::string str)
 
 void IRCCommandHandler::handleCommand(Server &server, Client &client, std::string input)
 {
+    std::cout << input << std::endl;
     int         n = -1;
     std::string ircCommands[7] = { "JOIN", "NICK", "TOPIC", \
     "KICK", "MODE", "PRIVMSG", "INVITE" };
@@ -49,7 +50,7 @@ void IRCCommandHandler::handleCommand(Server &server, Client &client, std::strin
             kick(command, server, client);
             break;
         case 4: // MODE
-            mode(command, server, client);
+            //mode(command, server, client);
             break;
         case 5: // PRIVMSG
             privmsg(command, server, client);

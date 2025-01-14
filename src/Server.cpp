@@ -205,13 +205,13 @@ void Server::run()
 			else if (events[i].events & EPOLLIN)
 				_handleClientMessage(events[i].data.fd);
 		}
-		for (std::map<int, Client>::iterator it = _clients.begin();
+		/* for (std::map<int, Client>::iterator it = _clients.begin();
 				it != _clients.end(); ++it)
 			if (static_cast<long int>(std::time(0) - it->second.getTime()) > 5)
 			{
 				sendMessageToClient(QUIT_LOG(_serverName, it->second.getNickname()), it->second.getSocket());
 				_disconnectClient(it->first);
-			}
+			} */
 	}
 }
 

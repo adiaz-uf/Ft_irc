@@ -32,11 +32,23 @@ Channel&	Channel::operator=(const Channel& other)
 
 Channel::~Channel() {}
 
-bool				Channel::isMember  				(int fd)                      	const
+bool				Channel::isMember  				(int fd)
 {
-	if (_members.find(fd) != _members.end())
-		return (true);
-	return (false);
+	std::cout  << "algo" << &_members << std::endl;
+	if (_members.empty())
+	{
+		std::cout  << "IS MEMBER FUN" << std::endl;
+		return (false);
+	}
+	std::cout  << _members.size() << std::endl;
+	for (std::map<int, Client*>::const_iterator it = _members.begin(); it != _members.end(); it++)
+	{
+		std::cout  << "IS MEMBER FUN" <<  it->second->getNickname() << std::endl;
+		if ((it->second)->getSocket() == fd)
+			return (true);
+
+	}
+	return(false); 	
 }
 bool				Channel::isOperator				(int fd)                      	const
 {
