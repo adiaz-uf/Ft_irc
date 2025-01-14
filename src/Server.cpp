@@ -103,6 +103,7 @@ std::string	Server::getPassword()
 
 void Server::addChannel(std::string channel)
 {
+	
 	Channel newchannel = Channel(channel);
 	this->_channels[channel] = newchannel;
 }
@@ -212,13 +213,13 @@ void Server::run()
 			else if (events[i].events & EPOLLIN)
 				_handleClientMessage(events[i].data.fd);
 		}
-		for (std::map<int, Client>::iterator it = _clients.begin();
+		/* for (std::map<int, Client>::iterator it = _clients.begin();
 				it != _clients.end(); ++it)
-			std::cout << static_cast<long int>(std::time(0) - it->second.getTime()) << std::endl;
-			//{
-			//	sendMessageToClient(QUIT_LOG(_serverName, it->second.getNickname()), it->second.getSocket());
-			//	_disconnectClient(it->first);
-			//}
+			if (static_cast<long int>(std::time(0) - it->second.getTime()) > 5)
+			{
+				sendMessageToClient(QUIT_LOG(_serverName, it->second.getNickname()), it->second.getSocket());
+				_disconnectClient(it->first);
+			} */
 	}
 }
 

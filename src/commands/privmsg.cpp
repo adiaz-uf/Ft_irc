@@ -28,9 +28,6 @@ RPL_AWAY (301)
 void IRCCommandHandler::privmsg(std::vector<std::string> command, Server &server, Client &client)
 {    
     if (command.size() < 3)
-<<<<<<< Updated upstream
-		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "PRIVMSG") << std::endl;
-=======
 	{
 		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "PRIVMSG") << std::endl;
 		return ;
@@ -47,14 +44,8 @@ void IRCCommandHandler::privmsg(std::vector<std::string> command, Server &server
 
     if (server.isValidChannel(command[1]))
         server.getChannel(command[1])->broadcastMessage(PRIVMSG_LOG((client.getNickname()), client.getUsername(), command[1], message), client.getSocket());
->>>>>>> Stashed changes
     else if (!server.isValidClient(command[1]))
-        std::cerr << ERR_NOSUCHNICK(command[2], command[1]) << std::endl;
+        std::cerr << ERR_NOSUCHNICK(client.getNickname(), command[1]) << std::endl;
     else
-<<<<<<< Updated upstream
-	    server.sendMessageToClient(PRIVMSG_LOG((client.getNickname()), client.getUsername(), command[1], command[2]), server.getClient(command[1])->getSocket());
-    return ;
-=======
 		server.sendMessageToClient(PRIVMSG_LOG((client.getNickname()), client.getUsername(), command[1], message), server.getClient(command[1])->getSocket());
->>>>>>> Stashed changes
 }
