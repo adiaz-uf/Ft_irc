@@ -29,7 +29,7 @@ void IRCCommandHandler::privmsg(std::vector<std::string> command, Server &server
 {    
     if (command.size() < 3)
 	{
-		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "PRIVMSG") << std::endl;
+		server.sendMessageToClient(ERR_NEEDMOREPARAMS(client.getUsername(), "PRIVMSG"), client.getSocket());
 		return ;
 	}
 	std::string message;

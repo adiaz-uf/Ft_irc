@@ -21,8 +21,8 @@ void	IRCCommandHandler::kick(std::vector<std::string> command, Server &server, C
 		server.sendMessageToClient(ERR_NOSUCHCHANNEL(client.getUsername() , command[1]), client.getSocket());
 	else if (!server.getChannel(command[1])->isMember(client.getSocket()))
 		server.sendMessageToClient(ERR_NOTONCHANNEL(client.getNickname(), server.getChannel(command[1])->getName()), client.getSocket());
-	else if (!server.getChannel(command[1])->isMember(server.getChannel(command[1])->getMember(command[2])->getSocket()))
-		server.sendMessageToClient(ERR_USERNOTINCHANNEL(client.getUsername(), client.getNickname(), "KICK"), client.getSocket());
+	else if (server.getChannel(command[1])->getMember(command[2]) == NULL || !server.getChannel(command[1])->isMember(server.getChannel(command[1])->getMember(command[2])->getSocket()))
+		server.sendMessageToClient(ERR_USERNOTINCHANNEL(client.getUsername(), client.getNickname()), client.getSocket());
     else if (!server.getChannel(command[1])->isOperator(client.getSocket()))
 	{
 		std::cout << "no operator " << std::endl;

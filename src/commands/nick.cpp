@@ -16,11 +16,11 @@ void IRCCommandHandler::nick(std::vector<std::string> command, Server &server, C
 {
     if (command.size() < 2)
     {
-		std::cerr << ERR_NONICKNAMEGIVEN(client.getUsername()) << std::endl;
+		server.sendMessageToClient(ERR_NONICKNAMEGIVEN(client.getUsername()), client.getSocket());
         return ;
     }
     if (!server.nickValid(command[1], client.getSocket()))
         return ;
+    server.sendMessageToClient(NICK_LOG(client.getNickname(), client.getUsername(), command[1]), client.getSocket());
     client.setNickname(command[1]);
-    //TODO: send log
 }

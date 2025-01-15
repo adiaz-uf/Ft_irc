@@ -71,7 +71,7 @@ void				Channel::makeMember				(Server& server, int fd)
 	Client* client = server.getClient(fd);
 	if (this->hasMode('i'))
 	{
-		server.sendMessageToClient(ERR_INVITEONLYCHAN(this->_name), fd);
+		server.sendMessageToClient(ERR_INVITEONLYCHAN(server.getClient(fd)->getNickname(), this->getName()), fd);
 		return ;
 	}
 	_members[fd] = client;
