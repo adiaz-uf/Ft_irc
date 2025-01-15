@@ -36,7 +36,7 @@
 #define PART_LOG(nick, user, channel)                      (":"(nick)"!~"(user)" PART #"(channel)"\r\n")
 #define NICK_LOG(oldnick, user, newnick)                    (":"(oldnick)"!~"(user)" NICK :"(newnick)"\r\n")
 
-
+/*
 #define ERR_NOTREGISTERED(source)                           "451 " + (source) + " " + std::string(":") + "You have not registered" + "\r\n"
 #define ERR_ALREADYREGISTERED(source)                       "462 " + (source) + " " + std::string(":") + "You may not register" + "\r\n"
 #define ERR_PASSWDMISMATCH(source)                          "464 " + (source) + " " + std::string(":") + "Password is incorrect" + "\r\n"
@@ -61,5 +61,31 @@
 #define ERR_USERNOTINCHANNEL(source, nickname, channel)     "441 " + (source) + " " + (nickname) + " " + (channel) + " " + std::string(":") + "They aren't on that channel" + "\r\n"
 
 #define ERR_INVALIDMODEPARAM(source)                        "696 " + (source) + " " + std::string(":") + "Invalid mode parameter" + "\r\n"
+*/
+
+#define ERR_NOTREGISTERED(source, channel)                  (std::string(":") + (source) + " PRIVMSG " + (channel) + " 451 " + (channel) + " :You have not registered\r\n")
+#define ERR_ALREADYREGISTERED(source, channel)              (std::string(":") + (source) + " PRIVMSG " + (channel) + " 462 " + (channel) + " :You may not register\r\n")
+#define ERR_PASSWDMISMATCH(source, channel)                 (std::string(":") + (source) + " PRIVMSG " + (channel) + " 464 " + (channel) + " :Password is incorrect\r\n")
+#define ERR_NONICKNAMEGIVEN(source, channel)                (std::string(":") + (source) + " PRIVMSG " + (channel) + " 431 " + (channel) + " :Nickname not given\r\n")
+#define ERR_ERRONEUSNICKNAME(source, command, channel)      (std::string(":") + (source) + " PRIVMSG " + (channel) + " 432 " + (command) + " :Erroneous nickname\r\n")
+#define ERR_NICKNAMEINUSE(source, channel)                  (std::string(":") + (source) + " PRIVMSG " + (channel) + " 433 " + (channel) + " :Nickname is already in use\r\n")
+
+#define ERR_UNKNOWNCOMMAND(source, command, channel)        (std::string(":") + (source) + " PRIVMSG " + (channel) + " 421 " + (command) + " :Unknown command\r\n")
+#define ERR_NEEDMOREPARAMS(source, command, channel)        (std::string(":") + (source) + " PRIVMSG " + (channel) + " 461 " + (command) + " :Not enough parameters\r\n")
+
+#define ERR_TOOMANYCHANNELS(source, channel)                (std::string(":") + (source) + " PRIVMSG " + (channel) + " 405 " + (channel) + " :You have joined too many channels\r\n")
+#define ERR_NOTONCHANNEL(source, channel)                   (std::string(":") + (source) + " PRIVMSG " + (channel) + " 442 " + (channel) + " :You're not on that channel\r\n")
+#define ERR_USERONCHANNEL(source, channel)                  (std::string(":") + (source) + " PRIVMSG " + (channel) + " 443 " + (channel) + " :is already on channel\r\n")
+#define ERR_NOSUCHCHANNEL(source, channel)                  (std::string(":") + (source) + " PRIVMSG " + (channel) + " 403 " + (channel) + " :No such channel\r\n")
+#define ERR_BADCHANNELKEY(source, channel)                  (std::string(":") + (source) + " PRIVMSG " + (channel) + " 475 " + (channel) + " :Cannot join channel (+k)\r\n")
+#define ERR_CHANNELISFULL(source, channel)                  (std::string(":") + (source) + " PRIVMSG " + (channel) + " 471 " + (channel) + " :Cannot join channel (+l)\r\n")
+#define ERR_CANNOTSENDTOCHAN(source, channel)               (std::string(":") + (source) + " PRIVMSG " + (channel) + " 404 " + (channel) + " :Cannot send to channel\r\n")
+#define ERR_CHANOPRIVSNEEDED(source, channel)               (std::string(":") + (source) + " PRIVMSG " + (channel) + " 482 " + (channel) + " :You must be a channel operator to perform this action\r\n")
+#define ERR_INVITEONLYCHAN(source, channel)                 (std::string(":") + (source) + " PRIVMSG " + (channel) + " 473 " + (channel) + " :Cannot join channel (+i)\r\n")
+
+#define ERR_NOSUCHNICK(source, nickname, channel)           (std::string(":") + (source) + " PRIVMSG " + (channel) + " 401 " + (nickname) + " :No such nick/channel\r\n")
+#define ERR_USERNOTINCHANNEL(source, nickname, channel)     (std::string(":") + (source) + " PRIVMSG " + (channel) + " 441 " + (nickname) + " " + (channel) + " :They aren't on that channel\r\n")
+
+#define ERR_INVALIDMODEPARAM(source, channel)               (std::string(":") + (source) + " PRIVMSG " + (channel) + " 696 " + (channel) + " :Invalid mode parameter\r\n")
 
 #endif // ERRORLOGS_HPP
