@@ -82,6 +82,8 @@ void				Channel::makeMember				(Server& server, int fd)
 		return ;
 	}
 	_members[fd] = client;
+	if (this->_members.size() == 1)
+		this->makeOperator(server, client->getSocket());
 	std::cout << "Added member " << fd << "with client " << client << "to channel."<< this << std::endl;
 }
 	
@@ -184,7 +186,7 @@ void Channel::broadcastMessage(const std::string& message, int senderFd)
         return;
     } 
     for (std::map<int, Client*>::iterator it = _members.begin();
-         it != _members.end(); it++)
+        it != _members.end(); it++)
     {
         if (!it->second) {
             std::cerr << "Invalid client pointer for FD: " << it->first << std::endl;
