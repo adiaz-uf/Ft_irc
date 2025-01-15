@@ -71,7 +71,6 @@ Client*		Server::getClient(int fd)
 	if (it != _clients.end())
 		return &(it->second);
 	return NULL;
-//	return &(this->_clients.at(fd));
 }
 
 Client*		Server::getClient(std::string client)
@@ -79,8 +78,6 @@ Client*		Server::getClient(std::string client)
 	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
 		if ((it->second).getNickname() == client)
 			return (&(it->second));
-			
-	/*shouldnt get to this line*/
 	return(NULL); 	
 }
 
@@ -176,7 +173,7 @@ void		Server::_handleClientMessage(int clientFd)
 	}	
 	while (cbuffer->find("\n") != std::string::npos)
 	{
- 		if (cbuffer->find("\n") != 0)
+		if (cbuffer->find("\n") != 0)
 			IRCCommandHandler::handleCommand(*this, _clients[clientFd], cbuffer->substr(0,cbuffer->find("\n")));
 		cbuffer->erase(0, cbuffer->find("\n") + 1);
 	}
@@ -266,8 +263,10 @@ bool		Server::nickValid(std::string name, int fd)
 
 void	Server::sendMessageToClient(const std::string& message, int clientFd)
 {
+	std::cout << "Client FD : " << clientFd << std::endl;
 	if (send(clientFd, message.c_str(), message.length(), 0) == -1)
-		std::cerr <<"Error sending message to Client FD : " << clientFd << std::endl;
+		std::cerr << "Error sending message to Client FD : " << clientFd << std::endl;
+	std::cout << message << std::endl;
 }
 
 void	Server::broadcastToEveryone(const std::string& message, const Server& server)

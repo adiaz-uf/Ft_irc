@@ -34,19 +34,12 @@ Channel::~Channel() {}
 
 bool				Channel::isMember  				(int fd)
 {
-	std::cout  << "algo" << &_members << std::endl;
 	if (_members.empty())
-	{
-		std::cout  << "IS MEMBER FUN" << std::endl;
 		return (false);
-	}
-	std::cout  << _members.size() << std::endl;
 	for (std::map<int, Client*>::const_iterator it = _members.begin(); it != _members.end(); it++)
 	{
-		std::cout  << "IS MEMBER FUN" <<  it->second->getNickname() << std::endl;
 		if ((it->second)->getSocket() == fd)
 			return (true);
-
 	}
 	return(false); 	
 }
@@ -76,7 +69,7 @@ void	 			Channel::invite					(Server& server, int fd)
 void				Channel::makeMember				(Server& server, int fd)
 {
 	Client* client = server.getClient(fd);
-	if (this->hasMode('i')) // TODO: channel mode is invite-only
+	if (this->hasMode('i'))
 	{
 		server.sendMessageToClient(ERR_INVITEONLYCHAN(this->_name), fd);
 		return ;
@@ -152,8 +145,6 @@ Client* Channel::getMember(std::string username)
 	for (std::map<int, Client*>::const_iterator it = _members.begin(); it != _members.end(); it++)
 		if ((it->second)->getNickname() == username)
 			return (it->second);
-			
-	/*shouldnt get to this line*/
 	return(NULL); 	
 }
 
