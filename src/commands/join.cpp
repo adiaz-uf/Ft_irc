@@ -29,19 +29,6 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
     std::queue<std::string> channels;
     std::queue<std::string> keys;
 	std::string split;                                                                                                                                                                
-
-//	Channel* channel = server.getChannel(command[1]);
-//	channel->broadcastMessage(KICK_LOG((client.getNickname()), command[2], command[1], command[3]), 0);
-
-
-	if (!server.getChannels()->size())
-		(*(server.getChannels()))[command[1]] = Channel(command[1]);
-	/* server.getChannel(command[1])->makeMember(server, client.getSocket());
-    if (server.getChannel(command[1])->getMember(client.getNickname()))
-	{
-        std::cerr << "Channel " << command[1] << std::endl;
-        return;
-    } */
 	if (command.size() < 2)
 		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "JOIN") << std::endl;
 	std::istringstream ss1(command[1]);
@@ -77,16 +64,11 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
 		{
 			server.addChannel(channels.front());
 			server.getChannel(channels.front())->makeMember(server, client.getSocket());
-			server.getChannel(channels.front())->makeOperator(server, client.getSocket());
+			//server.getChannel(channels.front())->makeOperator(server, client.getSocket());
 		}
-//		server.sendMessageToClient(JOIN_LOG((client.getNickname()), client.getUsername(), channels.front()), client.getSocket());
 		server.getChannel(channels.front())->broadcastMessage(JOIN_LOG((client.getNickname()), client.getUsername(), channels.front()), 0);
 		if (!keys.empty())
 			keys.pop();
 		channels.pop();
-		/* if (!channels.empty())
-			std::cout << "and "; */
 	}
-	//std::cout << std::endl;
-    return ;
 }
