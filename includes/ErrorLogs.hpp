@@ -10,31 +10,23 @@
 
 
 //hay que formatear esto bien
-#define TOPIC_GET_LOG(nick, channel, topic)                (std::string(": 331 ") + (nick) + " " + (channel) + " :" + (topic) + "\r\n") 
-
-#define TOPIC_SET_LOG(nick, user, channel, topic)                (std::string(":") + (nick) + "!~" + (user) + " TOPIC " + (channel) + " :" + (topic) + "\r\n") 
-
-//#define VTOPIC_SET(nick, channel, topic)              (": 331 " nick  " #"  (channel)  " :" topic "\r\n")
-
-//#define JOIN_LOG(nick, user, channel)                       ":" nick "!~" user " JOIN #" (channel) "\r\n"
-#define JOIN_LOG(nick, user, channel) 		(std::string(":") + (nick) + "!~" + (user) + " JOIN " + (channel) + "\r\n")
-
-#define KICK_LOG(operator, victim, channel, message) 		(std::string(":") + (operator) + "!~" + (victim) + " KICK " + (channel) + " " + (victim) + (message) + "\r\n")
-
-#define INVITE_OPERATOR_LOG(operator, victim, channel) 		(std::string(":") + " 341 " + (operator) + " " + (victim) + " " + (channel) + "\r\n")
-
-#define INVITE_CLIENT_LOG(op_nick, op_user, victim, channel) 		(std::string(":") + (op_nick) + "!~" + (op_user) + " INVITE " + (victim) + " :" + (channel) + "\r\n")
-
-#define PRIVMSG_LOG(nick, user, target, message) 		(std::string(":") + (nick) + "!~" + (user) + " PRIVMSG " + (target) + " " + (message) + "\r\n")
-
-#define MODE_LOG(nick, user, channel, mode)                (std::string(":") + (nick) + "!~" + (user) + " MODE " + (channel) + " " + (mode) + "\r\n") 
+#define TOPIC_GET_LOG(nick, channel, topic)                     (std::string(": 331 ") + (nick) + " " + (channel) + " :" + (topic) + "\r\n") 
+#define TOPIC_SET_LOG(nick, user, channel, topic)               (std::string(":") + (nick) + "!~" + (user) + " TOPIC " + (channel) + " :" + (topic) + "\r\n") 
+#define JOIN_LOG(nick, user, channel) 		                    (std::string(":") + (nick) + "!~" + (user) + " JOIN " + (channel) + "\r\n")
+#define KICK_LOG(operator, victim, channel, message) 		    (std::string(":") + (operator) + "!~" + (victim) + " KICK " + (channel) + " " + (victim) + (message) + "\r\n")
+#define INVITE_OPERATOR_LOG(operator, victim, channel) 		    (std::string(":") + " 341 " + (operator) + " " + (victim) + " " + (channel) + "\r\n")
+#define INVITE_CLIENT_LOG(op_nick, op_user, victim, channel) 	(std::string(":") + (op_nick) + "!~" + (op_user) + " INVITE " + (victim) + " :" + (channel) + "\r\n")
+#define PRIVMSG_LOG(nick, user, target, message) 		        (std::string(":") + (nick) + "!~" + (user) + " PRIVMSG " + (target) + " " + (message) + "\r\n")
+#define MODE_LOG(nick, user, channel, mode)                     (std::string(":") + (nick) + "!~" + (user) + " MODE " + (channel) + " " + (mode) + "\r\n") 
+#define QUIT_LOG(server, nick) 								    (std::string(":") + (server) + " ERROR " + "Closing Link: " + (nick) + " (Ping timeout)" + "\r\n")
+#define PART_LOG(nick, user, channel)                           (":"(nick)"!~"(user)" PART #"(channel)"\r\n")
+#define NICK_LOG(oldnick, user, newnick)                        (std::string(":") + (oldnick) + "!~" + (user) + " NICK :" + (newnick) + "\r\n")
 
 //#define MODE_UNSET_LOG(nick, user, channel, mode)                (std::string(":") + (nick) + "!~" + (user) + " MODE " + (channel) + " -" + (mode) + "\r\n") 
 
-#define QUIT_LOG(server, nick) 								(std::string(":") + (server) + " ERROR " + "Closing Link: " + (nick) + " (Ping timeout)" + "\r\n")
 
-#define PART_LOG(nick, user, channel)                      (":"(nick)"!~"(user)" PART #"(channel)"\r\n")
-#define NICK_LOG(oldnick, user, newnick)                    (std::string(":") + (oldnick) + "!~" + (user) + " NICK :" + (newnick) + "\r\n")
+
+
 
 /*
 #define ERR_NOTREGISTERED(source)                           "451 " + (source) + " " + std::string(":") + "You have not registered" + "\r\n"

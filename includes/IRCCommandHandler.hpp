@@ -29,6 +29,7 @@ public:
     static void join(std::vector<std::string> command, Server &server, Client &client);
     static void part(std::vector<std::string> command, Server &server, Client &client);
     static void nick(std::vector<std::string> command, Server &server, Client &client);
+    static void user(std::vector<std::string> command, Server &server, Client &client);
     static void quit(std::vector<std::string> command, Server &server, Client &client);
     static void ping(std::vector<std::string> command, Server &server, Client &client);
     static void pong(std::vector<std::string> command, Server &server, Client &client);

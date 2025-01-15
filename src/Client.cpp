@@ -1,10 +1,10 @@
 #include "Client.hpp"
 
 Client::Client()
-	: _socket(-1), _nickname(""), _username(""), _time(std::time(0)), _authenticated(false) , _terminal_input("") {}
+	: _socket(-1), _nickname(""), _username(""), _time(std::time(0)), _passProvided(false), _authenticated(false) , _terminal_input("") {}
 
 Client::Client(int socket)
-	: _socket(socket), _nickname(""), _username(""), _time(std::time(0)), _authenticated(false),  _terminal_input("") {}
+	: _socket(socket), _nickname(""), _username(""), _time(std::time(0)), _passProvided(false), _authenticated(false),  _terminal_input("") {}
 
 Client::Client(const Client& other)
 	: _socket(other._socket),
@@ -73,7 +73,22 @@ bool				Client::isAuthenticated	() const
 	return (this->_authenticated);
 }
 
-void				Client::authenticate	()
+void				Client::authenticate	(Server& server)
 {
-	_authenticated = true;
+	if (this->getPassProv() && this->getNickname() != "" && this->getUsername() != "")
+	{
+		_authenticated = true;
+		server.sendMessageToClient(("Your client has been successfully connected\r\n"), this->getSocket());
+		server.sendMessageToClient("Welcome to myIRC !\r\n", this->getSocket());
+	}
+	
+}
+
+bool	Client::getPassProv() 
+{
+	return _passProvided;
+}
+void	Client::setPassPos() 
+{
+	_passProvided = true;
 }

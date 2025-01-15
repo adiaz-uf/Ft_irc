@@ -1,20 +1,12 @@
 WELCOME MESSAGE
+    Por favor pone pass user y nick
 
-Password on Server Entry
+USER 
+    hpp y cpp
 
-Port Parsing 
-    Port Valid
-    No Other Characters
-
-HEXCHAT
-    At the moment it doesnt connect automatically - why?
-
-Disconnect:
-    When is client removed from channels
+MODE
 
 Al Final:
     Leaks
-
-Has Mode
 
 LOGS

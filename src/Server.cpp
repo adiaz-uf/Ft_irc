@@ -173,8 +173,11 @@ void		Server::_handleClientMessage(int clientFd)
 	}	
 	while (cbuffer->find("\n") != std::string::npos)
 	{
+		std::cout << "Check: " <<cbuffer->substr(0,cbuffer->find("\n")) << std::endl;
 		if (cbuffer->find("\n") != 0)
 			IRCCommandHandler::handleCommand(*this, _clients[clientFd], cbuffer->substr(0,cbuffer->find("\n")));
+		if (_clients.count(clientFd) == 0)
+			return ;
 		cbuffer->erase(0, cbuffer->find("\n") + 1);
 	}
 }
@@ -187,6 +190,7 @@ void		Server::disconnectClient(int clientFd)
 	
 	if (epoll_ctl(_epollFd, EPOLL_CTL_DEL, clientFd, NULL) == -1)
 		std::cerr << "Failed to remove client FD from epoll: " << clientFd << std::endl;
+	close(clientFd);
 	close(clientFd);
 	deleteMemberAllChannels(clientFd);
 	_clients.erase(clientFd);
@@ -257,7 +261,6 @@ bool		Server::nickValid(std::string name, int fd)
 			//@time=2024-12-21T08:22:56.797Z :osmium.libera.chat 433 bmatos-d asdasd :Nickname is already in use.
 			return (false);
 		}
-
 	return (true);
 }
 

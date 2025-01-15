@@ -32,7 +32,6 @@ class Server
 		int								_epollFd;
 		std::string						_password;
 		std::map<int, Client>			_clients;
-//		std::map<int, Client>			_unauthorizedClients;
 		std::map<std::string, Channel>	_channels;
 
 		//Suggest making these static non server functions
@@ -70,6 +69,7 @@ class Server
 		bool		nickValid(std::string name, int fd);
 		void		sendMessageToClient(const std::string& message, int clientFd);
 		void		broadcastToEveryone(const std::string& message, const Server& server);
+
 };
 
 #endif
