@@ -1,9 +1,3 @@
-WELCOME MESSAGE
-    Por favor pone pass user y nick
-
-USER 
-    hpp y cpp
-
 MODE
 
 Al Final:

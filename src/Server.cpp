@@ -154,7 +154,7 @@ void		Server::_acceptNewClient()
 		return ;
 	}
 	_clients[clientSocket] = Client(clientSocket);
-	std::cout << "New client connected but not authorized: " << clientSocket << std::endl;
+	sendMessageToClient("Please set username (USER), nickname (NICK) and enter the server password (PASS).\n", clientSocket);
 }
 
 void		Server::_handleClientMessage(int clientFd)
@@ -173,7 +173,7 @@ void		Server::_handleClientMessage(int clientFd)
 	}	
 	while (cbuffer->find("\n") != std::string::npos)
 	{
-		std::cout << "Check: " <<cbuffer->substr(0,cbuffer->find("\n")) << std::endl;
+		//std::cout << "Check: " <<cbuffer->substr(0,cbuffer->find("\n")) << std::endl;
 		if (cbuffer->find("\n") != 0)
 			IRCCommandHandler::handleCommand(*this, _clients[clientFd], cbuffer->substr(0,cbuffer->find("\n")));
 		if (_clients.count(clientFd) == 0)
@@ -190,7 +190,6 @@ void		Server::disconnectClient(int clientFd)
 	
 	if (epoll_ctl(_epollFd, EPOLL_CTL_DEL, clientFd, NULL) == -1)
 		std::cerr << "Failed to remove client FD from epoll: " << clientFd << std::endl;
-	close(clientFd);
 	close(clientFd);
 	deleteMemberAllChannels(clientFd);
 	_clients.erase(clientFd);
@@ -231,7 +230,7 @@ void		Server::deleteMemberAllChannels(int fd)
 		it->second.deleteMember(fd);
 }
 
-bool		Server::nickValid(std::string name, int fd)
+int		Server::nickValid(std::string name, int fd)
 {
 	(void)fd;
 	//Reglas de documentacion de IRC
@@ -240,36 +239,29 @@ bool		Server::nickValid(std::string name, int fd)
 		//They MUST NOT start with a character listed as a channel type, channel membership prefix, or prefix listed in the IRCv3 multi-prefix Extension.
 		//They SHOULD NOT contain any dot character ('.', 0x2E).
 	//Creo que hexchat tiene reglas distintas
-	if (name.find_first_not_of("1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`|^_-{}[]\\") != std::string::npos)
+	if (name.find_first_not_of("1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`|^_-{}[]\\") != std::string::npos || name.find_first_of("1234567890-") == 0)
 	{
 		//SEND MESSAGE TO CLIENT
 		// @time=2024-12-21T08:25:19.065Z :osmium.libera.chat 432 bmatos-d 2asdasd :Erroneous Nickname
-		return (false);
+		return (1);
 	}
-	
-	if (name.find_first_of("1234567890-") == 0)
-	{
-		//SEND MESSAGE TO CLIENT
-		// @time=2024-12-21T08:25:19.065Z :osmium.libera.chat 432 bmatos-d 2asdasd :Erroneous Nickname
-		return (false);
-	}
-	
+
 	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
 		if (it->second.getNickname() == name)
 		{
 			//MESSAGE TO CLIENT
 			//@time=2024-12-21T08:22:56.797Z :osmium.libera.chat 433 bmatos-d asdasd :Nickname is already in use.
-			return (false);
+			return (2);
 		}
-	return (true);
+	return (3);
 }
 
 void	Server::sendMessageToClient(const std::string& message, int clientFd)
 {
-	std::cout << "Client FD : " << clientFd << std::endl;
+	//std::cout << "Client FD : " << clientFd << std::endl;
 	if (send(clientFd, message.c_str(), message.length(), 0) == -1)
 		std::cerr << "Error sending message to Client FD : " << clientFd << std::endl;
-	std::cout << message << std::endl;
+	//std::cout << message << std::endl;
 }
 
 void	Server::broadcastToEveryone(const std::string& message, const Server& server)
@@ -279,6 +271,9 @@ void	Server::broadcastToEveryone(const std::string& message, const Server& serve
 	{
 		int	fd = it->first;
 		if (send(fd, message.c_str(), message.length(), 0) == -1)
+			
+			
+			
 			std::cerr << "Error broadcasting to FD : " << fd << std::endl;
 	}
 }

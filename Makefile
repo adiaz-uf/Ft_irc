@@ -10,8 +10,8 @@ OBJ_DIR		=	.obj/
 INC_DIR		=	includes/
 
 #color codes
-GREEN = \033[1;32m
-END = \033[0m
+GREEN 	= \033[1;32m
+END 	= \033[0m
 
 #source files
 SRCS =  main \

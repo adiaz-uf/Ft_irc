@@ -6,10 +6,13 @@ Command Example:
 NICK Wiz     ; Requesting the new nick "Wiz". Message Examples:
 :WiZ NICK Kilroy   ; WiZ changed his nickname to Kilroy.
 
-ERR_NONICKNAMEGIVEN (431)v
-ERR_ERRONEUSNICKNAME (432)v
-ERR_NICKNAMEINUSE (433)
-ERR_NICKCOLLISION (436)
+
+
+ERR_NONICKNAMEGIVEN (431)                                               [x]
+ERR_ERRONEUSNICKNAME (432)                                              [x]
+ERR_NICKNAMEINUSE (433)                                                 [x]
+ERR_NICKCOLLISION (436)                                                 [x]
+                - No hace falta manejar que es un 433 con otro servidor que este connectado
 */
 
 void IRCCommandHandler::nick(std::vector<std::string> command, Server &server, Client &client)
@@ -17,10 +20,20 @@ void IRCCommandHandler::nick(std::vector<std::string> command, Server &server, C
     if (command.size() < 2)
     {
 		server.sendMessageToClient(ERR_NONICKNAMEGIVEN(client.getUsername()), client.getSocket());
-        return ;
+        return ; 
     }
-    if (!server.nickValid(command[1], client.getSocket()))
-        return ;
-    server.sendMessageToClient(NICK_LOG(client.getNickname(), client.getUsername(), command[1]), client.getSocket());
-    client.setNickname(command[1]);
+    switch(server.nickValid(command[1], client.getSocket()))
+    {
+        case 1:
+            // ERR_ERRONEUSNICKNAME (432)
+            server.sendMessageToClient(ERR_ERRONEUSNICKNAME(client.getNickname(), command[1]), client.getSocket());
+            break;
+        case 2:
+            // ERR_NICKNAMEINUSE (433)
+            server.sendMessageToClient(ERR_NICKNAMEINUSE(client.getNickname(), command[1]), client.getSocket());
+            break;
+        default:
+            server.sendMessageToClient(NICK_LOG(client.getNickname(), client.getUsername(), command[1]), client.getSocket());
+            client.setNickname(command[1]);
+    }
 }

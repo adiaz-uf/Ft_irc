@@ -1,28 +1,48 @@
-# include "IRCCommandHandler.hpp"
+    # include "IRCCommandHandler.hpp"
 
 /*
-Command: NICK: Parameters: <nickname>
-Command Example:
-NICK Wiz     ; Requesting the new nick "Wiz". Message Examples:
-:WiZ NICK Kilroy   ; WiZ changed his nickname to Kilroy.
+3.1.3 User message
 
-ERR_NONICKNAMEGIVEN (431)v
-ERR_ERRONEUSNICKNAME (432)v
-ERR_NICKNAMEINUSE (433)
-ERR_NICKCOLLISION (436)
+      Command: USER
+   Parameters: <user> <mode> <unused> <realname>
+
+   The USER command is used at the beginning of connection to specify
+   the username, hostname and realname of a new user.
+
+ >>> The <realname> may contain space characters<<<
+
+   Numeric Replies:
+
+           ERR_NEEDMOREPARAMS              [x]
+           ERR_ALREADYREGISTRED            [x]
+
+   Example:
+
+   USER guest 0 * :Ronnie Reagan   ; User registering themselves with a
+                                   username of "guest" and real name
+                                   "Ronnie Reagan".
+
+   USER guest 8 * :Ronnie Reagan   ; User registering themselves with a
+                                   username of "guest" and real name
+                                   "Ronnie Reagan", and asking to be set
+                                   invisible.
 */
+
+
+
+
 
 void IRCCommandHandler::user(std::vector<std::string> command, Server &server, Client &client)
 {
-    (void)server;
+
+    //ERR_ALREADYREGISTRED
+    if (client.isAuthenticated() == true)
+        return (server.sendMessageToClient(ERR_ALREADYREGISTERED(client.getUsername()), client.getSocket()));
+
+    //ERR_NEEDMOREPARAMS
+    //>>> The <realname> may contain space characters<<<
+    if (command.size() < 5)
+		return (server.sendMessageToClient(ERR_NEEDMOREPARAMS(client.getUsername(), command[0]),client.getSocket()));
+    
     client.setUsername(command[1]);
-    //if (command.size() < 2)
-    //{
-	//	server.sendMessageToClient(ERR_NONICKNAMEGIVEN(client.getUsername()), client.getSocket());
-    //    return ;
-    //}
-    //if (!server.nickValid(command[1], client.getSocket()))
-    //    return ;
-    //server.sendMessageToClient(NICK_LOG(client.getNickname(), client.getUsername(), command[1]), client.getSocket());
-    //client.setNickname(command[1]);
 }

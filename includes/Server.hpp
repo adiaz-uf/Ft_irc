@@ -66,7 +66,7 @@ class Server
 
 		//Utilities
 		void		deleteMemberAllChannels(int fd);
-		bool		nickValid(std::string name, int fd);
+		int		nickValid(std::string name, int fd);
 		void		sendMessageToClient(const std::string& message, int clientFd);
 		void		broadcastToEveryone(const std::string& message, const Server& server);
 

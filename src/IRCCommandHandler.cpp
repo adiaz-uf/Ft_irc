@@ -24,19 +24,16 @@ void IRCCommandHandler::handleCommand(Server &server, Client &client, std::strin
 {
     std::cout << input << std::endl;
     int         n = -1;
-    std::string ircCommands[9] = { "PASS", "JOIN", "NICK", "TOPIC", \
-    "KICK", "MODE", "PRIVMSG", "INVITE", "USER" };
+    std::string ircCommands[9] = { "PASS", "JOIN", "NICK", "TOPIC", "KICK", "MODE", "PRIVMSG", "INVITE", "USER" };
     
     std::vector<std::string> command = IRCCommandHandler::split_istringstream(input);
     do
         n++;
-    while (n < 8 && command[0] != ircCommands[n]); 
+    while (n < 9 && command[0] != ircCommands[n]); 
 	
 	if (!client.isAuthenticated() && n != 0 && n != 2 && n != 8)
-	{
-		server.sendMessageToClient("You must provide the PASSWORD USER and NICK first.\r\n", client.getSocket());
-		return;
-	}
+		return(server.sendMessageToClient("You must provide the PASS, USER and NICK first.\r\n", client.getSocket()));
+    
     switch (n)
     {
 		case 0:  
