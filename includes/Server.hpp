@@ -20,6 +20,7 @@
 # include "Client.hpp"
 # include "Channel.hpp"
 # include "IRCCommandHandler.hpp"
+# include "Utilities.hpp"
 
 class Client;
 class Channel;
@@ -35,9 +36,9 @@ class Server
 		std::map<std::string, Channel>	_channels;
 
 		//Suggest making these static non server functions
-		void	_setupServerSocket(int port);
-		void	_acceptNewClient();
-		void	_handleClientMessage(int clientFd);
+		void		_setupServerSocket(int port);
+		void		_acceptNewClient();
+		void		_handleClientMessage(int clientFd);
 
 	public:
 		//Suggest removing the constructors we dont need.
@@ -66,7 +67,7 @@ class Server
 
 		//Utilities
 		void		deleteMemberAllChannels(int fd);
-		int		nickValid(std::string name, int fd);
+		int			nickValid(std::string name);
 		void		sendMessageToClient(const std::string& message, int clientFd);
 		void		broadcastToEveryone(const std::string& message, const Server& server);
 

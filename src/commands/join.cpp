@@ -5,24 +5,15 @@ Command: JOIN: Parameters: <channel>{,<channel>} [<key>{,<key>}]
 
 Command Examples:
 - JOIN #foobar                    ; join channel #foobar.
-- JOIN &foo fubar                 ; join channel &foo using key "fubar".
 - JOIN #foo,&bar fubar            ; join channel #foo using key "fubar" and &bar using no key.
-- JOIN #foo,#bar fubar,foobar     ; join channel #foo using key "fubar". and channel #bar using key "foobar".
 - JOIN #foo,#bar                  ; join channels #foo and #bar.
 Message Examples:
 - :WiZ JOIN #Twilight_zone        ; WiZ is joining the channel #Twilight_zone
 - :dan-!d@localhost JOIN #test    ; dan- is joining the channel #test
 
-ERR_NEEDMOREPARAMS (461)v
-ERR_NOSUCHCHANNEL (403)v
-ERR_TOOMANYCHANNELS (405)
-ERR_BADCHANNELKEY (475)v
-ERR_INVITEONLYCHAN (473)v
-ERR_BADCHANMASK (476)
-RPL_TOPIC (332)
-RPL_TOPICWHOTIME (333)
-RPL_NAMREPLY (353)
-RPL_ENDOFNAMES (366)
+ERR_NEEDMOREPARAMS (461)			[x]
+ERR_BADCHANNELKEY (475)				[x]
+ERR_INVITEONLYCHAN (473)			[x]
 */
 void    IRCCommandHandler::join(std::vector<std::string> command, Server &server, Client &client)
 {
@@ -44,6 +35,7 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
 	}
 	while (!channels.empty())
 	{
+		
 		if (server.isValidChannel(channels.front()))
 		{
 			if (server.getChannel(channels.front())->isMember(clientFd) == false)

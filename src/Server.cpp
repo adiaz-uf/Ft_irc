@@ -173,7 +173,6 @@ void		Server::_handleClientMessage(int clientFd)
 	}	
 	while (cbuffer->find("\n") != std::string::npos)
 	{
-		//std::cout << "Check: " <<cbuffer->substr(0,cbuffer->find("\n")) << std::endl;
 		if (cbuffer->find("\n") != 0)
 			IRCCommandHandler::handleCommand(*this, _clients[clientFd], cbuffer->substr(0,cbuffer->find("\n")));
 		if (_clients.count(clientFd) == 0)
@@ -182,8 +181,6 @@ void		Server::_handleClientMessage(int clientFd)
 	}
 }
 
-
-// Logic Question? when is client removed from all channel maps?
 void		Server::disconnectClient(int clientFd)
 {
 	std::cout << "Client disconnected: " << clientFd << std::endl;
@@ -230,38 +227,20 @@ void		Server::deleteMemberAllChannels(int fd)
 		it->second.deleteMember(fd);
 }
 
-int		Server::nickValid(std::string name, int fd)
+int		Server::nickValid(std::string name)
 {
-	(void)fd;
-	//Reglas de documentacion de IRC
-		//They MUST NOT contain any of the following characters: space (' ', 0x20), comma (',', 0x2C), asterisk ('*', 0x2A), question mark ('?', 0x3F), exclamation mark ('!', 0x21), at sign ('@', 0x40).
-		//They MUST NOT start with any of the following characters: dollar ('$', 0x24), colon (':', 0x3A).
-		//They MUST NOT start with a character listed as a channel type, channel membership prefix, or prefix listed in the IRCv3 multi-prefix Extension.
-		//They SHOULD NOT contain any dot character ('.', 0x2E).
-	//Creo que hexchat tiene reglas distintas
 	if (name.find_first_not_of("1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`|^_-{}[]\\") != std::string::npos || name.find_first_of("1234567890-") == 0)
-	{
-		//SEND MESSAGE TO CLIENT
-		// @time=2024-12-21T08:25:19.065Z :osmium.libera.chat 432 bmatos-d 2asdasd :Erroneous Nickname
 		return (1);
-	}
-
 	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
 		if (it->second.getNickname() == name)
-		{
-			//MESSAGE TO CLIENT
-			//@time=2024-12-21T08:22:56.797Z :osmium.libera.chat 433 bmatos-d asdasd :Nickname is already in use.
 			return (2);
-		}
 	return (3);
 }
 
 void	Server::sendMessageToClient(const std::string& message, int clientFd)
 {
-	//std::cout << "Client FD : " << clientFd << std::endl;
 	if (send(clientFd, message.c_str(), message.length(), 0) == -1)
 		std::cerr << "Error sending message to Client FD : " << clientFd << std::endl;
-	//std::cout << message << std::endl;
 }
 
 void	Server::broadcastToEveryone(const std::string& message, const Server& server)
@@ -271,9 +250,6 @@ void	Server::broadcastToEveryone(const std::string& message, const Server& serve
 	{
 		int	fd = it->first;
 		if (send(fd, message.c_str(), message.length(), 0) == -1)
-			
-			
-			
 			std::cerr << "Error broadcasting to FD : " << fd << std::endl;
 	}
 }

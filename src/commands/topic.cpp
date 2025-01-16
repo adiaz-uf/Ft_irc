@@ -6,56 +6,42 @@ TOPIC: Parameters: <channel> [<topic>]
 - TOPIC #test :             ; Clearing the topic on "#test"
 - TOPIC #test               ; Checking the topic for "#test"
 
-ERR_NEEDMOREPARAMS (461)v
-ERR_NOSUCHCHANNEL (403)v
-ERR_NOTONCHANNEL (442)v
-ERR_CHANOPRIVSNEEDED (482)v
-RPL_NOTOPIC (331)
-RPL_TOPIC (332)
-RPL_TOPICWHOTIME (333)
+ERR_NEEDMOREPARAMS (461)        [x]
+ERR_NOSUCHCHANNEL (403)         [x]
+ERR_NOTONCHANNEL (442)          [x]
+ERR_CHANOPRIVSNEEDED (482)      [x]
+
+NOT ERRORS TO BE IMPLEMENTED IN JOIN
+    RPL_NOTOPIC (331)               
+    RPL_TOPIC (332)                 
  */
 void	IRCCommandHandler::topic(std::vector<std::string> command, Server &server, Client &client)
 {  
-	/* if (command.size() == 2)
-		server.sendMessageToClient(TOPIC_GET_LOG(client.getNickname(), command[1], server.getChannel(command[1])->getTopic()), client.getSocket());
-	else if (command.size() == 3)
-	{
-		server.getChannel(command[1])->setTopic(command[2].substr(1, command[2].size() - 1));
-		server.sendMessageToClient(TOPIC_SET_LOG(client.getNickname(), client.getUsername(), command[1], server.getChannel(command[1])->getTopic()), client.getSocket());
-	} */
-	return;
-    if (command.size() < 2)
-		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "TOPIC") << std::endl;
-    else if (!server.isValidChannel(command[1]))
-        std::cerr << ERR_NOSUCHCHANNEL(command[1], server.getChannel(command[1])->getName()) << std::endl;
-    else if (!server.getChannel(command[1])->isMember(client.getSocket()))
-        std::cerr << ERR_NOTONCHANNEL(client.getNickname(), server.getChannel(command[1])->getName()) << std::endl;
-    else if (!server.getChannel(command[1])->isOperator(client.getSocket()))
-        std::cerr << ERR_CHANOPRIVSNEEDED(client.getNickname(), server.getChannel(command[1])->getName()) << std::endl;
+    int         clientFd      = client.getSocket();
+    std::string nick    = client.getNickname();
+
+    if (command.size() < 2) 
+        return (server.sendMessageToClient(ERR_NEEDMOREPARAMS(nick, "TOPIC"), clientFd));
+    if (!server.isValidChannel(command[1])) 
+        return (server.sendMessageToClient(ERR_NOSUCHCHANNEL(nick, command[1]), clientFd));
+    Channel *channel = server.getChannel(command[1]);
+    if (!channel->isMember(clientFd)) 
+        return (server.sendMessageToClient(ERR_NOTONCHANNEL(nick, channel->getName()), clientFd));
+    if (!channel->isOperator(clientFd))
+        return (server.sendMessageToClient(ERR_CHANOPRIVSNEEDED(nick, channel->getName()), clientFd));
+    if (command.size() == 2) 
+        return (server.sendMessageToClient(TOPIC_GET_LOG(nick, command[1], channel->getTopic()), clientFd));
+    std::string new_topic = aggregate(command, 2);
+    if (new_topic.size() == 1)
+    {
+        std::cout << "Clearing the topic on \"" << channel->getName() << "\"" << std::endl;
+        channel->setTopic(":No topic is set");
+        server.sendMessageToClient(TOPIC_SET_LOG(nick, client.getUsername(), command[1], channel->getTopic()), clientFd);
+    }
     else
     {
-        if (command.size() == 2)
-        {
-            std::cout << "Checking the topic for \"" << server.getChannel(command[1])->getName() << "\"" << std::endl;
-            server.sendMessageToClient(TOPIC_GET_LOG(client.getNickname(), command[1], server.getChannel(command[1])->getTopic()), client.getSocket());
-        }
-        else
-        {
-            if (command[2].compare(":") == 0)
-            {
-                std::cout << "Clearing the topic on \"" << server.getChannel(command[1])->getName() << "\"" << std::endl;
-                server.getChannel(command[1])->setTopic("");
-                server.sendMessageToClient(TOPIC_SET_LOG(client.getNickname(), client.getUsername(), command[1], server.getChannel(command[1])->getTopic()), client.getSocket());
-            }
-            else
-            {
-                command[2].erase(0, 1);
-                std::cout << " Setting the topic on \"" << server.getChannel(command[1])->getName()
-                << "\" to " << command[2] << std::endl;
-                server.getChannel(command[1])->setTopic(command[2]);
-                server.sendMessageToClient(TOPIC_SET_LOG(client.getNickname(), client.getUsername(), command[1], command[2]), client.getSocket());
-            }
-        }
+        std::cout << " Setting the topic on \"" << channel->getName() << "\" to " << command[2] << std::endl;
+        channel->setTopic(new_topic);
+        server.sendMessageToClient(TOPIC_SET_LOG(nick, client.getUsername(), command[1], new_topic), clientFd);
     }
-	return ;
 }

@@ -1,10 +1,10 @@
 # include "Channel.hpp"
 
 Channel::Channel()
-	: _name(""), _topic("No topic is set"), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
+	: _name(""), _topic(":No topic is set"), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
 
 Channel::Channel(const std::string& name)
-	: _name(name), _topic("No topic is set"), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
+	: _name(name), _topic(":No topic is set"), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
 
 Channel::Channel(const Channel& other)
 	: _name(other._name),
@@ -77,7 +77,8 @@ void				Channel::makeMember				(Server& server, int fd)
 	_members[fd] = client;
 	if (this->_members.size() == 1)
 		this->makeOperator(server, client->getSocket());
-	std::cout << "Added member " << fd << "with client " << client << "to channel."<< this << std::endl;
+	//TODO
+	//std::cout << "Added member " << fd << "with client " << client << "to channel."<< this << std::endl;
 }
 	
 void				Channel::removeMember			(int fd)
@@ -166,7 +167,6 @@ void				Channel::deleteInviteElements	()
 
 void Channel::broadcastMessage(const std::string& message, int senderFd)
 {
-	std::cerr << "Member size: " << _members.size() << std::endl;
     if (!_members.size()) {
         std::cerr << "Channel members list is empty: " << getName() << std::endl;
         return;
@@ -183,9 +183,7 @@ void Channel::broadcastMessage(const std::string& message, int senderFd)
             std::cerr << "Invalid client pointer for FD: " << it->first << std::endl;
             continue;
         }
-
         int fd = it->first;
-		std::cout << "fd : " << fd << std::endl;
 		if (fd != senderFd)
 		{
 			if (send(fd, message.c_str(), message.length(), 0) == -1)
