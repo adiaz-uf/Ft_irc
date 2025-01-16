@@ -28,9 +28,11 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
 {
     std::queue<std::string> channels;
     std::queue<std::string> keys;
-	std::string split;                                                                                                                                                                
+	std::string split;              
+	int clientFd = client.getSocket();
+
 	if (command.size() < 2)
-		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "JOIN") << std::endl;
+		server.sendMessageToClient(ERR_NEEDMOREPARAMS(client.getUsername(), "JOIN"), clientFd);
 	std::istringstream ss1(command[1]);
 	while (std::getline(ss1, split, ',')) // Separate channels into queue                                                                                                                                                                              
 		channels.push(split);
@@ -44,27 +46,26 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
 	{
 		if (server.isValidChannel(channels.front()))
 		{
-			if (server.getChannel(channels.front())->isMember(client.getSocket()) == false)
+			if (server.getChannel(channels.front())->isMember(clientFd) == false)
 			{
 				if (!keys.empty())
 					{
 						if (server.getChannel(channels.front())->checkPassword(keys.front()))
-							server.getChannel(channels.front())->makeMember(server, client.getSocket());
+							server.getChannel(channels.front())->makeMember(server, clientFd);
 						else	
 						{
-							std::cerr << ERR_BADCHANNELKEY(keys.front(), channels.front()) << std::endl;
+							server.sendMessageToClient(ERR_BADCHANNELKEY(keys.front(), channels.front()), clientFd);
 							return ;
 						}
 					}
 				else
-					server.getChannel(channels.front())->makeMember(server, client.getSocket());
+					server.getChannel(channels.front())->makeMember(server, clientFd);
 			}
 		}
 		else
 		{
 			server.addChannel(channels.front());
-			server.getChannel(channels.front())->makeMember(server, client.getSocket());
-			//server.getChannel(channels.front())->makeOperator(server, client.getSocket());
+			server.getChannel(channels.front())->makeMember(server, clientFd);
 		}
 		server.getChannel(channels.front())->broadcastMessage(JOIN_LOG((client.getNickname()), client.getUsername(), channels.front()), 0);
 		if (!keys.empty())
