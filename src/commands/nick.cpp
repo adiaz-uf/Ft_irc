@@ -16,23 +16,16 @@ void IRCCommandHandler::nick(std::vector<std::string> command, Server &server, C
     int clientFd = client.getSocket();
     if (command.size() < 2)
 		return (server.sendMessageToClient(ERR_NONICKNAMEGIVEN(client.getUsername()), clientFd));
-
+        
     std::string new_nick = command[1];
+
     switch(server.nickValid(new_nick))
     {
-        case 1:
-            // ERR_ERRONEUSNICKNAME (432)
-            return (server.sendMessageToClient(ERR_ERRONEUSNICKNAME(client.getNickname(), new_nick), clientFd));
-
-        case 2:
-            // ERR_NICKNAMEINUSE (433)
-            return (server.sendMessageToClient(ERR_NICKNAMEINUSE(client.getNickname(), new_nick), clientFd));
-        
+        case 1: return (server.sendMessageToClient(ERR_ERRONEUSNICKNAME(client.getNickname(), new_nick), clientFd));
+        case 2: return (server.sendMessageToClient(ERR_NICKNAMEINUSE(client.getNickname(), new_nick), clientFd));
         default:
             if (client.isAuthenticated()) 
-                {
                     server.sendMessageToClient(NICK_LOG(client.getNickname(), client.getUsername(), new_nick), clientFd);
-                    client.setNickname(new_nick);
-                }
+            client.setNickname(new_nick);
     }
 }

@@ -31,7 +31,7 @@ public:
     static void privmsg(std::vector<std::string> command, Server &server, Client &client);
 
 
-    //TODO Do or Delete
+    //TODO
     static void quit(std::vector<std::string> command, Server &server, Client &client);
     static void help(std::vector<std::string> command, Server &server, Client &client);
     static void ping(std::vector<std::string> command, Server &server, Client &client);

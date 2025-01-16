@@ -77,8 +77,6 @@ void				Channel::makeMember				(Server& server, int fd)
 	_members[fd] = client;
 	if (this->_members.size() == 1)
 		this->makeOperator(server, client->getSocket());
-	//TODO
-	//std::cout << "Added member " << fd << "with client " << client << "to channel."<< this << std::endl;
 }
 	
 void				Channel::removeMember			(int fd)
