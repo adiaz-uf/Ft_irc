@@ -13,11 +13,11 @@ Message Examples:
 - :WiZ JOIN #Twilight_zone        ; WiZ is joining the channel #Twilight_zone
 - :dan-!d@localhost JOIN #test    ; dan- is joining the channel #test
 
-ERR_NEEDMOREPARAMS (461)v
-ERR_NOSUCHCHANNEL (403)v
-ERR_TOOMANYCHANNELS (405)
-ERR_BADCHANNELKEY (475)v
-ERR_INVITEONLYCHAN (473)v
+ERR_NEEDMOREPARAMS (461)			[x]
+ERR_NOSUCHCHANNEL (403)				[ ] ????? TODO
+ERR_TOOMANYCHANNELS (405)			[ ]
+ERR_BADCHANNELKEY (475)				[x]
+ERR_INVITEONLYCHAN (473)			[x]
 ERR_BADCHANMASK (476)
 RPL_TOPIC (332)
 RPL_TOPICWHOTIME (333)
@@ -28,20 +28,30 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
 {
     std::queue<std::string> channels;
     std::queue<std::string> keys;
-	std::string split;                                                                                                                                                                
+	std::string split;
+
+
+
 	if (command.size() < 2)
-		std::cerr << ERR_NEEDMOREPARAMS(client.getUsername(), "JOIN") << std::endl;
+		server.sendMessageToClient(ERR_NEEDMOREPARAMS(client.getUsername(), "JOIN"), client.getSocket());
+
 	std::istringstream ss1(command[1]);
+
+	
 	while (std::getline(ss1, split, ',')) // Separate channels into queue                                                                                                                                                                              
 		channels.push(split);
+	
+
 	if (command.size() > 2)
 	{
 		std::istringstream ss2(command[2]); 
 		while (std::getline(ss2, split, ',')) // Separate keys into queue                                                                                                                                                                                  
 			keys.push(split);
 	}
+
 	while (!channels.empty())
 	{
+		
 		if (server.isValidChannel(channels.front()))
 		{
 			if (server.getChannel(channels.front())->isMember(client.getSocket()) == false)
@@ -51,21 +61,20 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
 						if (server.getChannel(channels.front())->checkPassword(keys.front()))
 							server.getChannel(channels.front())->makeMember(server, client.getSocket());
 						else	
-						{
-							std::cerr << ERR_BADCHANNELKEY(keys.front(), channels.front()) << std::endl;
-							return ;
-						}
+							return(server.sendMessageToClient(ERR_BADCHANNELKEY(keys.front(), channels.front()), client.getSocket()));
 					}
 				else
 					server.getChannel(channels.front())->makeMember(server, client.getSocket());
 			}
 		}
+ 
 		else
 		{
 			server.addChannel(channels.front());
 			server.getChannel(channels.front())->makeMember(server, client.getSocket());
-			//server.getChannel(channels.front())->makeOperator(server, client.getSocket());
+			server.getChannel(channels.front())->makeOperator(server, client.getSocket());
 		}
+
 		server.getChannel(channels.front())->broadcastMessage(JOIN_LOG((client.getNickname()), client.getUsername(), channels.front()), 0);
 		if (!keys.empty())
 			keys.pop();

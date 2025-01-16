@@ -173,6 +173,7 @@ void		Server::_handleClientMessage(int clientFd)
 	}	
 	while (cbuffer->find("\n") != std::string::npos)
 	{
+		//TODO
 		//std::cout << "Check: " <<cbuffer->substr(0,cbuffer->find("\n")) << std::endl;
 		if (cbuffer->find("\n") != 0)
 			IRCCommandHandler::handleCommand(*this, _clients[clientFd], cbuffer->substr(0,cbuffer->find("\n")));

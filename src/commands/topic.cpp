@@ -39,9 +39,7 @@ void	IRCCommandHandler::topic(std::vector<std::string> command, Server &server, 
     if (command.size() == 2) 
         return (server.sendMessageToClient(TOPIC_GET_LOG(nick, command[1], channel->getTopic()), fd));
 
-    //Aqui hay que agregar todos los argumentos del mensaje enviado al servidor que estan despues del ":" primero
     std::string new_topic = aggregate(command, 2);
-
 
     if (new_topic.size() == 1)
     {

@@ -77,7 +77,8 @@ void				Channel::makeMember				(Server& server, int fd)
 	_members[fd] = client;
 	if (this->_members.size() == 1)
 		this->makeOperator(server, client->getSocket());
-	std::cout << "Added member " << fd << "with client " << client << "to channel."<< this << std::endl;
+	//TODO
+	//std::cout << "Added member " << fd << "with client " << client << "to channel."<< this << std::endl;
 }
 	
 void				Channel::removeMember			(int fd)
@@ -166,7 +167,8 @@ void				Channel::deleteInviteElements	()
 
 void Channel::broadcastMessage(const std::string& message, int senderFd)
 {
-	std::cerr << "Member size: " << _members.size() << std::endl;
+	//TODO
+	//std::cerr << "Member size: " << _members.size() << std::endl;
     if (!_members.size()) {
         std::cerr << "Channel members list is empty: " << getName() << std::endl;
         return;
@@ -185,7 +187,7 @@ void Channel::broadcastMessage(const std::string& message, int senderFd)
         }
 
         int fd = it->first;
-		std::cout << "fd : " << fd << std::endl;
+		//std::cout << "fd : " << fd << std::endl;
 		if (fd != senderFd)
 		{
 			if (send(fd, message.c_str(), message.length(), 0) == -1)
