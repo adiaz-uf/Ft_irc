@@ -25,12 +25,7 @@ void	IRCCommandHandler::invite(std::vector<std::string> command, Server &server,
     else if (!server.isValidChannel(command[2]))
         server.sendMessageToClient(ERR_NOSUCHCHANNEL(command[2], server.getChannel(command[2])->getName()), clientFd);
     else if (!server.getChannel(command[2])->isMember(clientFd))
-        server.sendMessageToClient(ERR_NOTONCHANNEL(nick, server.getChannel(command[2])->getName()), clientFd);
-
-    //TODO CAN REMOVE I THINK
-    //else if (!server.getChannel(command[2])->isOperator(clientFd))
-    //    server.sendMessageToClient(ERR_CHANOPRIVSNEEDED(nick, server.getChannel(command[2])->getName()), clientFd);
-    
+        server.sendMessageToClient(ERR_NOTONCHANNEL(nick, server.getChannel(command[2])->getName()), clientFd);    
     else if (server.getChannel(command[2])->isMember(invitedFd))
         server.sendMessageToClient(ERR_USERONCHANNEL(nick, server.getChannel(command[2])->getName()), clientFd);
     else
