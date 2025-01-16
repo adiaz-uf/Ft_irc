@@ -11,12 +11,9 @@ ERR_NOTONCHANNEL (442)
 ERR_CHANOPRIVSNEEDED (482)v
 ERR_USERONCHANNEL (443)
 */
+// TODO: ERR_CHANOPRIVSNEEDED 
 void	IRCCommandHandler::invite(std::vector<std::string> command, Server &server, Client &client)
 {
-	server.sendMessageToClient(INVITE_CLIENT_LOG((client.getNickname()), client.getUsername(), command[1], command[2]), server.getClient(command[1])->getSocket());
-    
-	server.sendMessageToClient(INVITE_OPERATOR_LOG((client.getNickname()), command[1], command[2]), client.getSocket());
-	
 	if (command.size() < 3)
 		server.sendMessageToClient(ERR_NEEDMOREPARAMS(client.getUsername(), "INVITE"), client.getSocket());
     else if (!server.isValidClient(command[1]))
@@ -30,5 +27,10 @@ void	IRCCommandHandler::invite(std::vector<std::string> command, Server &server,
     else if (server.getChannel(command[2])->isMember(server.getClient(command[1])->getSocket()))
         server.sendMessageToClient(ERR_USERONCHANNEL(client.getNickname(), server.getChannel(command[2])->getName()), client.getSocket());
     else
+    {
         server.getChannel(command[2])->invite(server, client.getSocket());
+        server.sendMessageToClient(INVITE_CLIENT_LOG((client.getNickname()), client.getUsername(), command[1], command[2]), server.getClient(command[1])->getSocket());
+        // TODO
+        server.sendMessageToClient(INVITE_OPERATOR_LOG((client.getNickname()), command[1], command[2]), client.getSocket());
+    }
 }

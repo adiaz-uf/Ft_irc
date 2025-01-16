@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adiaz-uf <adiaz-uf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 06:41:52 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/16 06:41:53 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/16 11:37:47 by adiaz-uf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,6 @@
                                    invisible.
 */
 
-
-
-
-
 void IRCCommandHandler::user(std::vector<std::string> command, Server &server, Client &client)
 {
 
@@ -54,6 +50,5 @@ void IRCCommandHandler::user(std::vector<std::string> command, Server &server, C
     //ERR_NEEDMOREPARAMS
     if (command.size() < 5) //>>> The <realname> may contain space characters<<<
 		return (server.sendMessageToClient(ERR_NEEDMOREPARAMS(client.getUsername(), command[0]),client.getSocket()));
-    
     client.setUsername(command[1]);
 }

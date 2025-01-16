@@ -18,7 +18,7 @@ Message Examples:
 · o: Give/take channel operator privilege
 · l: Set/remove the user limit to channel
 */
-static void handle_i(std::vector<std::string> command, Server &server, Client &client, std::string oper, int it)
+/* static void handle_i(std::vector<std::string> command, Server &server, Client &client, std::string oper, int it)
 {
     if (oper == "+" && !server.getChannel(command[1]))
 
@@ -74,8 +74,8 @@ void IRCCommandHandler::mode(std::vector<std::string> command, Server &server, C
                 break;
             }
     }
-    
-
+}
+ */
     
 /*    std::string ircCommands[10] = { "+i", "+t", "+k", "+o", "+l", "-i", "-t", "-k", "-o", "-l" };
     int         n = -1;
@@ -161,4 +161,4 @@ void IRCCommandHandler::mode(std::vector<std::string> command, Server &server, C
 
 	//channel->broadcastMessage(MODE_LOG((client.getNickname()), client.getUsername(), command[1], command[2]), 0);
     */
-}
+

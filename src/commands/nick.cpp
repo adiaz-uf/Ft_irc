@@ -24,7 +24,7 @@ void IRCCommandHandler::nick(std::vector<std::string> command, Server &server, C
         return ; 
     }
     std::string new_nick = command[1];
-    switch(server.nickValid(new_nick, fd))
+    switch(server.nickValid(new_nick))
     {
         case 1:
             // ERR_ERRONEUSNICKNAME (432)

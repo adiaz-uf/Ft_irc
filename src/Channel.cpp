@@ -167,8 +167,6 @@ void				Channel::deleteInviteElements	()
 
 void Channel::broadcastMessage(const std::string& message, int senderFd)
 {
-	//TODO
-	//std::cerr << "Member size: " << _members.size() << std::endl;
     if (!_members.size()) {
         std::cerr << "Channel members list is empty: " << getName() << std::endl;
         return;
@@ -185,9 +183,7 @@ void Channel::broadcastMessage(const std::string& message, int senderFd)
             std::cerr << "Invalid client pointer for FD: " << it->first << std::endl;
             continue;
         }
-
         int fd = it->first;
-		//std::cout << "fd : " << fd << std::endl;
 		if (fd != senderFd)
 		{
 			if (send(fd, message.c_str(), message.length(), 0) == -1)

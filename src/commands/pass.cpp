@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pass.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adiaz-uf <adiaz-uf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 06:41:53 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/16 08:25:18 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/16 11:36:58 by adiaz-uf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,24 +43,24 @@ ERR_ALREADYREGISTRED (462)		[x]
 
 void IRCCommandHandler::pass(std::vector<std::string> command, Server &server, Client &client)
 {
-	int			fd		= client.getSocket();
+	int			clientFd		= client.getSocket();
 	std::string	nick	= client.getNickname();
 	
 	if (client.isAuthenticated())
 	{
-		server.sendMessageToClient(ERR_ALREADYREGISTERED(nick) + "\r\n", fd);
+		server.sendMessageToClient(ERR_ALREADYREGISTERED(nick) + "\r\n", clientFd);
 		return ;
 	}
-    if (command.size() < 2)
+    else if (command.size() < 2)
 	{
-		server.sendMessageToClient(ERR_NEEDMOREPARAMS(nick, "PASS") + "\r\n", fd);
+		server.sendMessageToClient(ERR_NEEDMOREPARAMS(nick, "PASS") + "\r\n", clientFd);
 		return ;
 	}
 	std::string	passwordClient = command[1];
 	if (passwordClient != server.getPassword())
 	{ 
-		server.sendMessageToClient(ERR_PASSWDMISMATCH(nick), fd);
-		server.disconnectClient(fd);
+		server.sendMessageToClient(ERR_PASSWDMISMATCH(nick), clientFd);
+		server.disconnectClient(clientFd);
 		return ;
 	}
 	client.setPassPos();

@@ -13,7 +13,7 @@
 #define TOPIC_GET_LOG(nick, channel, topic)                     (std::string(": 331 ") + (nick) + " " + (channel) + " " + (topic) + "\r\n") 
 #define TOPIC_SET_LOG(nick, user, channel, topic)               (std::string(":") + (nick) + "!~" + (user) + " TOPIC " + (channel) + " " + (topic) + "\r\n") 
 #define JOIN_LOG(nick, user, channel) 		                    (std::string(":") + (nick) + "!~" + (user) + " JOIN " + (channel) + "\r\n")
-#define KICK_LOG(operator, victim, channel, message) 		    (std::string(":") + (operator) + "!~" + (victim) + " KICK " + (channel) + " " + (victim) + (message) + "\r\n")
+#define KICK_LOG(operator, victim, channel, message) 		    (std::string(":") + (operator) + "!~" + (victim) + " KICK " + (channel) + " " + (victim) + " " + (message) + "\r\n")
 #define INVITE_OPERATOR_LOG(operator, victim, channel) 		    (std::string(":") + " 341 " + (operator) + " " + (victim) + " " + (channel) + "\r\n")
 #define INVITE_CLIENT_LOG(op_nick, op_user, victim, channel) 	(std::string(":") + (op_nick) + "!~" + (op_user) + " INVITE " + (victim) + " :" + (channel) + "\r\n")
 #define PRIVMSG_LOG(nick, user, target, message) 		        (std::string(":") + (nick) + "!~" + (user) + " PRIVMSG " + (target) + " " + (message) + "\r\n")
