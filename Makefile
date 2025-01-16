@@ -14,19 +14,20 @@ GREEN 	= \033[1;32m
 END 	= \033[0m
 
 #source files
-SRCS =  main \
-		Server \
-		Client \
-		Channel \
-		IRCCommandHandler \
-		commands/join \
-		commands/nick \
-		commands/topic \
-		commands/kick \
-		commands/invite \
-		commands/mode \
-		commands/privmsg \
-		commands/pass \
+SRCS =  main 					\
+		Server 					\
+		Client 					\
+		Channel 				\
+		IRCCommandHandler 		\
+		Utilities 				\
+		commands/join 			\
+		commands/nick 			\
+		commands/topic 			\
+		commands/kick 			\
+		commands/invite 		\
+		commands/mode 			\
+		commands/privmsg 		\
+		commands/pass 			\
 		commands/user 
 
 

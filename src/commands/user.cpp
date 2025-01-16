@@ -40,8 +40,7 @@ void IRCCommandHandler::user(std::vector<std::string> command, Server &server, C
         return (server.sendMessageToClient(ERR_ALREADYREGISTERED(client.getUsername()), client.getSocket()));
 
     //ERR_NEEDMOREPARAMS
-    //>>> The <realname> may contain space characters<<<
-    if (command.size() < 5)
+    if (command.size() < 5) //>>> The <realname> may contain space characters<<<
 		return (server.sendMessageToClient(ERR_NEEDMOREPARAMS(client.getUsername(), command[0]),client.getSocket()));
     
     client.setUsername(command[1]);

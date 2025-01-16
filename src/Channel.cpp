@@ -1,10 +1,10 @@
 # include "Channel.hpp"
 
 Channel::Channel()
-	: _name(""), _topic("No topic is set"), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
+	: _name(""), _topic(":No topic is set"), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
 
 Channel::Channel(const std::string& name)
-	: _name(name), _topic("No topic is set"), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
+	: _name(name), _topic(":No topic is set"), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
 
 Channel::Channel(const Channel& other)
 	: _name(other._name),

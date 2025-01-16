@@ -271,9 +271,6 @@ void	Server::broadcastToEveryone(const std::string& message, const Server& serve
 	{
 		int	fd = it->first;
 		if (send(fd, message.c_str(), message.length(), 0) == -1)
-			
-			
-			
 			std::cerr << "Error broadcasting to FD : " << fd << std::endl;
 	}
 }
