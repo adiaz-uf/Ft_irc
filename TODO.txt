@@ -1,4 +1,7 @@
 MODE
+MACROS
+TODOssssss
+
 
 Al Final:
     Leaks

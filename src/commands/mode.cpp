@@ -20,12 +20,28 @@ Message Examples:
 */
 /* static void handle_i(std::vector<std::string> command, Server &server, Client &client, std::string oper, int it)
 {
-    if (oper == "+" && !server.getChannel(command[1]))
+    Channel* channel = server.getChannel(command[1]);
+    if (oper == "+" && !channel->hasMode(INVITE_ONLY))
+        channel->setMode(INVITE_ONLY, ON);
+        ;
+    if (oper == "-" && channel->hasMode(INVITE_ONLY))
+        //removemode
+        ;
+}
 
+static void handle_t(std::vector<std::string> command, Server &server, Client &client, std::string oper, int it)
+{
+    if (oper == "+" && !server.getChannel(command[1])->hasMode(TOPIC_PROTECTED))
+        //addmode
+        ;
+    if (oper == "-" && server.getChannel(command[1])->hasMode(TOPIC_PROTECTED))
+        //removemode
+        ;
 }
 
 static void handle_o(std::vector<std::string> command, Server &server, Client &client, std::string oper, int it)
 {
+
 }
 
 static void handle_l(std::vector<std::string> command, Server &server, Client &client, std::string oper, int it)
@@ -36,24 +52,17 @@ static void handle_k(std::vector<std::string> command, Server &server, Client &c
 {
 }
 
-static void handle_t(std::vector<std::string> command, Server &server, Client &client, std::string oper, int it)
-{
-}
-
-
 void IRCCommandHandler::mode(std::vector<std::string> command, Server &server, Client &client)
 {
-    std::string oper        = "+"; 
-	std::string	nick	    = client.getNickname();
-	int			fd		    = client.getSocket(); 
+    std::string oper        = "+";
     int         char_it     = 0;
     int         command_it  = 3;
     char        curr;
 
 
-    if (command.size() < 3) return(server.sendMessageToClient(ERR_NEEDMOREPARAMS(nick, "MODE"), fd));
-    if (!server.isValidChannel(command[1])) return (server.sendMessageToClient(ERR_NOSUCHCHANNEL(command[1], server.getChannel(command[1])->getName()), fd));
-    if (!server.getChannel(command[1])->isOperator(fd)) return( server.sendMessageToClient(ERR_CHANOPRIVSNEEDED(nick, server.getChannel(command[1])->getName()), fd));
+    if (command.size() < 3) return(server.sendMessageToClient(ERR_NEEDMOREPARAMS(client.getNickname(), "MODE"), client.getSocket()));
+    if (!server.isValidChannel(command[1])) return (server.sendMessageToClient(ERR_NOSUCHCHANNEL(command[1], server.getChannel(command[1])->getName()), client.getSocket()));
+    if (!server.getChannel(command[1])->isOperator(client.getSocket())) return( server.sendMessageToClient(ERR_CHANOPRIVSNEEDED(client.getNickname(), server.getChannel(command[1])->getName()), fd));
     
     if (command[2][0] = '-') oper = "-";
 
@@ -65,11 +74,11 @@ void IRCCommandHandler::mode(std::vector<std::string> command, Server &server, C
         else 
             switch (curr)
             {
-            case 'i': handle_i(command, server, client, oper, command_it); char_it++; break;
+            case INVITE_ONLY:       handle_i(command, server, client, oper, command_it); char_it++; break;
             case 'o': handle_o(command, server, client, oper, command_it); char_it++; break;
             case 'l': handle_l(command, server, client, oper, command_it); char_it++; break;
             case 'k': handle_k(command, server, client, oper, command_it); char_it++; break;
-            case 't': handle_t(command, server, client, oper, command_it); char_it++; break;
+            case TOPIC_PROTECTED:   handle_t(command, server, client, oper, command_it); char_it++; break;
             default:
                 server.sendMessageToClient(ERR_INVALIDMODEPARAM(nick), fd));
                 break;
