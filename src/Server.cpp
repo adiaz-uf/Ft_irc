@@ -237,6 +237,15 @@ int		Server::nickValid(std::string name)
 	return (3);
 }
 
+int		Server::userValid(std::string name)
+{
+
+	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
+		if (it->second.getUsername() == name)
+			return (1);
+	return (0);
+}
+
 void	Server::sendMessageToClient(const std::string& message, int clientFd)
 {
 	if (send(clientFd, message.c_str(), message.length(), 0) == -1)
