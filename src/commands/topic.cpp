@@ -16,9 +16,6 @@ NOT ERRORS TO BE IMPLEMENTED IN JOIN
     RPL_TOPIC (332)                 
  */
 
-//TODO
-//ANYONE CAN READ ANYONE CAN CHANGE 
-//ONLY BARRED FROM CHANGING WHEN T is Toggled
 void	IRCCommandHandler::topic(std::vector<std::string> command, Server &server, Client &client)
 {  
     int         clientFd      = client.getSocket();
@@ -31,10 +28,10 @@ void	IRCCommandHandler::topic(std::vector<std::string> command, Server &server, 
     Channel *channel = server.getChannel(command[1]);
     if (!channel->isMember(clientFd)) 
         return (server.sendMessageToClient(ERR_NOTONCHANNEL(nick, channel->getName()), clientFd));
-    if (!channel->isOperator(clientFd))
-        return (server.sendMessageToClient(ERR_CHANOPRIVSNEEDED(nick, channel->getName()), clientFd));
     if (command.size() == 2) 
         return (server.sendMessageToClient(TOPIC_GET_LOG(nick, command[1], channel->getTopic()), clientFd));
+    if (!channel->isOperator(clientFd) && channel->hasMode(TOPIC_PROTECTED))
+        return (server.sendMessageToClient(ERR_CHANOPRIVSNEEDED(nick, channel->getName()), clientFd));
     std::string new_topic = aggregate(command, 2);
     if (new_topic.size() == 1)
     {
