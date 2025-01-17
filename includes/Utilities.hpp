@@ -6,7 +6,7 @@
 /*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 06:09:31 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/17 03:39:14 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/17 06:12:28 by bmatos-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #define OPERATOR_TOGGLE     'o'
 #define SIZE_LIMIT          'l'
 #define KEY_WORD            'k'
+#define ACCEPTED            true
+#define DENIED              false
 #define ON                   1
 #define OFF                  0
 

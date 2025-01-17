@@ -16,14 +16,16 @@ ERR_BADCHANNELKEY (475)				[x]
 ERR_INVITEONLYCHAN (473)			[x]
 */
 
-//TODO USER LIMIT CANT JOIN
 
+//TODO Channel info on join
 void    IRCCommandHandler::join(std::vector<std::string> command, Server &server, Client &client)
 {
     std::queue<std::string> channels;
     std::queue<std::string> keys;
 	std::string split;              
 	int clientFd = client.getSocket();
+	bool	permission;
+	Channel *channel;
 
 	if (command.size() < 2)
 		server.sendMessageToClient(ERR_NEEDMOREPARAMS(client.getUsername(), "JOIN"), clientFd);
@@ -36,30 +38,42 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
 		while (std::getline(ss2, split, ',')) // Separate keys into queue                                                                                                                                                                                  
 			keys.push(split);
 	}
+	std::cout << "Entered the function at least" << std::endl;
 	while (!channels.empty())
 	{
-		
-		if (server.isValidChannel(channels.front()))
-		{
-			if (server.getChannel(channels.front())->isMember(clientFd) == false)
-			{
-				if (!keys.empty())
-					{
-						if (server.getChannel(channels.front())->checkPassword(keys.front()))
-							server.getChannel(channels.front())->makeMember(server, clientFd);
-						else	
-							return server.sendMessageToClient(ERR_BADCHANNELKEY(keys.front(), channels.front()), clientFd);
-					}
-				else
-					server.getChannel(channels.front())->makeMember(server, clientFd);
-			}
-		}
-		else
+		permission = ACCEPTED;
+		if (!server.isValidChannel(channels.front()))
 		{
 			server.addChannel(channels.front());
 			server.getChannel(channels.front())->makeMember(server, clientFd);
+			server.getChannel(channels.front())->broadcastMessage(JOIN_LOG((client.getNickname()), client.getUsername(), channels.front()), 0);
 		}
-		server.getChannel(channels.front())->broadcastMessage(JOIN_LOG((client.getNickname()), client.getUsername(), channels.front()), 0);
+		else
+		{
+			channel = server.getChannel(channels.front());
+			if (channel->isMember(clientFd) == true) 
+				permission = DENIED;
+			if (permission && (channel->hasMode(KEY_WORD) && (keys.empty() || !channel->checkPassword(keys.front())))) 	
+			{
+				permission = DENIED;
+				server.sendMessageToClient(ERR_BADCHANNELKEY(client.getNickname(), channel->getName()), clientFd);
+			}
+			if (permission && (channel->hasMode(SIZE_LIMIT) && channel->userCount() >= channel->getUsersLimit())) 		
+			{
+				permission = DENIED; 
+				server.sendMessageToClient(ERR_CHANNELISFULL(client.getNickname(), channel->getName()), clientFd);
+			}
+			if (permission && (channel->hasMode(INVITE_ONLY) && !channel->isInvited(clientFd))) 						
+			{
+				permission = DENIED; 
+				server.sendMessageToClient(ERR_INVITEONLYCHAN(client.getNickname(), channel->getName()), clientFd);
+			}
+			if (permission == ACCEPTED)																					
+			{
+				channel->makeMember(server, clientFd);
+				channel->broadcastMessage(JOIN_LOG((client.getNickname()), client.getUsername(), channels.front()), 0);
+			}
+		}
 		if (!keys.empty())
 			keys.pop();
 		channels.pop();

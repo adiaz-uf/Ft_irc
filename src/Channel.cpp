@@ -69,11 +69,7 @@ void	 			Channel::invite					(Server& server, int fd)
 void				Channel::makeMember				(Server& server, int fd)
 {
 	Client* client = server.getClient(fd);
-	if (this->hasMode('i'))
-	{
-		server.sendMessageToClient(ERR_INVITEONLYCHAN(server.getClient(fd)->getNickname(), this->getName()), fd);
-		return ;
-	}
+	
 	_members[fd] = client;
 	if (this->_members.size() == 1)
 		this->makeOperator(server, client->getSocket());
@@ -188,4 +184,9 @@ void Channel::broadcastMessage(const std::string& message, int senderFd)
 				std::cerr << "Error broadcasting to FD: " << fd << " - " << std::endl;
 		}
 	}
+}
+
+int Channel::userCount()  const
+{
+	return (_members.size());
 }

@@ -74,6 +74,7 @@ class Channel
 						//UserLimit
 		void						setUsersLimit		(int limit);			
 		int							getUsersLimit		() 											const;
+		int							userCount			() 											const;
 
 		void						broadcastMessage(const std::string& message, int senderFd);
 
