@@ -6,6 +6,7 @@
 # include <ErrorLogs.hpp>
 # include <sstream>
 # include <queue>
+# include <set>
 
 class Server;
 class Client;
@@ -29,13 +30,13 @@ public:
     static void user(std::vector<std::string> command, Server &server, Client &client);
     static void mode(std::vector<std::string> command, Server &server, Client &client);
     static void privmsg(std::vector<std::string> command, Server &server, Client &client);
-
+    static void quit(std::vector<std::string> command, Server &server, Client &client);
+    static void part(std::vector<std::string> command, Server &server, Client &client);
+    
 
     //TODO
-    static void quit(std::vector<std::string> command, Server &server, Client &client);
     static void help(std::vector<std::string> command, Server &server, Client &client);
     static void ping(std::vector<std::string> command, Server &server, Client &client);
-    static void part(std::vector<std::string> command, Server &server, Client &client);
     static void pong(std::vector<std::string> command, Server &server, Client &client);
     static void notice(std::vector<std::string> command, Server &server, Client &client);
 };

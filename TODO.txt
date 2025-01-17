@@ -1,9 +1,7 @@
-MODE
 MACROS
-TODOssssss
+QUIT
+PART
 
+Need case insensitive channels!!!!!!!!!!!!
 
-Al Final:
-    Leaks
-
-LOGS
+LEAKS

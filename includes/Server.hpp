@@ -7,6 +7,7 @@
 
 # include <iostream>
 # include <map>
+# include <set>
 # include <vector>
 # include <string>
 # include <netinet/in.h>
@@ -48,29 +49,30 @@ class Server
 		Server& operator=(const Server& other);
 		~Server();
 
-		void		disconnectClient(int clientFd);
+		void							disconnectClient(int clientFd);
 
-		bool		isValidChannel(std::string channel);
-		bool		isValidClient(int fd);
-		bool		isValidClient(std::string client);
-		bool		isClientAuthorized(int fd);
+		bool							isValidChannel(std::string channel);
+		bool							isValidClient(int fd);
+		bool							isValidClient(std::string client);
+		bool							isClientAuthorized(int fd);
 
 			
 		std::map<std::string, Channel> 	*getChannels();
-		Channel* 	getChannel(std::string channel);
-		Client* 	getClient(std::string client);
-		Client* 	getClient				(int fd);
+		Channel* 						getChannel(std::string channel);
+		Client* 						getClient(std::string client);
+		Client* 						getClient				(int fd);
 
-		std::string	getPassword();
-		void 		addChannel(std::string channel);
-		void		run();
+		std::string						getPassword();
+		void 							addChannel(std::string channel);
+		void							run();
 
-		//Utilities
-		void		deleteMemberAllChannels(int fd);
-		int			nickValid(std::string name);
-		int			userValid(std::string name);
-		void		sendMessageToClient(const std::string& message, int clientFd);
-		void		broadcastToEveryone(const std::string& message, const Server& server);
+		//Utilities	
+		void							deleteMemberAllChannels(int fd);
+		int								nickValid(std::string name);
+		int								userValid(std::string name);
+		void							sendMessageToClient(const std::string& message, int clientFd);
+		void							broadcastToEveryone(const std::string& message, const Server& server);
+		std::set<int>					getContacts(int fd);
 
 };
 

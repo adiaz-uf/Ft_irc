@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   IRCCommandHandler.cpp                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/17 07:25:15 by bmatos-d          #+#    #+#             */
+/*   Updated: 2025/01/17 07:25:16 by bmatos-d         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 # include "IRCCommandHandler.hpp"
 
 std::vector<std::string> IRCCommandHandler::split_istringstream(std::string str) {
@@ -16,12 +28,12 @@ void IRCCommandHandler::handleCommand(Server &server, Client &client, std::strin
 {
     std::cout << input << std::endl;
     int         n = -1;
-    std::string ircCommands[9] = { "PASS", "JOIN", "NICK", "TOPIC", "KICK", "MODE", "PRIVMSG", "INVITE", "USER" };
+    std::string ircCommands[11] = { "PASS", "JOIN", "NICK", "TOPIC", "KICK", "MODE", "PRIVMSG", "INVITE", "USER", "PART", "QUIT"};
     
     std::vector<std::string> command = IRCCommandHandler::split_istringstream(input);
     do
         n++;
-    while (n < 9 && command[0] != ircCommands[n]); 
+    while (n < 11 && command[0] != ircCommands[n]); 
 	
 	if (!client.isAuthenticated() && n != 0 && n != 2 && n != 8)
 		return(server.sendMessageToClient("You must provide the PASS, USER and NICK first.\r\n", client.getSocket()));
@@ -54,6 +66,12 @@ void IRCCommandHandler::handleCommand(Server &server, Client &client, std::strin
             break;
         case 8: 
             user(command, server, client);
+            break;
+        case 9: 
+            part(command, server, client);
+            break;
+        case 10: 
+            quit(command, server, client);
             break;
         default:
             std::cout << "INVALID COMMAND" << std::endl;

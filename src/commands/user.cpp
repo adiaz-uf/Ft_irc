@@ -6,7 +6,7 @@
 /*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 06:41:52 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/17 07:06:01 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/17 07:07:35 by bmatos-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@
 
 void IRCCommandHandler::user(std::vector<std::string> command, Server &server, Client &client)
 {
-    bool changed = false;
     if (client.isAuthenticated() == true)
         return (server.sendMessageToClient(ERR_ALREADYREGISTERED(client.getUsername()), client.getSocket()));
     if (command.size() < 5) //>>> The <realname> may contain space characters<<<

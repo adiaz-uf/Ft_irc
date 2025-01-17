@@ -57,8 +57,11 @@
 //@time=2025-01-17T04:12:58.109Z :iridium.libera.chat 473 three22 #asdooooo :Cannot join channel (+i) - you must be invited
 #define ERR_INVITEONLYCHAN(clientNick, channel)                                 (std::string(": 473 ") + (clientNick) + " " + (channel) + " :Cannot join channel (+i) - you must be invited\r\n")
 
+//>> @time=2025-01-17T06:38:07.606Z :aafasaaa!~three@195.55.211.175 QUIT :Quit: Leaving
+#define QUIT_LOG(nick, user, message)                                                    (std::string(":") + (nick) + " " + (user) + " QUIT "+ (message) + "\r\n")
 
-
+//@time=2025-01-17T07:41:31.384Z :three223!~three223@195.55.211.139 PART #newchannn
+#define PART_LOG(nick, user, channel)                                           (std::string(":") + (nick) + "!~" + (user) + " PART " + (channel) + "\r\n")
 
 //No Comprobado
 #define TOPIC_GET_LOG(nick, channel, topic)                     (std::string(": 331 ") + (nick) + " " + (channel) + " " + (topic) + "\r\n") 
@@ -66,8 +69,6 @@
 #define JOIN_LOG(nick, user, channel) 		                    (std::string(":") + (nick) + "!~" + (user) + " JOIN " + (channel) + "\r\n")
 #define KICK_LOG(operator, victim, channel, message) 		    (std::string(":") + (operator) + "!~" + (victim) + " KICK " + (channel) + " " + (victim) + " " + (message) + "\r\n")
 #define PRIVMSG_LOG(nick, user, target, message) 		        (std::string(":") + (nick) + "!~" + (user) + " PRIVMSG " + (target) + " " + (message) + "\r\n")
-#define QUIT_LOG(server, nick) 								    (std::string(":") + (server) + " ERROR " + "Closing Link: " + (nick) + " (Ping timeout)" + "\r\n")
-#define PART_LOG(nick, user, channel)                           (":"(nick)"!~"(user)" PART #"(channel)"\r\n")
 #define NICK_LOG(oldnick, user, newnick)                        (std::string(":") + (oldnick) + "!~" + (user) + " NICK :" + (newnick) + "\r\n")
 #define ERR_NOTREGISTERED(clientNick, channel)                  (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 451 " + (channel) + " :You have not registered\r\n")
 #define ERR_PASSWDMISMATCH(clientNick)                          ("464 " + (clientNick) + " :Password is incorrect\r\n")

@@ -80,6 +80,7 @@ class Channel
 
 		Client* 					getMember(std::string username);
 		std::string 				getName();
+		std::map<int, Client*>*		getMembers();
 
 };
 

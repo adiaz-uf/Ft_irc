@@ -6,7 +6,7 @@
 /*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 06:09:31 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/17 06:12:28 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/17 07:32:25 by bmatos-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@
 #define OFF                  0
 
 std::string aggregate(std::vector<std::string> command, int start);
+void        operator_check();
 
 #endif

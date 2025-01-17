@@ -190,3 +190,8 @@ int Channel::userCount()  const
 {
 	return (_members.size());
 }
+
+std::map<int, Client*>*		Channel::getMembers()
+{
+	return &_members;
+}

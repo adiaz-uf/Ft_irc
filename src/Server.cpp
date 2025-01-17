@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Server.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/17 07:25:26 by bmatos-d          #+#    #+#             */
+/*   Updated: 2025/01/17 09:20:28 by bmatos-d         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Server.hpp"
 
 Server::Server()
@@ -157,6 +169,18 @@ void		Server::_acceptNewClient()
 	sendMessageToClient("Please set username (USER), nickname (NICK) and enter the server password (PASS).\n", clientSocket);
 }
 
+std::set<int> Server::getContacts(int fd)
+{
+	std::set<int> ret;
+	for (std::map<std::string, Channel>::iterator ch = _channels.begin(); ch != _channels.end(); ch++)
+	{
+		if ((*ch).second.isMember(fd))
+			for (std::map<int, Client*>::iterator cl = (*ch).second.getMembers()->begin(); cl != (*ch).second.getMembers()->end(); cl++)
+				ret.insert(cl->first);
+	}
+	return (ret);
+}
+
 void		Server::_handleClientMessage(int clientFd)
 {
 	char	buffer[512];
@@ -210,13 +234,6 @@ void Server::run()
 			else if (events[i].events & EPOLLIN)
 				_handleClientMessage(events[i].data.fd);
 		}
-		/* for (std::map<int, Client>::iterator it = _clients.begin();
-				it != _clients.end(); ++it)
-			if (static_cast<long int>(std::time(0) - it->second.getTime()) > 5)
-			{
-				sendMessageToClient(QUIT_LOG(_serverName, it->second.getNickname()), it->second.getSocket());
-				_disconnectClient(it->first);
-			} */
 	}
 }
 

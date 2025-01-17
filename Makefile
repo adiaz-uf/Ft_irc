@@ -28,6 +28,8 @@ SRCS =  main 					\
 		commands/mode 			\
 		commands/privmsg 		\
 		commands/pass 			\
+		commands/part 			\
+		commands/quit 			\
 		commands/user 
 
 OBJS = $(SRCS:.cpp=.o)
