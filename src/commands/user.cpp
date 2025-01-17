@@ -6,7 +6,7 @@
 /*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 06:41:52 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/16 23:49:27 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/17 02:19:29 by bmatos-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@
                                    invisible.
 */
 
+
+//TODO CHECK VALID USERNAME
 void IRCCommandHandler::user(std::vector<std::string> command, Server &server, Client &client)
 {
 
@@ -49,7 +51,7 @@ void IRCCommandHandler::user(std::vector<std::string> command, Server &server, C
 
     //ERR_NEEDMOREPARAMS
     if (command.size() < 5) //>>> The <realname> may contain space characters<<<
-		return (server.sendMessageToClient(ERR_NEEDMOREPARAMS(client.getUsername(), command[0]),client.getSocket()));
+		  return (server.sendMessageToClient(ERR_NEEDMOREPARAMS(client.getUsername(), command[0]),client.getSocket()));
+    
     client.setUsername(command[1]);
-    server.sendMessageToClient("USERNAME CHANGED\r\n", client.getSocket());
 }

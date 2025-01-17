@@ -15,6 +15,9 @@ ERR_NEEDMOREPARAMS (461)			[x]
 ERR_BADCHANNELKEY (475)				[x]
 ERR_INVITEONLYCHAN (473)			[x]
 */
+
+//TODO USER LIMIT CANT JOIN
+
 void    IRCCommandHandler::join(std::vector<std::string> command, Server &server, Client &client)
 {
     std::queue<std::string> channels;
@@ -45,10 +48,7 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
 						if (server.getChannel(channels.front())->checkPassword(keys.front()))
 							server.getChannel(channels.front())->makeMember(server, clientFd);
 						else	
-						{
-							server.sendMessageToClient(ERR_BADCHANNELKEY(keys.front(), channels.front()), clientFd);
-							return ;
-						}
+							return server.sendMessageToClient(ERR_BADCHANNELKEY(keys.front(), channels.front()), clientFd);
 					}
 				else
 					server.getChannel(channels.front())->makeMember(server, clientFd);

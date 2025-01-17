@@ -15,6 +15,10 @@ NOT ERRORS TO BE IMPLEMENTED IN JOIN
     RPL_NOTOPIC (331)               
     RPL_TOPIC (332)                 
  */
+
+//TODO
+//ANYONE CAN READ ANYONE CAN CHANGE 
+//ONLY BARRED FROM CHANGING WHEN T is Toggled
 void	IRCCommandHandler::topic(std::vector<std::string> command, Server &server, Client &client)
 {  
     int         clientFd      = client.getSocket();

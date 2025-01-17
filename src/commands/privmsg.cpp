@@ -25,6 +25,8 @@ ERR_NOTOPLEVEL (413)
 ERR_WILDTOPLEVEL (414)
 RPL_AWAY (301)
 */
+
+
 void IRCCommandHandler::privmsg(std::vector<std::string> command, Server &server, Client &client)
 {    
 	std::string message;

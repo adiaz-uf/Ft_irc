@@ -24,13 +24,13 @@
 #define MODE_I_T_L_TOGGLE(op_nick, op_user, channel, operator, mode)  (std::string(":") + (op_nick) + "!~" + (op_user) + " MODE " + (channel) + " " + (operator) + (mode) + "\r\n")
 
 //@time=2025-01-16T06:52:26.564Z :bmatos-d3!~bmatos-d3@195.55.211.139 MODE #ajdsknasasdasdasd +o bmatos-d_
-#define MODE_O_TOGGLE(op_nick, op_user, channel, operator, target)  (std::string(":") + (op_nick) + "!~" + (op_user) + " MODE " + (channel) + " " + (operator) + "o" + (target) + "\r\n")
+#define MODE_O_TOGGLE(op_nick, op_user, channel, operator, target)  (std::string(":") + (op_nick) + "!~" + (op_user) + " MODE " + (channel) + " " + (operator) + "o " + (target) + "\r\n")
 
 //@time=2025-01-16T06:58:37.908Z :bmatos-d3!~bmatos-d3@195.55.211.139 MODE #ajdsknasasdasdasd +k asda
-#define MODE_K_ON(op_nick, op_user, channel, operator, keyword)     (std::string(":") + (op_nick) + "!~" + (op_user) + " MODE " + (channel) + " +k " + (keyword) + "\r\n")
+#define MODE_K_ON(op_nick, op_user, channel, keyword)     (std::string(":") + (op_nick) + "!~" + (op_user) + " MODE " + (channel) + " +k " + (keyword) + "\r\n")
 
 //@time=2025-01-16T07:00:04.376Z :bmatos-d3!~bmatos-d3@195.55.211.139 MODE #ajdsknasasdasdasd -k *
-#define MODE_K_OFF(op_nick, op_user, channel, operator)             (std::string(":") + (op_nick) + "!~" + (op_user) + " MODE " + (channel) + " -k * " + "\r\n")
+#define MODE_K_OFF(op_nick, op_user, channel)             (std::string(":") + (op_nick) + "!~" + (op_user) + " MODE " + (channel) + " -k * " + "\r\n")
 
 //@time=2025-01-16T07:03:18.199Z :bmatos-d3!~bmatos-d3@195.55.211.139 MODE #ajdsknasasdasdasd +l 50
 #define MODE_L_ON(op_nick, op_user, channel, operator, mode, limit)  (std::string(":") + (op_nick) + "!~" + (op_user) + " MODE " + (channel) + " +l " + (limit) + "\r\n")

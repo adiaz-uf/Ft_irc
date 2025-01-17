@@ -44,7 +44,7 @@ void IRCCommandHandler::handleCommand(Server &server, Client &client, std::strin
             kick(command, server, client);
             break;
         case 5: 
-            //mode(command, server, client);
+            mode(command, server, client);
             break;
         case 6:
             privmsg(command, server, client);
