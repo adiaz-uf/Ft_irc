@@ -36,6 +36,8 @@
 //@time=2025-01-16T07:03:18.199Z :bmatos-d3!~bmatos-d3@195.55.211.139 MODE #ajdsknasasdasdasd +l 50
 #define MODE_L_ON(op_nick, op_user, channel, operator, mode, limit)             (std::string(":") + (op_nick) + "!~" + (op_user) + " MODE " + (channel) + " +l " + (limit) + "\r\n")
 
+#define MODE_RPL(channel)														(std::string(":") + " MODE " + (channel) + " +t " + "\r\n")
+
 //@time=2025-01-16T04:03:25.022Z :tantalum.libera.chat 433 bmatos-d3 bmatos-d_ :Nickname is already in use.
 #define ERR_NICKNAMEINUSE(clientNick, badNick)                                  (std::string(": ") +  " 433 " + (clientNick) + (badNick) + " :Nickname is already in use\r\n")
 
