@@ -6,7 +6,7 @@
 /*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:53 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/17 07:25:56 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/17 13:03:13 by bmatos-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	IRCCommandHandler::invite(std::vector<std::string> command, Server &server,
     else if (!server.getChannel(command[2])->isMember(clientFd))
         server.sendMessageToClient(ERR_NOTONCHANNEL(nick, server.getChannel(command[2])->getName()), clientFd);    
     else if (server.getChannel(command[2])->isMember(invitedFd))
-        server.sendMessageToClient(ERR_USERONCHANNEL(nick, server.getChannel(command[2])->getName()), clientFd);
+        server.sendMessageToClient(ERR_USERONCHANNEL(nick, command[1], server.getChannel(command[2])->getName()), clientFd);
     else
     {
         server.getChannel(command[2])->invite(server, invitedFd);

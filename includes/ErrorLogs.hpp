@@ -102,11 +102,12 @@
 //@time=2025-01-17T11:52:27.468Z :tungsten.libera.chat 401 asswhole a :No such nick/channel
 #define ERR_NOSUCHNICK(clientNick, target)                                      (": 401 " + (clientNick) + " " + (target) + " :No such nick/channel\r\n")
 
+//@time=2025-01-17T11:59:42.002Z :tungsten.libera.chat 443 asswhole three121 #asdasdasda :is already on channel
+#define ERR_USERONCHANNEL(clientNick, target, channel)                          (std::string(": 443 ") + (clientNick) + " " + (target) + " " + (channel) + " :is already on channel\r\n")
 #endif // ERRORLOGS_HPP
 
 //-----------------------NO USADOS-------------------------//
 /*
-#define ERR_USERONCHANNEL(clientNick, channel)                  (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 443 " + (channel) + " :is already on channel\r\n")
 #define ERR_TOOMANYCHANNELS(clientNick, channel)                (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 405 " + (channel) + " :You have joined too many channels\r\n")
 #define ERR_CANNOTSENDTOCHAN(clientNick, channel)               (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 404 " + (channel) + " :Cannot send to channel\r\n")
 #define ERR_INVALIDMODEPARAM(clientNick)                        ("696 " + (clientNick) + " :Invalid mode parameter\r\n")

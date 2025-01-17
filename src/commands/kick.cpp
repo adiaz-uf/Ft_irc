@@ -6,7 +6,7 @@
 /*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:48 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/17 07:25:49 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/17 12:57:17 by bmatos-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	IRCCommandHandler::kick(std::vector<std::string> command, Server &server, C
 	else if (!server.getChannel(command[1])->isMember(clientFd))
 		server.sendMessageToClient(ERR_NOTONCHANNEL(client.getNickname(), server.getChannel(command[1])->getName()), clientFd);
 	else if (server.getChannel(command[1])->getMember(command[2]) == NULL || !server.getChannel(command[1])->isMember(server.getChannel(command[1])->getMember(command[2])->getSocket()))
-		server.sendMessageToClient(ERR_USERNOTINCHANNEL(client.getUsername(), client.getNickname()), clientFd);
+		server.sendMessageToClient(ERR_USERNOTINCHANNEL(client.getUsername(), client.getNickname(), server.getChannel(command[1])->getName()), clientFd);
     else if (!server.getChannel(command[1])->isOperator(clientFd))
 		server.sendMessageToClient(ERR_CHANOPRIVSNEEDED(client.getNickname(), server.getChannel(command[1])->getName()), clientFd);
 	else
