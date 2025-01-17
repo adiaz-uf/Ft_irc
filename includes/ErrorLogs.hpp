@@ -58,31 +58,58 @@
 #define ERR_INVITEONLYCHAN(clientNick, channel)                                 (std::string(": 473 ") + (clientNick) + " " + (channel) + " :Cannot join channel (+i) - you must be invited\r\n")
 
 //>> @time=2025-01-17T06:38:07.606Z :aafasaaa!~three@195.55.211.175 QUIT :Quit: Leaving
-//                                  :one!~one QUIT :Client Quit
-#define QUIT_LOG(nick, user, message)                                                    (std::string(":") + (nick) + "!~" + (user) + " QUIT :Quit: "+ (message) + "\r\n")
+#define QUIT_LOG(nick, user, message)                                           (std::string(":") + (nick) + "!~" + (user) + " QUIT :Quit: "+ (message) + "\r\n")
 
 //@time=2025-01-17T07:41:31.384Z :three223!~three223@195.55.211.139 PART #newchannn
 #define PART_LOG(nick, user, channel)                                           (std::string(":") + (nick) + "!~" + (user) + " PART " + (channel) + "\r\n")
 
-//No Comprobado
-#define TOPIC_GET_LOG(nick, channel, topic)                     (std::string(": 331 ") + (nick) + " " + (channel) + " " + (topic) + "\r\n") 
-#define TOPIC_SET_LOG(nick, user, channel, topic)               (std::string(":") + (nick) + "!~" + (user) + " TOPIC " + (channel) + " " + (topic) + "\r\n") 
-#define JOIN_LOG(nick, user, channel) 		                    (std::string(":") + (nick) + "!~" + (user) + " JOIN " + (channel) + "\r\n")
-#define KICK_LOG(operator, victim, channel, message) 		    (std::string(":") + (operator) + "!~" + (victim) + " KICK " + (channel) + " " + (victim) + " " + (message) + "\r\n")
-#define PRIVMSG_LOG(nick, user, target, message) 		        (std::string(":") + (nick) + "!~" + (user) + " PRIVMSG " + (target) + " " + (message) + "\r\n")
-#define NICK_LOG(oldnick, user, newnick)                        (std::string(":") + (oldnick) + "!~" + (user) + " NICK :" + (newnick) + "\r\n")
-#define ERR_NOTREGISTERED(clientNick, channel)                  (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 451 " + (channel) + " :You have not registered\r\n")
-#define ERR_PASSWDMISMATCH(clientNick)                          ("464 " + (clientNick) + " :Password is incorrect\r\n")
-#define ERR_NONICKNAMEGIVEN(clientNick)                         ("431 " + (clientNick) + " :Nickname not given\r\n")
-#define ERR_UNKNOWNCOMMAND(clientNick, command, channel)        (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 421 " + (command) + " :Unknown command\r\n")
-#define ERR_TOOMANYCHANNELS(clientNick, channel)                (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 405 " + (channel) + " :You have joined too many channels\r\n")
-#define ERR_NOTONCHANNEL(clientNick, channel)                   (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 442 " + (channel) + " :You're not on that channel\r\n")
-#define ERR_USERONCHANNEL(clientNick, channel)                  (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 443 " + (channel) + " :is already on channel\r\n")
-#define ERR_NOSUCHCHANNEL(clientNick, channel)                  (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 403 " + (channel) + " :No such channel\r\n")
-#define ERR_CANNOTSENDTOCHAN(clientNick, channel)               (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 404 " + (channel) + " :Cannot send to channel\r\n")
-#define ERR_CHANOPRIVSNEEDED(clientNick, channel)               (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 482 " + (channel) + " :You must be a channel operator to perform this action\r\n")
-#define ERR_NOSUCHNICK(clientNick, targetNick)                    ("401 " + (clientNick) + " " + (targetNick) + " :No such nick\r\n")
-#define ERR_USERNOTINCHANNEL(clientNick, targetNick)              ("441 "+ (clientNick) + (targetNick) + " :They aren't on that channel\r\n")
-#define ERR_INVALIDMODEPARAM(clientNick)                        ("696 " + (clientNick) + " :Invalid mode parameter\r\n")
+//TODO //@time=2025-01-17T10:49:18.142Z :silver.libera.chat 332 three12 #newchan :a
+#define TOPIC_GET_LOG(nick, channel, topic)                                     (std::string(": 332 ") + (nick) + " " + (channel) + " " + (topic) + "\r\n") 
+
+//@time=2025-01-17T10:51:11.672Z :three12!~three12@195.55.211.139 TOPIC #newchan :a
+#define TOPIC_SET_LOG(nick, user, channel, topic)                               (std::string(":") + (nick) + "!~" + (user) + " TOPIC " + (channel) + " " + (topic) + "\r\n") 
+
+//@time=2025-01-17T11:12:06.091Z :bmatos-d_!~three121@195.55.211.76 JOIN #asd * :realname
+#define JOIN_LOG(nick, user, channel) 		                                    (std::string(":") + (nick) + "!~" + (user) + " JOIN " + (channel) + "\r\n")
+
+//@time=2025-01-17T11:13:49.801Z :bmatos-d_!~three121@195.55.211.76 KICK #asdasdasda three121 :three121
+#define KICK_LOG(operator, victim, channel, message) 		                    (std::string(":") + (operator) + "!~" + (victim) + " KICK " + (channel) + " " + (victim) + " " + (message) + "\r\n")
+
+//@time=2025-01-17T11:15:19.723Z :three121!~three121@195.55.211.76 PRIVMSG #asdasdasda :asd
+#define PRIVMSG_LOG(nick, user, target, message) 		                        (std::string(":") + (nick) + "!~" + (user) + " PRIVMSG " + (target) + " " + (message) + "\r\n")
+
+//@time=2025-01-17T11:15:59.465Z :bmatos-d_!~three121@195.55.211.76 NICK :asswhole
+#define NICK_LOG(oldnick, user, newnick)                                        (std::string(":") + (oldnick) + "!~" + (user) + " NICK :" + (newnick) + "\r\n")
+
+//TODO//
+#define ERR_PASSWDMISMATCH(clientNick)                                          (": 464 " + (clientNick) + " :Password is incorrect\r\n")
+
+//TODO//
+#define ERR_NONICKNAMEGIVEN(clientNick)                                         (": 431 " + (clientNick) + " :Nickname not given\r\n")
+
+//@time=2025-01-17T11:36:03.395Z :tungsten.libera.chat 441 three121 asswhole #asdasdasdaa :They aren't on that channel
+#define ERR_USERNOTINCHANNEL(clientNick, targetNick, channel)                   (": 441 "+ (clientNick) + " " + (targetNick) + " " + (channel) + " :They aren't on that channel\r\n")
+
+//TODO//
+#define ERR_NOTONCHANNEL(clientNick, channel)                                   (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 442 " + (channel) + " :You're not on that channel\r\n")
+
+//@time=2025-01-17T11:43:55.640Z :tungsten.libera.chat 403 asswhole Libera.Chat :No such channel
+#define ERR_NOSUCHCHANNEL(clientNick, channel)                                  (std::string(": 403 ") + (clientNick) + " IRC :No such channel\r\n")
+
+//@time=2025-01-17T11:46:51.651Z :tungsten.libera.chat 482 three121 #asdasdasda :You're not a channel operator
+#define ERR_CHANOPRIVSNEEDED(clientNick, channel)                               (std::string(": 482 ") + (clientNick) + " " + (channel) + " :You must be a channel operator to perform this action\r\n")
+
+//@time=2025-01-17T11:52:27.468Z :tungsten.libera.chat 401 asswhole a :No such nick/channel
+#define ERR_NOSUCHNICK(clientNick, target)                                      (": 401 " + (clientNick) + " " + (target) + " :No such nick/channel\r\n")
 
 #endif // ERRORLOGS_HPP
+
+//-----------------------NO USADOS-------------------------//
+/*
+#define ERR_USERONCHANNEL(clientNick, channel)                  (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 443 " + (channel) + " :is already on channel\r\n")
+#define ERR_TOOMANYCHANNELS(clientNick, channel)                (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 405 " + (channel) + " :You have joined too many channels\r\n")
+#define ERR_CANNOTSENDTOCHAN(clientNick, channel)               (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 404 " + (channel) + " :Cannot send to channel\r\n")
+#define ERR_INVALIDMODEPARAM(clientNick)                        ("696 " + (clientNick) + " :Invalid mode parameter\r\n")
+#define ERR_NOTREGISTERED(clientNick, channel)                  (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 451 " + (channel) + " :You have not registered\r\n")
+#define ERR_UNKNOWNCOMMAND(clientNick, command, channel)        (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 421 " + (command) + " :Unknown command\r\n")
+*/

@@ -6,7 +6,7 @@
 /*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:15 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/17 07:25:16 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/17 12:21:34 by bmatos-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,7 @@ void IRCCommandHandler::handleCommand(Server &server, Client &client, std::strin
             std::cout << "INVALID COMMAND" << std::endl;
             break;
     }
+    //TODO nos da segfault aqui se el pass esta incorrecto. Desconecta en la 
+    //function pero intenta accder al client aqui
     if (client.isAuthenticated() == false) client.authenticate(server);
 }

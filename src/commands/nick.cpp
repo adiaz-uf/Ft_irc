@@ -6,7 +6,7 @@
 /*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:43 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/17 07:25:44 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/17 12:29:16 by bmatos-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ ERR_NICKNAMEINUSE (433)       [x]
 void IRCCommandHandler::nick(std::vector<std::string> command, Server &server, Client &client)
 {
     int clientFd = client.getSocket();
-    if (command.size() < 2)
-		return (server.sendMessageToClient(ERR_NONICKNAMEGIVEN(client.getUsername()), clientFd));
+    if (command.size() < 2) return (server.sendMessageToClient(ERR_NONICKNAMEGIVEN(client.getUsername()), clientFd));
         
     std::string new_nick = command[1];
 
