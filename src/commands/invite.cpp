@@ -1,34 +1,49 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   invite.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/17 07:25:53 by bmatos-d          #+#    #+#             */
+/*   Updated: 2025/01/17 13:03:13 by bmatos-d         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 # include "IRCCommandHandler.hpp"
 
 /* 
 INVITE: Parameters: <nickname> <channel>
 - INVITE Wiz #foo_bar    ; Invite Wiz to #foo_bar
 
-RPL_INVITING (341)
-ERR_NEEDMOREPARAMS (461)v
-ERR_NOSUCHCHANNEL (403)v
-ERR_NOTONCHANNEL (442)
-ERR_CHANOPRIVSNEEDED (482)v
-ERR_USERONCHANNEL (443)
+ERR_NEEDMOREPARAMS (461)        [x]
+ERR_NOSUCHNICK                  [x]
+ERR_NOSUCHCHANNEL (403)         [x]
+ERR_USERONCHANNEL (443)         [x]
+ERR_NOTONCHANNEL (442)          [x]
+ERR_CHANOPRIVSNEEDED (482)      [x] << No es necesario que no podemos hacer toggle al modo necesario para tener que ser operador
 */
+
 void	IRCCommandHandler::invite(std::vector<std::string> command, Server &server, Client &client)
 {
-	server.sendMessageToClient(INVITE_CLIENT_LOG((client.getNickname()), client.getUsername(), command[1], command[2]), server.getClient(command[1])->getSocket());
-    
-	server.sendMessageToClient(INVITE_OPERATOR_LOG((client.getNickname()), command[1], command[2]), client.getSocket());
-	
+    int             clientFd    = client.getSocket();
+    int             invitedFd   = server.getClient(command[1])->getSocket();
+    std::string     nick        = client.getNickname();
+
 	if (command.size() < 3)
-		server.sendMessageToClient(ERR_NEEDMOREPARAMS(client.getUsername(), "INVITE"), client.getSocket());
+		server.sendMessageToClient(ERR_NEEDMOREPARAMS(nick, "INVITE"), clientFd);
     else if (!server.isValidClient(command[1]))
-        server.sendMessageToClient(ERR_NOSUCHNICK(command[2], command[1]), client.getSocket());
+        server.sendMessageToClient(ERR_NOSUCHNICK(command[2], command[1]), clientFd);
     else if (!server.isValidChannel(command[2]))
-        server.sendMessageToClient(ERR_NOSUCHCHANNEL(command[2], server.getChannel(command[2])->getName()), client.getSocket());
-    else if (!server.getChannel(command[2])->isMember(client.getSocket()))
-        server.sendMessageToClient(ERR_NOTONCHANNEL(client.getNickname(), server.getChannel(command[2])->getName()), client.getSocket());
-    else if (!server.getChannel(command[2])->isOperator(client.getSocket()))
-        server.sendMessageToClient(ERR_CHANOPRIVSNEEDED(client.getNickname(), server.getChannel(command[2])->getName()), client.getSocket());
-    else if (server.getChannel(command[2])->isMember(server.getClient(command[1])->getSocket()))
-        server.sendMessageToClient(ERR_USERONCHANNEL(client.getNickname(), server.getChannel(command[2])->getName()), client.getSocket());
+        server.sendMessageToClient(ERR_NOSUCHCHANNEL(command[2], server.getChannel(command[2])->getName()), clientFd);
+    else if (!server.getChannel(command[2])->isMember(clientFd))
+        server.sendMessageToClient(ERR_NOTONCHANNEL(nick, server.getChannel(command[2])->getName()), clientFd);    
+    else if (server.getChannel(command[2])->isMember(invitedFd))
+        server.sendMessageToClient(ERR_USERONCHANNEL(nick, command[1], server.getChannel(command[2])->getName()), clientFd);
     else
-        server.getChannel(command[2])->invite(server, client.getSocket());
+    {
+        server.getChannel(command[2])->invite(server, invitedFd);
+        server.sendMessageToClient(INVITER_LOG(nick, command[1], command[2]), clientFd);
+        server.sendMessageToClient(INVITEE_LOG(nick, client.getUsername(), command[1], command[2]), invitedFd);
+    }
 }

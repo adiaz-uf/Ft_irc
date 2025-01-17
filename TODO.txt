@@ -1,20 +1,2 @@
-WELCOME MESSAGE
-
-Password on Server Entry
-
-Port Parsing 
-    Port Valid
-    No Other Characters
-
-HEXCHAT
-    At the moment it doesnt connect automatically - why?
-
-Disconnect:
-    When is client removed from channels
-
-Al Final:
-    Leaks
-
-Has Mode
-
-LOGS
+MACROS
+LEAKS

@@ -1,10 +1,10 @@
 # include "Channel.hpp"
 
 Channel::Channel()
-	: _name(""), _topic("No topic is set"), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
+	: _name(""), _topic(":No topic is set"), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
 
 Channel::Channel(const std::string& name)
-	: _name(name), _topic("No topic is set"), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
+	: _name(name), _topic(":No topic is set"), _members(), _operators(), _invited(), _modes(), _userLimit(-1) {}
 
 Channel::Channel(const Channel& other)
 	: _name(other._name),
@@ -34,19 +34,12 @@ Channel::~Channel() {}
 
 bool				Channel::isMember  				(int fd)
 {
-	std::cout  << "algo" << &_members << std::endl;
 	if (_members.empty())
-	{
-		std::cout  << "IS MEMBER FUN" << std::endl;
 		return (false);
-	}
-	std::cout  << _members.size() << std::endl;
 	for (std::map<int, Client*>::const_iterator it = _members.begin(); it != _members.end(); it++)
 	{
-		std::cout  << "IS MEMBER FUN" <<  it->second->getNickname() << std::endl;
 		if ((it->second)->getSocket() == fd)
 			return (true);
-
 	}
 	return(false); 	
 }
@@ -76,15 +69,10 @@ void	 			Channel::invite					(Server& server, int fd)
 void				Channel::makeMember				(Server& server, int fd)
 {
 	Client* client = server.getClient(fd);
-	if (this->hasMode('i')) // TODO: channel mode is invite-only
-	{
-		server.sendMessageToClient(ERR_INVITEONLYCHAN(this->_name), fd);
-		return ;
-	}
+	
 	_members[fd] = client;
 	if (this->_members.size() == 1)
 		this->makeOperator(server, client->getSocket());
-	std::cout << "Added member " << fd << "with client " << client << "to channel."<< this << std::endl;
 }
 	
 void				Channel::removeMember			(int fd)
@@ -152,8 +140,6 @@ Client* Channel::getMember(std::string username)
 	for (std::map<int, Client*>::const_iterator it = _members.begin(); it != _members.end(); it++)
 		if ((it->second)->getNickname() == username)
 			return (it->second);
-			
-	/*shouldnt get to this line*/
 	return(NULL); 	
 }
 
@@ -175,7 +161,6 @@ void				Channel::deleteInviteElements	()
 
 void Channel::broadcastMessage(const std::string& message, int senderFd)
 {
-	std::cerr << "Member size: " << _members.size() << std::endl;
     if (!_members.size()) {
         std::cerr << "Channel members list is empty: " << getName() << std::endl;
         return;
@@ -192,13 +177,21 @@ void Channel::broadcastMessage(const std::string& message, int senderFd)
             std::cerr << "Invalid client pointer for FD: " << it->first << std::endl;
             continue;
         }
-
         int fd = it->first;
-		std::cout << "fd : " << fd << std::endl;
 		if (fd != senderFd)
 		{
 			if (send(fd, message.c_str(), message.length(), 0) == -1)
 				std::cerr << "Error broadcasting to FD: " << fd << " - " << std::endl;
 		}
 	}
+}
+
+int Channel::userCount()  const
+{
+	return (_members.size());
+}
+
+std::map<int, Client*>*		Channel::getMembers()
+{
+	return &_members;
 }

@@ -7,6 +7,7 @@
 
 # include <iostream>
 # include <map>
+# include <set>
 # include <vector>
 # include <string>
 # include <netinet/in.h>
@@ -20,6 +21,7 @@
 # include "Client.hpp"
 # include "Channel.hpp"
 # include "IRCCommandHandler.hpp"
+# include "Utilities.hpp"
 
 class Client;
 class Channel;
@@ -32,13 +34,12 @@ class Server
 		int								_epollFd;
 		std::string						_password;
 		std::map<int, Client>			_clients;
-//		std::map<int, Client>			_unauthorizedClients;
 		std::map<std::string, Channel>	_channels;
 
 		//Suggest making these static non server functions
-		void	_setupServerSocket(int port);
-		void	_acceptNewClient();
-		void	_handleClientMessage(int clientFd);
+		void		_setupServerSocket(int port);
+		void		_acceptNewClient();
+		void		_handleClientMessage(int clientFd);
 
 	public:
 		//Suggest removing the constructors we dont need.
@@ -48,28 +49,31 @@ class Server
 		Server& operator=(const Server& other);
 		~Server();
 
-		void		disconnectClient(int clientFd);
+		void							disconnectClient(int clientFd);
 
-		bool		isValidChannel(std::string channel);
-		bool		isValidClient(int fd);
-		bool		isValidClient(std::string client);
-		bool		isClientAuthorized(int fd);
+		bool							isValidChannel(std::string channel);
+		bool							isValidClient(int fd);
+		bool							isValidClient(std::string client);
+		bool							isClientAuthorized(int fd);
 
 			
 		std::map<std::string, Channel> 	*getChannels();
-		Channel* 	getChannel(std::string channel);
-		Client* 	getClient(std::string client);
-		Client* 	getClient				(int fd);
+		Channel* 						getChannel(std::string channel);
+		Client* 						getClient(std::string client);
+		Client* 						getClient				(int fd);
 
-		std::string	getPassword();
-		void 		addChannel(std::string channel);
-		void		run();
+		std::string						getPassword();
+		void 							addChannel(std::string channel);
+		void							run();
 
-		//Utilities
-		void		deleteMemberAllChannels(int fd);
-		bool		nickValid(std::string name, int fd);
-		void		sendMessageToClient(const std::string& message, int clientFd);
-		void		broadcastToEveryone(const std::string& message, const Server& server);
+		//Utilities	
+		void							deleteMemberAllChannels(int fd);
+		int								nickValid(std::string name);
+		int								userValid(std::string name);
+		void							sendMessageToClient(const std::string& message, int clientFd);
+		void							broadcastToEveryone(const std::string& message, const Server& server);
+		std::set<int>					getContacts(int fd);
+
 };
 
 #endif

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Server.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/17 07:25:26 by bmatos-d          #+#    #+#             */
+/*   Updated: 2025/01/17 13:14:36 by bmatos-d         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Server.hpp"
 
 Server::Server()
@@ -71,7 +83,6 @@ Client*		Server::getClient(int fd)
 	if (it != _clients.end())
 		return &(it->second);
 	return NULL;
-//	return &(this->_clients.at(fd));
 }
 
 Client*		Server::getClient(std::string client)
@@ -79,8 +90,6 @@ Client*		Server::getClient(std::string client)
 	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
 		if ((it->second).getNickname() == client)
 			return (&(it->second));
-			
-	/*shouldnt get to this line*/
 	return(NULL); 	
 }
 
@@ -157,7 +166,19 @@ void		Server::_acceptNewClient()
 		return ;
 	}
 	_clients[clientSocket] = Client(clientSocket);
-	std::cout << "New client connected but not authorized: " << clientSocket << std::endl;
+	sendMessageToClient("Please set username (USER), nickname (NICK) and enter the server password (PASS).\n", clientSocket);
+}
+
+std::set<int> Server::getContacts(int fd)
+{
+	std::set<int> ret;
+	for (std::map<std::string, Channel>::iterator ch = _channels.begin(); ch != _channels.end(); ch++)
+	{
+		if ((*ch).second.isMember(fd))
+			for (std::map<int, Client*>::iterator cl = (*ch).second.getMembers()->begin(); cl != (*ch).second.getMembers()->end(); cl++)
+				ret.insert(cl->first);
+	}
+	return (ret);
 }
 
 void		Server::_handleClientMessage(int clientFd)
@@ -176,14 +197,14 @@ void		Server::_handleClientMessage(int clientFd)
 	}	
 	while (cbuffer->find("\n") != std::string::npos)
 	{
- 		if (cbuffer->find("\n") != 0)
+		if (cbuffer->find("\n") != 0)
 			IRCCommandHandler::handleCommand(*this, _clients[clientFd], cbuffer->substr(0,cbuffer->find("\n")));
+		if (_clients.count(clientFd) == 0)
+			return ;
 		cbuffer->erase(0, cbuffer->find("\n") + 1);
 	}
 }
 
-
-// Logic Question? when is client removed from all channel maps?
 void		Server::disconnectClient(int clientFd)
 {
 	std::cout << "Client disconnected: " << clientFd << std::endl;
@@ -213,13 +234,6 @@ void Server::run()
 			else if (events[i].events & EPOLLIN)
 				_handleClientMessage(events[i].data.fd);
 		}
-		/* for (std::map<int, Client>::iterator it = _clients.begin();
-				it != _clients.end(); ++it)
-			if (static_cast<long int>(std::time(0) - it->second.getTime()) > 5)
-			{
-				sendMessageToClient(QUIT_LOG(_serverName, it->second.getNickname()), it->second.getSocket());
-				_disconnectClient(it->first);
-			} */
 	}
 }
 
@@ -230,44 +244,29 @@ void		Server::deleteMemberAllChannels(int fd)
 		it->second.deleteMember(fd);
 }
 
-bool		Server::nickValid(std::string name, int fd)
+int		Server::nickValid(std::string name)
 {
-	(void)fd;
-	//Reglas de documentacion de IRC
-		//They MUST NOT contain any of the following characters: space (' ', 0x20), comma (',', 0x2C), asterisk ('*', 0x2A), question mark ('?', 0x3F), exclamation mark ('!', 0x21), at sign ('@', 0x40).
-		//They MUST NOT start with any of the following characters: dollar ('$', 0x24), colon (':', 0x3A).
-		//They MUST NOT start with a character listed as a channel type, channel membership prefix, or prefix listed in the IRCv3 multi-prefix Extension.
-		//They SHOULD NOT contain any dot character ('.', 0x2E).
-	//Creo que hexchat tiene reglas distintas
-	if (name.find_first_not_of("1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`|^_-{}[]\\") != std::string::npos)
-	{
-		//SEND MESSAGE TO CLIENT
-		// @time=2024-12-21T08:25:19.065Z :osmium.libera.chat 432 bmatos-d 2asdasd :Erroneous Nickname
-		return (false);
-	}
-	
-	if (name.find_first_of("1234567890-") == 0)
-	{
-		//SEND MESSAGE TO CLIENT
-		// @time=2024-12-21T08:25:19.065Z :osmium.libera.chat 432 bmatos-d 2asdasd :Erroneous Nickname
-		return (false);
-	}
-	
+	if (name.find_first_not_of("1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`|^_-{}[]\\") != std::string::npos || name.find_first_of("1234567890-") == 0)
+		return (1);
 	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
 		if (it->second.getNickname() == name)
-		{
-			//MESSAGE TO CLIENT
-			//@time=2024-12-21T08:22:56.797Z :osmium.libera.chat 433 bmatos-d asdasd :Nickname is already in use.
-			return (false);
-		}
+			return (2);
+	return (3);
+}
 
-	return (true);
+int		Server::userValid(std::string name)
+{
+
+	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
+		if (it->second.getUsername() == name)
+			return (1);
+	return (0);
 }
 
 void	Server::sendMessageToClient(const std::string& message, int clientFd)
 {
 	if (send(clientFd, message.c_str(), message.length(), 0) == -1)
-		std::cerr <<"Error sending message to Client FD : " << clientFd << std::endl;
+		std::cerr << "Error sending message to Client FD : " << clientFd << std::endl;
 }
 
 void	Server::broadcastToEveryone(const std::string& message, const Server& server)

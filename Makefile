@@ -2,7 +2,7 @@ NAME = ircserv
 
 CC = c++
 RM = rm -rf
-CFLAGS = -Wall -g -Werror -Wextra -std=c++98 #-fsanitize=address
+CFLAGS = -Wall -g -Werror -Wextra -std=c++98 -fsanitize=address
 
 #directories
 SRC_DIR		=	src/
@@ -10,24 +10,27 @@ OBJ_DIR		=	.obj/
 INC_DIR		=	includes/
 
 #color codes
-GREEN = \033[1;32m
-END = \033[0m
+GREEN 	= \033[1;32m
+END 	= \033[0m
 
 #source files
-SRCS =  main \
-		Server \
-		Client \
-		Channel \
-		IRCCommandHandler \
-		commands/join \
-		commands/nick \
-		commands/topic \
-		commands/kick \
-		commands/invite \
-		commands/mode \
-		commands/privmsg \
-		commands/pass \
-
+SRCS =  main 					\
+		Server 					\
+		Client 					\
+		Channel 				\
+		IRCCommandHandler 		\
+		Utilities 				\
+		commands/join 			\
+		commands/nick 			\
+		commands/topic 			\
+		commands/kick 			\
+		commands/invite 		\
+		commands/mode 			\
+		commands/privmsg 		\
+		commands/pass 			\
+		commands/part 			\
+		commands/quit 			\
+		commands/user 
 
 OBJS = $(SRCS:.cpp=.o)
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   kick.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/17 07:25:48 by bmatos-d          #+#    #+#             */
+/*   Updated: 2025/01/17 13:44:01 by aude-la-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 # include "IRCCommandHandler.hpp"
 
 
@@ -15,30 +27,17 @@ ERR_NOTONCHANNEL (442)v
 */
 void	IRCCommandHandler::kick(std::vector<std::string> command, Server &server, Client &client)
 {
-/* 	Channel* channel = server.getChannel(command[1]);
-	std::cerr << "Channel :" << channel << std::endl;
-	if (!channel) {
-		std::cerr << ERR_NOSUCHCHANNEL(client.getNickname(), command[1]) << std::endl;
-		return;
-	} 
-	if (command.size() > 3)
-		channel->broadcastMessage(KICK_LOG((client.getNickname()), command[2], command[1], command[3]), 0);
-	else if (command.size() == 3)
-		channel->broadcastMessage(KICK_LOG((client.getNickname()), command[2], command[1], command[2]), 0);
-	return ;
-	*/
-	std::cout << "bye bye 1" << std::endl;
+	int clientFd = client.getSocket();
 	if (command.size() < 3)
-		std::cout  << "bye bye 2" << std::endl;
-		//server.sendMessageToClient(ERR_NEEDMOREPARAMS(client.getUsername(), "KICK"), client.getSocket());
+		server.sendMessageToClient(ERR_NEEDMOREPARAMS(client.getNickname(), "KICK"), clientFd);
 	else if (!server.isValidChannel(command[1]))
-		server.sendMessageToClient(ERR_NOSUCHCHANNEL(client.getUsername() , command[1]), client.getSocket());
-	else if (!server.getChannel(command[1])->isMember(client.getSocket()))
-		server.sendMessageToClient(ERR_NOTONCHANNEL(client.getNickname(), server.getChannel(command[1])->getName()), client.getSocket());
-	else if (!server.getChannel(command[1])->isMember(server.getChannel(command[1])->getMember(command[2])->getSocket()))
-		server.sendMessageToClient(ERR_USERNOTINCHANNEL(client.getUsername(), client.getNickname(), "KICK"), client.getSocket());
-    else if (!server.getChannel(command[1])->isOperator(client.getSocket()))
-		server.sendMessageToClient(ERR_CHANOPRIVSNEEDED(client.getNickname(), server.getChannel(command[1])->getName()), client.getSocket());
+		server.sendMessageToClient(ERR_NOSUCHCHANNEL(client.getUsername() , command[1]), clientFd);
+	else if (!server.getChannel(command[1])->isMember(clientFd))
+		server.sendMessageToClient(ERR_NOTONCHANNEL(client.getNickname(), server.getChannel(command[1])->getName()), clientFd);
+	else if (server.getChannel(command[1])->getMember(command[2]) == NULL || !server.getChannel(command[1])->isMember(server.getChannel(command[1])->getMember(command[2])->getSocket()))
+		server.sendMessageToClient(ERR_USERNOTINCHANNEL(client.getUsername(), client.getNickname(), server.getChannel(command[1])->getName()), clientFd);
+    else if (!server.getChannel(command[1])->isOperator(clientFd))
+		server.sendMessageToClient(ERR_CHANOPRIVSNEEDED(client.getNickname(), server.getChannel(command[1])->getName()), clientFd);
 	else
 	{
 		std::cout << "bye bye " << std::endl;
@@ -46,18 +45,13 @@ void	IRCCommandHandler::kick(std::vector<std::string> command, Server &server, C
 		int socket = server.getChannel(command[1])->getMember(command[2])->getSocket();
 		if (command.size() > 3)
 		{
-			std::string message;
-			for (size_t i = 3; i < command.size(); ++i)
-			{
-					message += " ";
-				message += command[i];
-			}
+			std::string message = aggregate(command, 3);
 			if (!message.empty() && message[0] == ':')
 				message.erase(0, 1);
 			server.getChannel(command[1])->broadcastMessage(KICK_LOG((client.getNickname()), command[2], command[1], message), 0);
 		}
 		else if (command.size() == 3)
-			server.getChannel(command[1])->broadcastMessage(KICK_LOG((client.getNickname()), command[2], command[1], ""), 0);
+			server.getChannel(command[1])->broadcastMessage(KICK_LOG((client.getNickname()), command[2], command[1], "No reason"), 0);
 		server.getChannel(command[1])->deleteMember(socket);
 	}
 }
