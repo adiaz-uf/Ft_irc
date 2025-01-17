@@ -6,7 +6,7 @@
 /*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:46 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/17 07:25:47 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/17 13:25:21 by bmatos-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,8 @@ void IRCCommandHandler::mode(std::vector<std::string> command, Server &server, C
     int         char_it     = 0;
     int         command_it  = 3;
 
-    if (command.size() < 3)                                                 return  (server.sendMessageToClient(ERR_NEEDMOREPARAMS  (client.getNickname(), "MODE"), client.getSocket()));
+    if (command.size() < 2)                                                 return  (server.sendMessageToClient(ERR_NEEDMOREPARAMS  (client.getNickname(), "MODE"), client.getSocket()));
+    if (command.size() == 2)                                                return  (RPL);
     if (!server.isValidChannel(command[1]))                                 return  (server.sendMessageToClient(ERR_NOSUCHCHANNEL   (command[1], server.getChannel(command[1])->getName()), client.getSocket()));
     if (!server.getChannel(command[1])->isOperator(client.getSocket()))     return  (server.sendMessageToClient(ERR_CHANOPRIVSNEEDED(client.getNickname(), server.getChannel(command[1])->getName()), client.getSocket()));
     if (command[2][0] == '-')                                                        oper = "-";
