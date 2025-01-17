@@ -58,7 +58,8 @@
 #define ERR_INVITEONLYCHAN(clientNick, channel)                                 (std::string(": 473 ") + (clientNick) + " " + (channel) + " :Cannot join channel (+i) - you must be invited\r\n")
 
 //>> @time=2025-01-17T06:38:07.606Z :aafasaaa!~three@195.55.211.175 QUIT :Quit: Leaving
-#define QUIT_LOG(nick, user, message)                                                    (std::string(":") + (nick) + " " + (user) + " QUIT "+ (message) + "\r\n")
+//                                  :one!~one QUIT :Client Quit
+#define QUIT_LOG(nick, user, message)                                                    (std::string(":") + (nick) + "!~" + (user) + " QUIT :Quit: "+ (message) + "\r\n")
 
 //@time=2025-01-17T07:41:31.384Z :three223!~three223@195.55.211.139 PART #newchannn
 #define PART_LOG(nick, user, channel)                                           (std::string(":") + (nick) + "!~" + (user) + " PART " + (channel) + "\r\n")

@@ -1,7 +1,3 @@
 MACROS
-QUIT
-PART
-
-Need case insensitive channels!!!!!!!!!!!!
 
 LEAKS
