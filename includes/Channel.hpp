@@ -66,7 +66,8 @@ class Channel
 
 						//MODE
 		bool						hasMode				(char mode) 								const;
-		void						setMode				(char mode, bool enable);			
+		void						setMode				(char mode, bool enable);
+		std::string					getModes			()											const;			
 		
 		void						copyMemberToInvite	();
 		void						deleteInviteElements();

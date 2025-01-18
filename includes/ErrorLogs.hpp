@@ -36,7 +36,8 @@
 //@time=2025-01-16T07:03:18.199Z :bmatos-d3!~bmatos-d3@195.55.211.139 MODE #ajdsknasasdasdasd +l 50
 #define MODE_L_ON(op_nick, op_user, channel, operator, mode, limit)             (std::string(":") + (op_nick) + "!~" + (op_user) + " MODE " + (channel) + " +l " + (limit) + "\r\n")
 
-#define MODE_RPL(channel)														(std::string(":") + " MODE " + (channel) + " +t " + "\r\n")
+//TODO
+#define MODE_RPL(channel, modes)														(std::string(":Operator ") + " MODE " + (channel) + " +" + (modes) +"\r\n")
 
 //@time=2025-01-16T04:03:25.022Z :tantalum.libera.chat 433 bmatos-d3 bmatos-d_ :Nickname is already in use.
 #define ERR_NICKNAMEINUSE(clientNick, badNick)                                  (std::string(": ") +  " 433 " + (clientNick) + (badNick) + " :Nickname is already in use\r\n")
@@ -84,7 +85,7 @@
 #define NICK_LOG(oldnick, user, newnick)                                        (std::string(":") + (oldnick) + "!~" + (user) + " NICK :" + (newnick) + "\r\n")
 
 //TODO//
-#define ERR_PASSWDMISMATCH(clientNick)                                          (": 464 " + (clientNick) + " :Password is incorrect\r\n")
+#define ERR_PASSWDMISMATCH(clientNick)                                          (": 464 " + (clientNick) + " :ERRONEOUS_PASS Password is incorrect\r\n")
 
 //TODO//
 #define ERR_NONICKNAMEGIVEN(clientNick)                                         (": 431 " + (clientNick) + " :Nickname not given\r\n")
@@ -106,7 +107,18 @@
 
 //@time=2025-01-17T11:59:42.002Z :tungsten.libera.chat 443 asswhole three121 #asdasdasda :is already on channel
 #define ERR_USERONCHANNEL(clientNick, target, channel)                          (std::string(": 443 ") + (clientNick) + " " + (target) + " " + (channel) + " :is already on channel\r\n")
+
+//TODO
+//La ultima cosa que hacer me parece 
+//@time=2025-01-17T22:36:22.449Z :copper.libera.chat 352 bmatos-d_ #what ~two21 195.55.211.164 copper.libera.chat bmatos-d_ H :0 realname
+//(client) + " " + (channel) + " " + (username) + " " + (host) + " " + (server) + " " + (nick) + " " + (flags) + " " + :(hopcount) + " " + (realname)
+#define WHO_ARE_YOU(client, channel, username, host, server, nick, flags, hopcount, realname) (std::string(": 352 ") + (client) + " " + (channel) + " " + (username) + " " + (host) + " " + (server) + " " + (nick) + " H" + (flags) + " :" + (hopcount) + " " + (realname) + "\r\n")
+
+//>> @time=2025-01-17T22:38:07.989Z :copper.libera.chat 315 two21 #ubuntu :End of /WHO list.
+#define WHO_END(nick, channel)                                                  (std::string(": 315 ") + (nick) + " " + (channel) + "  :End of /WHO list.\r\n")
+
 #endif // ERRORLOGS_HPP
+
 
 //-----------------------NO USADOS-------------------------//
 /*

@@ -32,6 +32,7 @@ public:
     static void privmsg (std::vector<std::string> command, Server &server, Client &client);
     static void quit    (std::vector<std::string> command, Server &server, Client &client);
     static void part    (std::vector<std::string> command, Server &server, Client &client);
+    static void who     (std::vector<std::string> command, Server &server, Client &client);
     
 
     //TODO

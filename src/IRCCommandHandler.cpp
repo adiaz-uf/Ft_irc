@@ -6,7 +6,7 @@
 /*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:15 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/17 13:21:58 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/17 23:20:45 by bmatos-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ void IRCCommandHandler::handleCommand(Server &server, Client &client, std::strin
     std::cout << input << std::endl;
     int         fd = client.getSocket();
     int         n = -1;
-    std::string ircCommands[11] = { "PASS", "JOIN", "NICK", "TOPIC", "KICK", "MODE", "PRIVMSG", "INVITE", "USER", "PART", "QUIT"};
+    std::string ircCommands[12] = { "PASS", "JOIN", "NICK", "TOPIC", "KICK", "MODE", "PRIVMSG", "INVITE", "USER", "PART", "QUIT", "WHO"};
     
     std::vector<std::string> command = IRCCommandHandler::split_istringstream(input);
+    //@Augustin we talked about making it mixeed case compatible but i just realised this is a hexchat feature not a SERVER CLIENT feature
+    //std::transform(command[0].begin(), command[0].end(), command[0].begin(), ::toupper);
     do
         n++;
     while (n < 11 && command[0] != ircCommands[n]); 
@@ -73,6 +75,9 @@ void IRCCommandHandler::handleCommand(Server &server, Client &client, std::strin
             break;
         case 10: 
             quit(command, server, client);
+            break;
+        case 11: 
+            who(command, server, client);
             break;
         default:
             std::cout << "INVALID COMMAND" << std::endl;

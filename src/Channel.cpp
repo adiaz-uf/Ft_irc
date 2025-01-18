@@ -124,6 +124,18 @@ void				Channel::setMode   				(char mode, bool enable)
 	else
 		_modes.erase(mode);
 }
+
+std::string			Channel::getModes() const
+{
+	std::string message = "";
+
+	if (this->hasMode(INVITE_ONLY)) 		message += INVITE_ONLY;
+	if (this->hasMode(TOPIC_PROTECTED)) 	message += TOPIC_PROTECTED;
+	if (this->hasMode(KEY_WORD)) 			message += KEY_WORD;
+	if (this->hasMode(SIZE_LIMIT))			message += SIZE_LIMIT;
+
+	return (message);
+}
 	
 void				Channel::setUsersLimit			(int limit)
 {
