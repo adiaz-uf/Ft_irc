@@ -117,6 +117,6 @@
 #define WHO_ARE_YOU(client, channel, username, host, server, nick, flags, hopcount, realname) (std::string(": 352 ") + (client) + " " + (channel) + " " + (username) + " " + (host) + " " + (server) + " " + (nick) + " H" + (flags) + " :" + (hopcount) + " " + (realname) + "\r\n")
 
 //>> @time=2025-01-17T22:38:07.989Z :copper.libera.chat 315 two21 #ubuntu :End of /WHO list.
-#define WHO_END(nick, channel)                                                  (std::string(": 315 ") + (nick) + " " + (channel) + "  :End of /WHO list.\r\n")
+#define WHO_END(nick, channel)                                                  (std::string(": 315 ") + (nick) + " " + (channel) + " :End of /WHO list.\r\n")
 
 #endif // ERRORLOGS_HPP

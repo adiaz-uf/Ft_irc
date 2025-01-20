@@ -6,7 +6,7 @@
 /*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 06:41:52 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/20 12:38:44 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/20 12:45:39 by bmatos-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,18 @@
 
 void IRCCommandHandler::who(std::vector<std::string> command, Server &server, Client &client)
 {
+    int clientFd = client.getSocket();
+    std::string     nick        = client.getNickname();
 
-    if (command.size() < 2)                                             return /* NOT ENOUGH PARAMS */;
-    if (!server.isValidChannel(command[1]))                             return /* NOT VALID CHANNEL */;
+    if (command.size() < 2)                                         
+        return (server.sendMessageToClient(ERR_NEEDMOREPARAMS(nick, "WHO"), clientFd));
+    if (!server.isValidChannel(command[1]))                            
+        return (server.sendMessageToClient(ERR_NOSUCHCHANNEL(command[1], server.getChannel(command[1])->getName()), clientFd));
+
     Channel *channel = server.getChannel(command[1]);
+    if (!channel->isMember(client.getSocket()))                         
+        return (server.sendMessageToClient(ERR_NOTONCHANNEL(nick, server.getChannel(command[1])->getName()), clientFd));
 
-    if (!channel->isMember(client.getSocket()))                         return /* NOT IN CHANNEL */;
     std::string is_operator;
     std::string names = "";
 
