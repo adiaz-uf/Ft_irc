@@ -9,9 +9,6 @@
 #include <time.h>
 
 
-
-
-
 //Comprobado
 
 //@time=2025-01-16T06:38:04.592Z :bmatos-d3!~bmatos-d3@195.55.211.139 MODE #ajdsknasasdasdasd +i

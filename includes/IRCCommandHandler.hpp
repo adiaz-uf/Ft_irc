@@ -3,6 +3,7 @@
 
 # include "Client.hpp"
 # include "Server.hpp"
+# include  <ctime>
 # include <ErrorLogs.hpp>
 # include <sstream>
 # include <queue>
@@ -33,13 +34,7 @@ public:
     static void quit    (std::vector<std::string> command, Server &server, Client &client);
     static void part    (std::vector<std::string> command, Server &server, Client &client);
     static void who     (std::vector<std::string> command, Server &server, Client &client);
-    
-
-    //TODO
-    static void help    (std::vector<std::string> command, Server &server, Client &client);
-    static void ping    (std::vector<std::string> command, Server &server, Client &client);
-    static void pong    (std::vector<std::string> command, Server &server, Client &client);
-    static void notice  (std::vector<std::string> command, Server &server, Client &client);
+    static void bot     (std::vector<std::string> command, Server &server, Client &client);
 };
 
 #endif // IRCCOMMANDHANDLER_HPP

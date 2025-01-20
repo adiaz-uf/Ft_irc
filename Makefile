@@ -31,6 +31,7 @@ SRCS =  main 					\
 		commands/part 			\
 		commands/quit 			\
 		commands/who 			\
+		commands/bot 			\
 		commands/user 
 
 OBJS = $(SRCS:.cpp=.o)
