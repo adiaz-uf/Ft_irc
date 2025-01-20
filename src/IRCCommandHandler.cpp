@@ -26,16 +26,15 @@ std::vector<std::string> IRCCommandHandler::split_istringstream(std::string str)
 
 void IRCCommandHandler::handleCommand(Server &server, Client &client, std::string input)
 {
-    std::cout << input << std::endl;
     int         fd = client.getSocket();
     int         n = -1;
-    std::string ircCommands[12] = { "PASS", "JOIN", "NICK", "TOPIC", "KICK", "MODE", "PRIVMSG", "INVITE", "USER", "PART", "QUIT", "WHO"};
+    std::string ircCommands[13] = { "PASS", "JOIN", "NICK", "TOPIC", "KICK", "MODE", "PRIVMSG", "INVITE", "USER", "PART", "QUIT", "WHO", "bot"};
     
     std::vector<std::string> command = IRCCommandHandler::split_istringstream(input);
     std::transform(command[0].begin(), command[0].end(), command[0].begin(), ::toupper);
     do
         n++;
-    while (n < 11 && command[0] != ircCommands[n]); 
+    while (n < 13 && command[0] != ircCommands[n]); 
 	
 	if (!client.isAuthenticated() && n != 0 && n != 2 && n != 8)
 		return(server.sendMessageToClient("You must provide the PASS, USER and NICK first.\r\n", client.getSocket()));
@@ -78,6 +77,8 @@ void IRCCommandHandler::handleCommand(Server &server, Client &client, std::strin
         case 11: 
             who(command, server, client);
             break;
+        case 12:
+            bot(command, server, client);
         default:
             std::cout << "INVALID COMMAND" << std::endl;
             break;
