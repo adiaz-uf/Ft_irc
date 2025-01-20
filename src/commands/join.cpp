@@ -6,7 +6,7 @@
 /*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:50 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/17 07:25:51 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/20 13:17:53 by bmatos-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
 		while (std::getline(ss2, split, ',')) // Separate keys into queue                                                                                                                                                                                  
 			keys.push(split);
 	}
-	std::cout << "Entered the function at least" << std::endl;
 	while (!channels.empty())
 	{
 		permission = ACCEPTED;

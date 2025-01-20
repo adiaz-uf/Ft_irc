@@ -6,7 +6,7 @@
 /*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:15 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/17 23:20:45 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/20 14:37:56 by bmatos-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ void IRCCommandHandler::handleCommand(Server &server, Client &client, std::strin
     std::string ircCommands[12] = { "PASS", "JOIN", "NICK", "TOPIC", "KICK", "MODE", "PRIVMSG", "INVITE", "USER", "PART", "QUIT", "WHO"};
     
     std::vector<std::string> command = IRCCommandHandler::split_istringstream(input);
-    //@Augustin we talked about making it mixeed case compatible but i just realised this is a hexchat feature not a SERVER CLIENT feature
-    //std::transform(command[0].begin(), command[0].end(), command[0].begin(), ::toupper);
+    std::transform(command[0].begin(), command[0].end(), command[0].begin(), ::toupper);
     do
         n++;
     while (n < 11 && command[0] != ircCommands[n]); 
