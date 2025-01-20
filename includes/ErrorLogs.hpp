@@ -109,22 +109,14 @@
 #define ERR_USERONCHANNEL(clientNick, target, channel)                          (std::string(": 443 ") + (clientNick) + " " + (target) + " " + (channel) + " :is already on channel\r\n")
 
 //TODO
-//La ultima cosa que hacer me parece 
+//La ultima cosa que hacer me parece
+//@time=2025-01-20T11:19:31.973Z :silver.libera.chat 353 two212 = #c :two212 Moprius kts Betal tomaw empty kubrickdave_ au- Turn_Left daugaard ash_11 ensyde SymbioticFemale Chronos shalok zeemate siw5ohs0 mark- phant stewi greengoblin vanishingideal bloony printfdebugging- BUSY iomari891 
+#define RPL_NAMEREPLY(nick, channel, names) (std::string(": 353 ") + (nick) + " @ " + (channel) + " :" + (names) + "\r\n")
+
 //@time=2025-01-17T22:36:22.449Z :copper.libera.chat 352 bmatos-d_ #what ~two21 195.55.211.164 copper.libera.chat bmatos-d_ H :0 realname
-//(client) + " " + (channel) + " " + (username) + " " + (host) + " " + (server) + " " + (nick) + " " + (flags) + " " + :(hopcount) + " " + (realname)
 #define WHO_ARE_YOU(client, channel, username, host, server, nick, flags, hopcount, realname) (std::string(": 352 ") + (client) + " " + (channel) + " " + (username) + " " + (host) + " " + (server) + " " + (nick) + " H" + (flags) + " :" + (hopcount) + " " + (realname) + "\r\n")
 
 //>> @time=2025-01-17T22:38:07.989Z :copper.libera.chat 315 two21 #ubuntu :End of /WHO list.
 #define WHO_END(nick, channel)                                                  (std::string(": 315 ") + (nick) + " " + (channel) + "  :End of /WHO list.\r\n")
 
 #endif // ERRORLOGS_HPP
-
-
-//-----------------------NO USADOS-------------------------//
-/*
-#define ERR_TOOMANYCHANNELS(clientNick, channel)                (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 405 " + (channel) + " :You have joined too many channels\r\n")
-#define ERR_CANNOTSENDTOCHAN(clientNick, channel)               (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 404 " + (channel) + " :Cannot send to channel\r\n")
-#define ERR_INVALIDMODEPARAM(clientNick)                        ("696 " + (clientNick) + " :Invalid mode parameter\r\n")
-#define ERR_NOTREGISTERED(clientNick, channel)                  (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 451 " + (channel) + " :You have not registered\r\n")
-#define ERR_UNKNOWNCOMMAND(clientNick, command, channel)        (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 421 " + (command) + " :Unknown command\r\n")
-*/
