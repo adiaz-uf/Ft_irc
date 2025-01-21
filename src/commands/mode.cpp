@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adiaz-uf <adiaz-uf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:46 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/17 20:40:08 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/21 10:17:33 by adiaz-uf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,12 @@
 /*
 Command: MODE: Parameters: <target> [<modestring> [<mode arguments>...]]
 
-Command Examples:
-MODE #foobar +mb *@127.0.0.1    ; Setting the "moderated" channel mode and
-    adding the "*@127.0.0.1" mask to the ban
-    list of the #foobar channel.
-
-Message Examples:
-:irc.example.com MODE #foobar +o bunny ; The irc.example.com server gave channel
-    operator privileges to bunny on #foobar.
-
 · i: Set/remove Invite-only channel
 · t: Set/remove the restrictions of the TOPIC command to channel operators
 · k: Set/remove the channel key (password)
 · o: Give/take channel operator privilege
 · l: Set/remove the user limit to channel
 */
-
 
 static void handle_i(std::vector<std::string> command, Server &server, Client &client, std::string oper, int *it)
 {
@@ -139,11 +129,16 @@ void IRCCommandHandler::mode(std::vector<std::string> command, Server &server, C
     int         char_it     = 0;
     int         command_it  = 3;
 
-    if (command.size() < 2)                                                 return  (server.sendMessageToClient(ERR_NEEDMOREPARAMS  (client.getNickname(), "MODE"), client.getSocket()));
-    if (command.size() == 2)                                                return  (server.sendMessageToClient(MODE_RPL(server.getChannel(command[1])->getName(), server.getChannel(command[1])->getModes()), client.getSocket()));
-    if (!server.isValidChannel(command[1]))                                 return  (server.sendMessageToClient(ERR_NOSUCHCHANNEL   (command[1], server.getChannel(command[1])->getName()), client.getSocket()));
-    if (!server.getChannel(command[1])->isOperator(client.getSocket()))     return  (server.sendMessageToClient(ERR_CHANOPRIVSNEEDED(client.getNickname(), server.getChannel(command[1])->getName()), client.getSocket()));
-    if (command[2][0] == '-')                                                        oper = "-";
+    if (command.size() < 2)                                                 
+        return  (server.sendMessageToClient(ERR_NEEDMOREPARAMS  (client.getNickname(), "MODE"), client.getSocket()));
+    if (command.size() == 2)                                                
+        return  (server.sendMessageToClient(MODE_RPL(server.getChannel(command[1])->getName(), server.getChannel(command[1])->getModes()), client.getSocket()));
+    if (!server.isValidChannel(command[1]))                                 
+        return  (server.sendMessageToClient(ERR_NOSUCHCHANNEL   (command[1], server.getChannel(command[1])->getName()), client.getSocket()));
+    if (!server.getChannel(command[1])->isOperator(client.getSocket()))     
+        return  (server.sendMessageToClient(ERR_CHANOPRIVSNEEDED(client.getNickname(), server.getChannel(command[1])->getName()), client.getSocket()));
+    if (command[2][0] == '-')                                                        
+        oper = "-";
     
     while (char_it < (int)command[2].size())
     {

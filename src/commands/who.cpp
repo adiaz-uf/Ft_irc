@@ -3,21 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   who.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adiaz-uf <adiaz-uf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 06:41:52 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/20 12:45:39 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/21 10:23:15 by adiaz-uf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-    # include "IRCCommandHandler.hpp"
-
-/*
-*/
+# include "IRCCommandHandler.hpp"
 
 void IRCCommandHandler::who(std::vector<std::string> command, Server &server, Client &client)
 {
-    int clientFd = client.getSocket();
+    int             clientFd    = client.getSocket();
     std::string     nick        = client.getNickname();
 
     if (command.size() < 2)                                         
@@ -43,5 +40,5 @@ void IRCCommandHandler::who(std::vector<std::string> command, Server &server, Cl
         names.append((*it).second->getNickname());
         names += ' ';
     }
-    server.sendMessageToClient(RPL_NAMEREPLY(client.getNickname(), channel->getName(), names), client.getSocket());
+    server.sendMessageToClient(RPL_NAMEREPLY(nick, channel->getName(), names), client.getSocket());
 }

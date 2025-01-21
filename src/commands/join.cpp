@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adiaz-uf <adiaz-uf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:50 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/20 13:17:53 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/21 10:17:01 by adiaz-uf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,7 @@
 
 /*
 Command: JOIN: Parameters: <channel>{,<channel>} [<key>{,<key>}]
-
-Command Examples:
-- JOIN #foobar                    ; join channel #foobar.
-- JOIN #foo,&bar fubar            ; join channel #foo using key "fubar" and &bar using no key.
-- JOIN #foo,#bar                  ; join channels #foo and #bar.
-Message Examples:
-- :WiZ JOIN #Twilight_zone        ; WiZ is joining the channel #Twilight_zone
-- :dan-!d@localhost JOIN #test    ; dan- is joining the channel #test
-
-ERR_NEEDMOREPARAMS (461)			[x]
-ERR_BADCHANNELKEY (475)				[x]
-ERR_INVITEONLYCHAN (473)			[x]
 */
-
 
 //TODO Channel info on join
 void    IRCCommandHandler::join(std::vector<std::string> command, Server &server, Client &client)
@@ -36,6 +23,7 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
     std::queue<std::string> keys;
 	std::string split;              
 	int clientFd = client.getSocket();
+	std::string nick = client.getNickname();
 	bool	permission;
 	Channel *channel;
 
@@ -57,7 +45,7 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
 		{
 			server.addChannel(channels.front());
 			server.getChannel(channels.front())->makeMember(server, clientFd);
-			server.getChannel(channels.front())->broadcastMessage(JOIN_LOG((client.getNickname()), client.getUsername(), channels.front()), 0);
+			server.getChannel(channels.front())->broadcastMessage(JOIN_LOG((nick), client.getUsername(), channels.front()), 0);
 		}
 		else
 		{
@@ -67,22 +55,22 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
 			if (permission && (channel->hasMode(KEY_WORD) && (keys.empty() || !channel->checkPassword(keys.front())))) 	
 			{
 				permission = DENIED;
-				server.sendMessageToClient(ERR_BADCHANNELKEY(client.getNickname(), channel->getName()), clientFd);
+				server.sendMessageToClient(ERR_BADCHANNELKEY(nick, channel->getName()), clientFd);
 			}
 			if (permission && (channel->hasMode(SIZE_LIMIT) && channel->userCount() >= channel->getUsersLimit())) 		
 			{
 				permission = DENIED; 
-				server.sendMessageToClient(ERR_CHANNELISFULL(client.getNickname(), channel->getName()), clientFd);
+				server.sendMessageToClient(ERR_CHANNELISFULL(nick, channel->getName()), clientFd);
 			}
 			if (permission && (channel->hasMode(INVITE_ONLY) && !channel->isInvited(clientFd))) 						
 			{
 				permission = DENIED; 
-				server.sendMessageToClient(ERR_INVITEONLYCHAN(client.getNickname(), channel->getName()), clientFd);
+				server.sendMessageToClient(ERR_INVITEONLYCHAN(nick, channel->getName()), clientFd);
 			}
 			if (permission == ACCEPTED)																					
 			{
 				channel->makeMember(server, clientFd);
-				channel->broadcastMessage(JOIN_LOG((client.getNickname()), client.getUsername(), channels.front()), 0);
+				channel->broadcastMessage(JOIN_LOG((nick), client.getUsername(), channels.front()), 0);
 			}
 		}
 		if (!keys.empty())

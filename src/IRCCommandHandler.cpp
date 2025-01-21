@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRCCommandHandler.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adiaz-uf <adiaz-uf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:15 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/20 14:37:56 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/21 10:04:58 by adiaz-uf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void IRCCommandHandler::handleCommand(Server &server, Client &client, std::strin
 {
     int         fd = client.getSocket();
     int         n = -1;
-    std::string ircCommands[13] = { "PASS", "JOIN", "NICK", "TOPIC", "KICK", "MODE", "PRIVMSG", "INVITE", "USER", "PART", "QUIT", "WHO", "bot"};
+    std::string ircCommands[13] = { "PASS", "JOIN", "NICK", "TOPIC", "KICK", "MODE", "PRIVMSG", "INVITE", "USER", "PART", "QUIT", "WHO", "BOT"};
     
     std::vector<std::string> command = IRCCommandHandler::split_istringstream(input);
     std::transform(command[0].begin(), command[0].end(), command[0].begin(), ::toupper);
@@ -80,7 +80,7 @@ void IRCCommandHandler::handleCommand(Server &server, Client &client, std::strin
         case 12:
             bot(command, server, client);
         default:
-            std::cout << "INVALID COMMAND" << std::endl;
+            //std::cout << "INVALID COMMAND" << std::endl; // TODO:?
             break;
     }
     if (server.getClient(fd)) if (client.isAuthenticated() == false) client.authenticate(server);

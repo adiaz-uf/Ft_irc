@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adiaz-uf <adiaz-uf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:53 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/17 13:03:13 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/21 10:16:55 by adiaz-uf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,6 @@
 
 /* 
 INVITE: Parameters: <nickname> <channel>
-- INVITE Wiz #foo_bar    ; Invite Wiz to #foo_bar
-
-ERR_NEEDMOREPARAMS (461)        [x]
-ERR_NOSUCHNICK                  [x]
-ERR_NOSUCHCHANNEL (403)         [x]
-ERR_USERONCHANNEL (443)         [x]
-ERR_NOTONCHANNEL (442)          [x]
-ERR_CHANOPRIVSNEEDED (482)      [x] << No es necesario que no podemos hacer toggle al modo necesario para tener que ser operador
 */
 
 void	IRCCommandHandler::invite(std::vector<std::string> command, Server &server, Client &client)

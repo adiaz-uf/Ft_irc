@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   join.cpp                                           :+:      :+:    :+:   */
+/*   bot.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adiaz-uf <adiaz-uf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:50 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/17 07:25:51 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/21 10:02:04 by adiaz-uf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void makeJoke(Server &server, Client &client)
 void sayDate(Server &server, Client &client)
 {
     std::time_t result = std::time(NULL);
-    std::cout << std::ctime(&result);
     server.sendMessageToClient(std::ctime(&result), client.getSocket());
 }
 
