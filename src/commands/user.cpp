@@ -6,18 +6,11 @@
 /*   By: adiaz-uf <adiaz-uf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 06:41:52 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/21 10:22:40 by adiaz-uf         ###   ########.fr       */
+/*   Updated: 2025/01/21 11:38:48 by adiaz-uf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-    # include "IRCCommandHandler.hpp"
-
-/*
-3.1.3 User message
-
-Command: USER
-*/
-
+# include "IRCCommandHandler.hpp"
 
 void IRCCommandHandler::user(std::vector<std::string> command, Server &server, Client &client)
 {

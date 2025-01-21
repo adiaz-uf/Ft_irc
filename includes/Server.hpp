@@ -37,13 +37,11 @@ class Server
 		std::map<int, Client>			_clients;
 		std::map<std::string, Channel>	_channels;
 
-		//Suggest making these static non server functions
 		void		_setupServerSocket(int port);
 		void		_acceptNewClient();
 		void		_handleClientMessage(int clientFd);
 
 	public:
-		//Suggest removing the constructors we dont need.
 		Server();
 		Server(int port, const std::string& password);
 		Server(const Server& other);
@@ -51,13 +49,11 @@ class Server
 		~Server();
 
 		void							disconnectClient(int clientFd);
-
 		bool							isValidChannel(std::string channel);
 		bool							isValidClient(int fd);
 		bool							isValidClient(std::string client);
 		bool							isClientAuthorized(int fd);
 
-			
 		std::map<std::string, Channel> 	*getChannels();
 		Channel* 						getChannel(std::string channel);
 		Client* 						getClient(std::string client);
@@ -71,10 +67,10 @@ class Server
 		void							deleteMemberAllChannels(int fd);
 		int								nickValid(std::string name);
 		int								userValid(std::string name);
+		int								getClientsCount();
 		void							sendMessageToClient(const std::string& message, int clientFd);
 		void							broadcastToEveryone(const std::string& message, const Server& server);
 		std::set<int>					getContacts(int fd);
-
 };
 
 #endif

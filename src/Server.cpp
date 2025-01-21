@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adiaz-uf <adiaz-uf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:26 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/17 13:14:36 by bmatos-d         ###   ########.fr       */
+/*   Updated: 2025/01/21 11:42:56 by adiaz-uf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ void		Server::_acceptNewClient()
 	struct sockaddr_in	clientAddr;
 	socklen_t	clientLen = sizeof(clientAddr);
 	int	clientSocket = accept(_serverSocket, (struct sockaddr*)&clientAddr, &clientLen);
+	std::cout << "Client connected: " << clientSocket << std::endl;
 	if (clientSocket == -1)
 		return ;
 	
@@ -167,6 +168,11 @@ void		Server::_acceptNewClient()
 	}
 	_clients[clientSocket] = Client(clientSocket);
 	sendMessageToClient("Please set username (USER), nickname (NICK) and enter the server password (PASS).\n", clientSocket);
+}
+
+int Server::getClientsCount()
+{
+    return this->_clients.size();
 }
 
 std::set<int> Server::getContacts(int fd)
@@ -236,7 +242,6 @@ void Server::run()
 		}
 	}
 }
-
 
 void		Server::deleteMemberAllChannels(int fd)
 {

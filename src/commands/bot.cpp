@@ -6,7 +6,7 @@
 /*   By: adiaz-uf <adiaz-uf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:50 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/21 10:02:04 by adiaz-uf         ###   ########.fr       */
+/*   Updated: 2025/01/21 11:28:43 by adiaz-uf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void makeJoke(Server &server, Client &client)
             server.sendMessageToClient("What do you call a pony with a cough? A little horse.\r\n", fd);
             break;
         case 1:
-            server.sendMessageToClient("What did one hat say to the other? you wait here. I’ll go on a head.\r\n", fd);
+            server.sendMessageToClient("What did one hat say to the other? you wait here. I'll go on a head.\r\n", fd);
             break;
         case 2:
             server.sendMessageToClient("What do you call a magic dog? A labracadabrador.\r\n", fd);
@@ -38,17 +38,28 @@ void makeJoke(Server &server, Client &client)
 void sayDate(Server &server, Client &client)
 {
     std::time_t result = std::time(NULL);
-    server.sendMessageToClient(std::ctime(&result), client.getSocket());
+    std::string date(std::ctime(&result));
+    std::string message = "Hi! todays date is " + date; 
+    server.sendMessageToClient(message, client.getSocket());
+}
+
+void countClients(Server &server, Client &client)
+{
+    int count = server.getClientsCount();
+    std::stringstream ss;
+    ss << count;
+    std::string str = "Clients in server: " + ss.str() + "\r\n";
+    server.sendMessageToClient(str, client.getSocket());
 }
 
 void	IRCCommandHandler::bot(std::vector<std::string> command, Server &server, Client &client)
 {
     int         n = -1;
-    std::string ircCommands[2] = { "JOKE", "DATE" };
+    std::string ircCommands[3] = { "JOKE", "DATE", "CLIENTS" };
     
     do
         n++;
-    while (n < 2 && command[1] != ircCommands[n]); 
+    while (n < 3 && command[1] != ircCommands[n]); 
     switch (n)
     {
 		case 0:  
@@ -57,8 +68,11 @@ void	IRCCommandHandler::bot(std::vector<std::string> command, Server &server, Cl
         case 1:  
             sayDate(server, client);
             break;
+        case 2: 
+            countClients(server, client);
+            break;
         default:
-            std::cout << "INVALID BOT COMMAND" << std::endl;
+            server.sendMessageToClient("Invalid Bot Command, available commands: JOKE, DATE, CLIENTS.\r\n", client.getSocket());
             break;
     }
 }

@@ -61,6 +61,6 @@ fclean: clean
 re: fclean all
 
 run: $(NAME)
-	@./$(NAME)
+	@./$(NAME) 6667 default
 	
 .PHONY: all clean fclean re run

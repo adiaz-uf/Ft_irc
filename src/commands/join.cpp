@@ -6,7 +6,7 @@
 /*   By: adiaz-uf <adiaz-uf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:50 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/21 10:17:01 by adiaz-uf         ###   ########.fr       */
+/*   Updated: 2025/01/21 11:34:14 by adiaz-uf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,15 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
 	bool	permission;
 	Channel *channel;
 
-	if (command.size() < 2)
-		server.sendMessageToClient(ERR_NEEDMOREPARAMS(client.getUsername(), "JOIN"), clientFd);
+	if (command.size() < 2) 
+		return (server.sendMessageToClient(ERR_NEEDMOREPARAMS(client.getUsername(), "JOIN"), clientFd));
 	std::istringstream ss1(command[1]);
-	while (std::getline(ss1, split, ',')) // Separate channels into queue                                                                                                                                                                              
+	while (std::getline(ss1, split, ','))                                                                                                                                                                            
 		channels.push(split);
 	if (command.size() > 2)
 	{
 		std::istringstream ss2(command[2]); 
-		while (std::getline(ss2, split, ',')) // Separate keys into queue                                                                                                                                                                                  
+		while (std::getline(ss2, split, ','))                                                                                                                                                                               
 			keys.push(split);
 	}
 	while (!channels.empty())

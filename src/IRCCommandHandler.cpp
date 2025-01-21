@@ -6,7 +6,7 @@
 /*   By: adiaz-uf <adiaz-uf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:15 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/21 10:04:58 by adiaz-uf         ###   ########.fr       */
+/*   Updated: 2025/01/21 11:33:35 by adiaz-uf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ void IRCCommandHandler::handleCommand(Server &server, Client &client, std::strin
         case 12:
             bot(command, server, client);
         default:
-            //std::cout << "INVALID COMMAND" << std::endl; // TODO:?
             break;
     }
     if (server.getClient(fd)) if (client.isAuthenticated() == false) client.authenticate(server);

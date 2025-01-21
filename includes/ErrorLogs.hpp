@@ -3,16 +3,11 @@
 
 #include <iostream>
 #include <string>
-
 #include <cstdlib>
 #include <cstdio>
 #include <time.h>
 
-
-//Comprobado
-
 //@time=2025-01-16T06:38:04.592Z :bmatos-d3!~bmatos-d3@195.55.211.139 MODE #ajdsknasasdasdasd +i
-//@time=2025-01-16T07:03:18.199Z :bmatos-d3!~bmatos-d3@195.55.211.139 MODE #ajdsknasasdasdasd -l
 #define MODE_I_T_L_TOGGLE(op_nick, op_user, channel, operator, mode)            (std::string(":") + (op_nick) + "!~" + (op_user) + " MODE " + (channel) + " " + (operator) + (mode) + "\r\n")
 
 //@time=2025-01-16T22:32:40.782Z :osmium.libera.chat 341 bmatos-d_ bmatos-d__ #asdasdasd
@@ -33,7 +28,6 @@
 //@time=2025-01-16T07:03:18.199Z :bmatos-d3!~bmatos-d3@195.55.211.139 MODE #ajdsknasasdasdasd +l 50
 #define MODE_L_ON(op_nick, op_user, channel, operator, mode, limit)             (std::string(":") + (op_nick) + "!~" + (op_user) + " MODE " + (channel) + " +l " + (limit) + "\r\n")
 
-//TODO
 #define MODE_RPL(channel, modes)														(std::string(":Operator ") + " MODE " + (channel) + " +" + (modes) +"\r\n")
 
 //@time=2025-01-16T04:03:25.022Z :tantalum.libera.chat 433 bmatos-d3 bmatos-d_ :Nickname is already in use.
@@ -81,16 +75,13 @@
 //@time=2025-01-17T11:15:59.465Z :bmatos-d_!~three121@195.55.211.76 NICK :asswhole
 #define NICK_LOG(oldnick, user, newnick)                                        (std::string(":") + (oldnick) + "!~" + (user) + " NICK :" + (newnick) + "\r\n")
 
-//TODO//
 #define ERR_PASSWDMISMATCH(clientNick)                                          (": 464 " + (clientNick) + " :ERRONEOUS_PASS Password is incorrect\r\n")
 
-//TODO//
 #define ERR_NONICKNAMEGIVEN(clientNick)                                         (": 431 " + (clientNick) + " :Nickname not given\r\n")
 
 //@time=2025-01-17T11:36:03.395Z :tungsten.libera.chat 441 three121 asswhole #asdasdasdaa :They aren't on that channel
 #define ERR_USERNOTINCHANNEL(clientNick, targetNick, channel)                   (": 441 "+ (clientNick) + " " + (targetNick) + " " + (channel) + " :They aren't on that channel\r\n")
 
-//TODO//
 #define ERR_NOTONCHANNEL(clientNick, channel)                                   (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 442 " + (channel) + " :You're not on that channel\r\n")
 
 //@time=2025-01-17T11:43:55.640Z :tungsten.libera.chat 403 asswhole Libera.Chat :No such channel
@@ -105,8 +96,6 @@
 //@time=2025-01-17T11:59:42.002Z :tungsten.libera.chat 443 asswhole three121 #asdasdasda :is already on channel
 #define ERR_USERONCHANNEL(clientNick, target, channel)                          (std::string(": 443 ") + (clientNick) + " " + (target) + " " + (channel) + " :is already on channel\r\n")
 
-//TODO
-//La ultima cosa que hacer me parece
 //@time=2025-01-20T11:19:31.973Z :silver.libera.chat 353 two212 = #c :two212 Moprius kts Betal tomaw empty kubrickdave_ au- Turn_Left daugaard ash_11 ensyde SymbioticFemale Chronos shalok zeemate siw5ohs0 mark- phant stewi greengoblin vanishingideal bloony printfdebugging- BUSY iomari891 
 #define RPL_NAMEREPLY(nick, channel, names) (std::string(": 353 ") + (nick) + " @ " + (channel) + " :" + (names) + "\r\n")
 

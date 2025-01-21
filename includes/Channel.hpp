@@ -36,10 +36,6 @@ class Channel
 		Channel&	operator=(const Channel& other);
 		~Channel();
 		
-
-						//ADD REMOVE
-		//IMPORTANT NOTE: FOR THESE YOU *MUST* DO APPROPRIATE CHECKS BEFORE CALLING
-		//If fd is already in invited do not add to invited
 		void						makeMember			(Server& server, int fd);
 		void						removeMember		(int fd);
 
@@ -51,7 +47,6 @@ class Channel
 
 		void 						deleteMember		(int fd);
 
-						//"IS IN?" CHECKS
 		bool						isInvited			(int fd)									const;
 		bool						isMember			(int fd);
 		bool						isOperator			(int fd) 									const;
