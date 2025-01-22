@@ -85,7 +85,7 @@
 #define ERR_NOTONCHANNEL(clientNick, channel)                                   (std::string(":") + (clientNick) + " PRIVMSG " + (channel) + " 442 " + (channel) + " :You're not on that channel\r\n")
 
 //@time=2025-01-17T11:43:55.640Z :tungsten.libera.chat 403 asswhole Libera.Chat :No such channel
-#define ERR_NOSUCHCHANNEL(clientNick, channel)                                  (std::string(": 403 ") + (clientNick) + " IRC :No such channel\r\n")
+#define ERR_NOSUCHCHANNEL(clientNick, channel)                                  (std::string(": 403 ") + (clientNick) + " " + (channel) + " :No such channel\r\n")
 
 //@time=2025-01-17T11:46:51.651Z :tungsten.libera.chat 482 three121 #asdasdasda :You're not a channel operator
 #define ERR_CHANOPRIVSNEEDED(clientNick, channel)                               (std::string(": 482 ") + (clientNick) + " " + (channel) + " :You must be a channel operator to perform this action\r\n")
