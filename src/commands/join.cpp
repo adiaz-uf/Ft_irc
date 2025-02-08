@@ -6,7 +6,7 @@
 /*   By: adiaz-uf <adiaz-uf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:50 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/22 18:50:05 by aude-la-         ###   ########.fr       */
+/*   Updated: 2025/02/08 10:36:39 by adiaz-uf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void    IRCCommandHandler::join(std::vector<std::string> command, Server &server
 		permission = ACCEPTED;
 		if (channels.front()[0] != '#')
 			server.sendMessageToClient(ERR_NOSUCHCHANNEL(client.getUsername(), channels.front()), clientFd);
- 		else if (!server.isValidChannel(channels.front()))
+		else if (!server.isValidChannel(channels.front()))
 		{
 			server.addChannel(channels.front());
 			server.getChannel(channels.front())->makeMember(server, clientFd);

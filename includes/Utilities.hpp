@@ -6,7 +6,7 @@
 /*   By: adiaz-uf <adiaz-uf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 06:09:31 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/21 11:36:14 by adiaz-uf         ###   ########.fr       */
+/*   Updated: 2025/02/06 12:46:27 by adiaz-uf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@
 #define OPERTATOR            "@"
 
 std::string aggregate(std::vector<std::string> command, int start);
-void        operator_check();// TODO
+
 
 #endif
