@@ -57,7 +57,7 @@
 //@time=2025-01-17T07:41:31.384Z :three223!~three223@195.55.211.139 PART #newchannn
 #define PART_LOG(nick, user, channel)                                           (std::string(":") + (nick) + "!~" + (user) + " PART " + (channel) + "\r\n")
 
-//TODO //@time=2025-01-17T10:49:18.142Z :silver.libera.chat 332 three12 #newchan :a
+//@time=2025-01-17T10:49:18.142Z :silver.libera.chat 332 three12 #newchan :a
 #define TOPIC_GET_LOG(nick, channel, topic)                                     (std::string(": 332 ") + (nick) + " " + (channel) + " " + (topic) + "\r\n") 
 
 //@time=2025-01-17T10:51:11.672Z :three12!~three12@195.55.211.139 TOPIC #newchan :a

@@ -16,7 +16,6 @@
 Command: JOIN: Parameters: <channel>{,<channel>} [<key>{,<key>}]
 */
 
-//TODO Channel info on join
 void    IRCCommandHandler::join(std::vector<std::string> command, Server &server, Client &client)
 {
     std::queue<std::string> channels;

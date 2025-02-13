@@ -61,6 +61,7 @@ class Server
 
 		std::string						getPassword();
 		void 							addChannel(std::string channel);
+		void 							deleteChannel(std::string channel);
 		void							run();
 
 		//Utilities	

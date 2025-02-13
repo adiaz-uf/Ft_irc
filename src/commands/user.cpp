@@ -18,7 +18,7 @@ void IRCCommandHandler::user(std::vector<std::string> command, Server &server, C
 	std::string nick		= client.getNickname();
 	if (client.isAuthenticated() == true)
 		return (server.sendMessageToClient(ERR_ALREADYREGISTERED(nick), clientFd));
-	if (command.size() < 5) //>>> The <realname> may contain space characters<<< TODO
+	if (command.size() < 5)
 		return (server.sendMessageToClient(ERR_NEEDMOREPARAMS(nick, command[0]),clientFd));
 	if (server.userValid(command[1]))
 		return (server.sendMessageToClient("Username taken, try again...", clientFd));

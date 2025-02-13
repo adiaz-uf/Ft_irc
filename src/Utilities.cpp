@@ -25,3 +25,10 @@ std::string aggregate(std::vector<std::string> command, int start_index)
     }
     return (ret);
 }
+
+std::string toUpperCase(std::string str)
+{
+    std::transform(str.begin(), str.end(), str.begin(), static_cast<int(*)(int)>(std::toupper));
+    return str;
+}
+

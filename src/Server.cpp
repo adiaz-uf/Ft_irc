@@ -56,7 +56,7 @@ Server::~Server()
 
 bool 		Server::isValidChannel(std::string channel) 
 {
-    return (this->_channels.find(channel) != this->_channels.end());
+    return (this->_channels.find(toUpperCase(channel)) != this->_channels.end());
 }
 
 bool 		Server::isValidClient(int fd)  
@@ -100,6 +100,7 @@ std::map<std::string, Channel>*	Server::getChannels()
 
 Channel*	Server::getChannel(std::string channel)
 {
+	channel = toUpperCase(channel);
 	if (this->_channels.find(channel) != this->_channels.end())
 		return &(this->_channels.at(channel));
 	return (NULL);
@@ -114,7 +115,14 @@ void Server::addChannel(std::string channel)
 {
 	
 	Channel newchannel = Channel(channel);
-	this->_channels[channel] = newchannel;
+	this->_channels[toUpperCase(channel)] = newchannel;
+}
+
+void Server::deleteChannel(std::string channel)
+{
+	std::map<std::string, Channel>::iterator it = this->_channels.find(channel);
+	if (it != this->_channels.end())
+		this->_channels.erase(it);
 }
 
 void		Server::_setupServerSocket(int port)

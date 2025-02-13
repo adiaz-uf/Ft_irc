@@ -27,6 +27,6 @@
 #define OPERTATOR            "@"
 
 std::string aggregate(std::vector<std::string> command, int start);
-
+std::string toUpperCase(std::string str);
 
 #endif

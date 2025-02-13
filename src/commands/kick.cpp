@@ -44,5 +44,7 @@ void	IRCCommandHandler::kick(std::vector<std::string> command, Server &server, C
 		else if (command.size() == 3)
 			channel->broadcastMessage(KICK_LOG((nick), command[2], command[1], "No reason"), 0);
 		channel->deleteMember(socket);
+		if (channel->userCount() == 0)
+        	server.deleteChannel(toUpperCase(command[1]));
 	}
 }

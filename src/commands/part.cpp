@@ -21,11 +21,14 @@ void IRCCommandHandler::part(std::vector<std::string> command, Server &server, C
         return (server.sendMessageToClient(ERR_NEEDMOREPARAMS(nick, command[0]), fd));
     if (!server.isValidChannel(command[1]))              
         return (server.sendMessageToClient(ERR_NOSUCHCHANNEL (nick, command[1]), fd));
-    Channel *channel     = server.getChannel(command[1]);
+    Channel *channel     = server.getChannel(toUpperCase(command[1]));
+
     if (!channel->isMember(fd))                          
-        return (server.sendMessageToClient(ERR_NOTONCHANNEL  (nick, command[1]), fd));
-    channel->broadcastMessage(PART_LOG(nick, client.getUsername(), command[1]), 0);
+        return (server.sendMessageToClient(ERR_NOTONCHANNEL  (nick, channel->getName()), fd));
+    channel->broadcastMessage(PART_LOG(nick, client.getUsername(), channel->getName()), 0);
     channel->removeMember(fd);
     if (channel->isOperator(fd))
         channel->removeOperator(fd);
+    if (channel->userCount() == 0)
+        server.deleteChannel(toUpperCase(command[1]));
 }
