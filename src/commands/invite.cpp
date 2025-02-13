@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiaz-uf <adiaz-uf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:53 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/02/08 10:36:12 by adiaz-uf         ###   ########.fr       */
+/*   Updated: 2025/02/13 12:10:31 by bmatos-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	IRCCommandHandler::invite(std::vector<std::string> command, Server &server,
         return (server.sendMessageToClient(ERR_NOSUCHNICK(command[2], command[1]), clientFd));
     int             invitedFd   = server.getClient(command[1])->getSocket();
     if (!server.isValidChannel(command[2]))
-        return (server.sendMessageToClient(ERR_NOSUCHCHANNEL(command[2], server.getChannel(command[2])->getName()), clientFd));
+        return (server.sendMessageToClient(ERR_NOSUCHNICK(command[2], command[2]), clientFd));
     else if (!server.getChannel(command[2])->isMember(clientFd))
         return (server.sendMessageToClient(ERR_NOTONCHANNEL(nick, server.getChannel(command[2])->getName()), clientFd));
     else if (server.getChannel(command[2])->isMember(invitedFd))
