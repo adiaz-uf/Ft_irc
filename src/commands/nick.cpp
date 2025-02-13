@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiaz-uf <adiaz-uf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:43 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/02/08 10:37:25 by adiaz-uf         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:38:31 by bmatos-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,14 @@ void IRCCommandHandler::nick(std::vector<std::string> command, Server &server, C
 {
     int clientFd = client.getSocket();
     const std::string nick = client.getNickname();
-    if (command.size() < 2) 
-        return (server.sendMessageToClient(ERR_NONICKNAMEGIVEN(nick), clientFd));
+
+    if (command.size() < 2) return (server.sendMessageToClient(ERR_NONICKNAMEGIVEN(nick), clientFd));
         
     std::string new_nick = command[1];
+
+    if (new_nick == nick)
+        return;
+    
     switch(server.nickValid(new_nick))
     {
         case 1: 

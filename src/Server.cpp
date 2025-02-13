@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiaz-uf <adiaz-uf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmatos-d <bmatos-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 07:25:26 by bmatos-d          #+#    #+#             */
-/*   Updated: 2025/01/21 11:42:56 by adiaz-uf         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:55:43 by bmatos-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,7 @@ int		Server::nickValid(std::string name)
 	if (name.find_first_not_of("1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`|^_-{}[]\\") != std::string::npos || name.find_first_of("1234567890-") == 0)
 		return (1);
 	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
-		if (it->second.getNickname() == name)
+		if (toUpperCase(it->second.getNickname()) == toUpperCase(name))
 			return (2);
 	return (3);
 }
